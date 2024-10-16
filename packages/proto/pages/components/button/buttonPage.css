@@ -1,0 +1,137 @@
+/* 1.) button Display */
+.button-display-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  margin: var(--spacing-sm);
+}
+
+.button-display-title {
+  font-size: var(--font-size-md);
+  font-weight: bold;
+  margin-top: var(--spacing-xs);
+}
+
+.button-display {
+  position: relative;
+  z-index: 1;
+  background-color: #cda434;
+  color: #000;
+  margin-bottom: var(--spacing-xs);
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-size: 16px;
+  transition: transform 0.3s ease;
+}
+
+/* Layer effect using ::before */
+.button-display::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  z-index: -1;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  transform: scale(1.05);
+}
+
+.button-display:hover::before {
+  transform: scale(1.1);
+  opacity: 0.8;
+}
+
+.button-display:hover {
+  transform: translateY(-2px); /* Button lifts on hover */
+}
+
+/* 2.) Control OPtions */
+.controls {
+  display: flex;
+  flex-direction: column;
+
+  max-height: 400px;
+  overflow-y: auto;
+  gap: 10px;
+  padding: 10px;
+}
+
+.icon-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.icon-container button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.icon {
+  width: 50px;
+  height: 50px;
+  filter: brightness(0) invert(1); /* Makes the icon white */
+}
+
+.icon-label {
+  font-size: 14px;
+  margin-top: 5px;
+  color: var(--color-white);
+}
+
+.icon-container:hover .icon-label {
+  color: var(--color-gold); /* Change color on hover */
+}
+
+/* 3.) Customization Tools */
+#customization-tools {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+/* Heading for the customization section */
+.customization-tools-type {
+  justify-self: flex-start;
+  gap: var(--spacing-sm);
+  font-size: 18px;
+  margin-bottom: 15px;
+  color: var(--color-white);
+}
+.customization-tools-type-title {
+  font-size: var(--font-size-md);
+  font-weight: bold;
+}
+/* Button List Container */
+.button-type-list {
+  display: flex;
+  gap: 10px; /* Space between buttons */
+  margin: var(--spacing-sm);
+}
+
+@media (max-width: 1024px) {
+  .controls {
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
+    overflow-x: auto;
+    gap: var(--spacing-lg);
+    max-height: 200px;
+  }
+  .button-type-list {
+    flex-direction: column;
+  }
+}

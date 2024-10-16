@@ -1,0 +1,14 @@
+/* Title Styling */
+.title {
+  font-size: var(--font-size-xl); /* Adjust font size to fit the page nicely */
+  color: var(--color-gold);
+  text-align: center; /* Center the title horizontally */
+  margin: var(--spacing-md) 0; /* Space around the title */
+}
+
+/* Responsive Adjustments for Table of Contents */
+@media (max-width: 768px) {
+  .title {
+    font-size: var(--font-size-lg); /* Smaller font size for titles */
+  }
+}

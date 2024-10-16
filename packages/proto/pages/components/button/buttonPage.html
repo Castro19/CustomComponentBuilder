@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PublishUI - Button</title>
+    <link rel="stylesheet" href="../../../styles/index.css" />
+    <link rel="stylesheet" href="../../componentPage.css" />
+    <link rel="stylesheet" href="../../gridUtility.css" />
+    <link rel="stylesheet" href="./buttonPage.css" />
+    <link rel="stylesheet" href="../../../styles/tokens.css" />
+    <link rel="stylesheet" href="./button-token.css" />
+    <link rel="stylesheet" href="./custom-button-styles.css" />
+  </head>
+  <body>
+    <div class="magazine-wrapper">
+      <div class="magazine-page magazine-page-left">
+        <div class="page-number-left">5</div>
+        <h1 class="title">Button</h1>
+        <div class="grid-container left-page-grid-2-rows">
+          <div class="grid-item left-page-first-row">
+            <div class="button-display-container">
+              <p class="button-display-title">Button Display</p>
+              <button id="customButton" class="button-display">Button</button>
+            </div>
+          </div>
+
+          <div class="grid-item">
+            <div class="controls">
+              <div class="icon-container type-icon" id="type-icon">
+                <button onclick="showCustomizationTools('type-icon')">
+                  <svg class="icon">
+                    <use
+                      href="../../../public/icons/componentOptions.svg#icon-options"
+                    />
+                  </svg>
+                  <p class="icon-label">Type</p>
+                </button>
+              </div>
+              <div class="icon-container font-icon" id="font-icon">
+                <button onclick="showCustomizationTools('font-icon')">
+                  <svg class="icon">
+                    <use
+                      href="../../../public/icons/componentOptions.svg#icon-font"
+                    />
+                  </svg>
+                  <p class="icon-label">Font</p>
+                </button>
+              </div>
+              <div class="icon-container background-icon" id="background-icon">
+                <button onclick="showCustomizationTools('background-icon')">
+                  <svg class="icon">
+                    <use
+                      href="../../../public/icons/componentOptions.svg#icon-border"
+                    />
+                  </svg>
+                  <p class="icon-label">Background</p>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="grid-item-customization" id="customization-button-types">
+            <h3 class="customization-tools-type-title">Button Types</h3>
+            <div class="button-type-list">
+              <button class="button button-primary" id="primaryButton">
+                Primary Button
+              </button>
+              <button class="button button-secondary" id="secondaryButton">
+                Secondary Button
+              </button>
+              <button class="button button-destructive" id="destructiveButton">
+                Destructive Button
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-container footer-container-left-page">
+          <button class="arrow-button">
+            <a href="../../tableContents/tableContents.html">
+              <svg class="icon arrow arrow-left">
+                <use
+                  href="../../../public/icons/componentOptions.svg#icon-arrow"
+                />
+              </svg>
+            </a>
+          </button>
+        </div>
+      </div>
+      <div class="magazine-page magazine-page-right">
+        <div class="page-number-right">6</div>
+        <h1 class="title">Button Docs</h1>
+        <!-- Right Page Grid Layout -->
+        <div class="grid-container right-page-grid-2-rows">
+          <div class="grid-item">Button Code</div>
+          <div class="grid-item">Instructions</div>
+        </div>
+        <div class="footer-container footer-container-right-page">
+          <button class="arrow-button">
+            <a href="../../credits/creditsPage.html">
+              <svg class="icon arrow" width="50" height="50">
+                <use
+                  href="../../../public/icons/componentOptions.svg#icon-arrow"
+                />
+              </svg>
+            </a>
+          </button>
+        </div>
+      </div>
+    </div>
+    <script src="./buttonPage.js"></script>
+  </body>
+</html>

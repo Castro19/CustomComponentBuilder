@@ -1,0 +1,5 @@
+.credits-list li {
+  margin-bottom: var(--spacing-sm);
+  font-size: var(--font-size-md);
+  color: var(--color-white);
+}
