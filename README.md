@@ -39,4 +39,4 @@
 
 - **Link:** https://miro.com/app/board/uXjVLaY6bpY=/?share_link_id=719833017301
 
-- [Current Demo](docs/labDemo-1-6.mp4)
+- [Current Demo](https://drive.google.com/file/d/1YYXhBB6JN_ywluXst-xL7U4xFnX1TRWa/view?usp=sharing)
