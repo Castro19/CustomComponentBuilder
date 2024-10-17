@@ -133,5 +133,16 @@
   }
   .button-type-list {
     flex-direction: column;
+    gap: var(--spacing-xs);
+  }
+  .button {
+    height: 30%;
+  }
+  .icon {
+    height: 35px;
+    width: 35px;
+  }
+  .icon-label {
+    font-size: var(--font-size-sm);
   }
 }

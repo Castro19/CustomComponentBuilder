@@ -55,8 +55,12 @@
 }
 
 /* Responsive Adjustments for Table of Contents */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .title {
     font-size: var(--font-size-lg); /* Smaller font size for titles */
+  }
+  .toc-item {
+    font-size: var(--font-size-sm); /* Smaller font size for titles */
+    padding: 0;
   }
 }
