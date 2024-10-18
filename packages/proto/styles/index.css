@@ -61,7 +61,7 @@ svg.icon {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 90%;
+  width: var(--page-width-large);
   max-width: 1200px;
   margin: auto; /* Center the wrapper itself within the viewport */
 }
@@ -132,6 +132,8 @@ pre {
   }
 
   .magazine-page {
+    height: var(--page-height-large);
+    width: var(--page-width-large);
     grid-template-rows: auto 3fr 1fr auto;
   }
 }

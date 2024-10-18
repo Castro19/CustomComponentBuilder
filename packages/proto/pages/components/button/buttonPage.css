@@ -117,9 +117,18 @@
 }
 /* Button List Container */
 .button-type-list {
-  display: flex;
-  gap: 10px; /* Space between buttons */
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(80px, 1fr)
+  ); /* Adjust the minmax value as needed */
+  gap: 5px; /* Reduced space between buttons */
   margin: var(--spacing-sm);
+}
+
+.button {
+  font-size: var(--font-size-xs); /* Smaller font size */
+  padding: var(--spacing-xs) var(--spacing-sm); /* Smaller padding */
 }
 
 @media (max-width: 1024px) {
@@ -136,7 +145,7 @@
     gap: var(--spacing-xs);
   }
   .button {
-    height: 30%;
+    font-size: var(--font-size-xs); /* Smaller font size */
   }
   .icon {
     height: 35px;
