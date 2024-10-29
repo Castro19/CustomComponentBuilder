@@ -229,3 +229,63 @@
     font-size: var(--font-size-sm);
   }
 }
+
+.font-weight-container {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  align-items: center;
+  justify-content: flex-start;
+  margin-left: var(--spacing-sm);
+  margin-top: var(--spacing-sm);
+}
+
+.font-weight-title {
+  font-size: var(--font-size-sm);
+  font-weight: bold;
+  margin-right: var(--spacing-sm);
+}
+
+.font-weight-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.font-weight-slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--color-white);
+  outline: none;
+}
+
+.font-weight-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--color-gold);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.font-weight-slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--color-gold);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.font-weight-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+.font-weight-value {
+  color: var(--color-white);
+  min-width: 40px;
+  text-align: center;
+}
