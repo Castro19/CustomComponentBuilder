@@ -49,14 +49,14 @@
                   <p class="icon-label">Font</p>
                 </button>
               </div>
-              <div class="icon-container background-icon" id="background-icon">
-                <button onclick="showCustomizationTools('background-icon')">
+              <div class="icon-container border-icon" id="border-icon">
+                <button onclick="showCustomizationTools('border-icon')">
                   <svg class="icon">
                     <use
                       href="../../../public/icons/componentOptions.svg#icon-border"
                     />
                   </svg>
-                  <p class="icon-label">Background</p>
+                  <p class="icon-label">Border</p>
                 </button>
               </div>
             </div>
@@ -129,8 +129,88 @@
                 />
               </div>
             </div>
+            <div class="text-color-container">
+              <p class="text-color-title">Text Color:</p>
+              <div class="text-color-controls">
+                <input type="color" class="text-color-picker" value="#000000" />
+                <span class="text-color-value">#000000</span>
+              </div>
+            </div>
+            <div class="button-color-container">
+              <p class="button-color-title">Button Color:</p>
+              <div class="button-color-controls">
+                <input
+                  type="color"
+                  class="button-color-picker"
+                  value="#CDA434"
+                />
+                <span class="button-color-value">#CDA434</span>
+              </div>
+            </div>
+          </div>
+          <div
+            class="grid-item-customization border-customization"
+            id="customization-button-border"
+          >
+            <h3 class="customization-tools-type-title">Border</h3>
+
+            <!-- Border Width -->
+            <div class="border-width-container">
+              <p class="border-width-title">Border Width:</p>
+              <div class="border-width-controls">
+                <select class="border-width-select">
+                  <option value="1px">Thin (1px)</option>
+                  <option value="2px">Medium (2px)</option>
+                  <option value="3px">Thick (3px)</option>
+                  <option value="4px">Extra Thick (4px)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Border Style -->
+            <div class="border-style-container">
+              <p class="border-style-title">Border Style:</p>
+              <div class="border-style-controls">
+                <select class="border-style-select">
+                  <option value="solid">Solid</option>
+                  <option value="dashed">Dashed</option>
+                  <option value="dotted">Dotted</option>
+                  <option value="double">Double</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Border Color -->
+            <div class="border-color-container">
+              <p class="border-color-title">Border Color:</p>
+              <div class="border-color-controls">
+                <input
+                  type="color"
+                  class="border-color-picker"
+                  value="#FFFFFF"
+                />
+                <span class="border-color-value">#FFFFFF</span>
+              </div>
+            </div>
+
+            <!-- Border Radius -->
+            <div class="border-radius-container">
+              <p class="border-radius-title">Border Radius:</p>
+              <div class="border-radius-controls">
+                <input
+                  type="range"
+                  class="border-radius-slider"
+                  min="0"
+                  max="50"
+                  step="1"
+                  value="4"
+                />
+                <span class="border-radius-value">4px</span>
+              </div>
+            </div>
           </div>
         </div>
+
         <div class="footer-container footer-container-left-page">
           <button class="arrow-button">
             <a href="../../tableContents/tableContents.html">
