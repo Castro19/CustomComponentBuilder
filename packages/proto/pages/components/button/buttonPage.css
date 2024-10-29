@@ -115,6 +115,7 @@
 .customization-tools-type-title {
   font-size: var(--font-size-md);
   font-weight: bold;
+  align-self: center;
 }
 /* Button List Container */
 .button-type-list {
@@ -133,13 +134,14 @@
 /* Font Customization */
 .font-customization {
   display: none;
+  align-items: flex-start !important;
 }
 
 .font-family-container {
   display: grid;
   grid-template-columns: 1fr 2fr;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   margin-left: var(--spacing-sm);
 }
 .font-family-title {
@@ -156,16 +158,11 @@
 
 .font-family-select {
   padding: var(--spacing-xs) var(--spacing-sm);
-  border: 1px solid var(--color-gold);
+  border: 1px solid;
   background: transparent;
   color: var(--color-white);
   cursor: pointer;
   transition: all 0.3s ease;
-}
-
-.font-family-select:hover {
-  background: var(--color-gold);
-  color: var(--color-black);
 }
 
 .font-family-select option {
@@ -177,7 +174,7 @@
   display: grid;
   grid-template-columns: 1fr 2fr;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   margin-left: var(--spacing-sm);
 }
 
@@ -196,16 +193,11 @@
 
 .font-size-select {
   padding: var(--spacing-xs) var(--spacing-sm);
-  border: 1px solid var(--color-gold);
+  border: 1px solid;
   background: transparent;
   color: var(--color-white);
   cursor: pointer;
   transition: all 0.3s ease;
-}
-
-.font-size-select:hover {
-  background: var(--color-gold);
-  color: var(--color-black);
 }
 
 .font-size-select option {
