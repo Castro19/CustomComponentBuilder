@@ -1,9 +1,26 @@
 // Function to handle click events and log the icon that was clicked
 function showCustomizationTools(iconId) {
-  console.log(`Icon clicked: ${iconId}`);
+  const buttonTypeSection = document.getElementById(
+    "customization-button-types"
+  );
+  const buttonFontSection = document.getElementById(
+    "customization-button-font"
+  );
+
+  buttonTypeSection.style.display = "none";
+  buttonFontSection.style.display = "none";
 
   // For now, just log the clicked icon's ID
   // Later I will extend this to display the customization tools
+  if (iconId === "type-icon") {
+    console.log("Type icon clicked");
+    buttonTypeSection.style.display = "flex";
+    // render the type icon customization tools
+  } else if (iconId === "font-icon") {
+    console.log("Font icon clicked");
+    buttonFontSection.style.display = "flex";
+    // render the font icon customization tools
+  }
 }
 
 // Add event listeners for each icon to ensure all icons log their clicks
@@ -57,4 +74,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Optional: On initial load, set the default button style
   displayButton.classList.add("button-primary");
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  const buttonTypes = document.querySelectorAll(".button-type");
+  const fontSelect = document.querySelector(".font-family-select");
+
+  fontSelect.addEventListener("change", function () {
+    const fontFamily = this.value;
+    buttonTypes.forEach((btn) => {
+      btn.style.setProperty("font-family", fontFamily, "important");
+    });
+  });
 });
