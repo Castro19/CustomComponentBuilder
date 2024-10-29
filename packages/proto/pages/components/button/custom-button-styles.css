@@ -1,5 +1,5 @@
 /* Base button styles */
-.button {
+.button-type {
   font-family: var(--button-font-family);
   font-size: var(--button-font-size);
   font-weight: var(--button-font-weight);

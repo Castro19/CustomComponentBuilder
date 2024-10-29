@@ -22,6 +22,7 @@
   border-radius: 4px;
   font-size: 16px;
   transition: transform 0.3s ease;
+  min-width: 170px;
 }
 
 /* Layer effect using ::before */
@@ -118,17 +119,58 @@
 /* Button List Container */
 .button-type-list {
   display: grid;
-  grid-template-columns: repeat(
-    auto-fill,
-    minmax(80px, 1fr)
-  ); /* Adjust the minmax value as needed */
+  grid-template-columns: 1fr;
   gap: 5px; /* Reduced space between buttons */
+  margin: var(--spacing-sm);
+  width: 70%;
+}
+
+.button-type {
+  font-size: var(--font-size-xs); /* Smaller font size */
+  padding: var(--spacing-xs) var(--spacing-sm); /* Smaller padding */
+}
+
+/* Font Customization */
+.font-customization {
+  display: none;
+}
+
+.font-family-container {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  align-items: center;
+  justify-content: center;
+  margin-left: var(--spacing-sm);
+}
+.font-family-title {
+  font-size: var(--font-size-sm);
+  font-weight: bold;
+  margin-right: var(--spacing-sm);
+}
+.font-family-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-sm);
   margin: var(--spacing-sm);
 }
 
-.button {
-  font-size: var(--font-size-xs); /* Smaller font size */
-  padding: var(--spacing-xs) var(--spacing-sm); /* Smaller padding */
+.font-family-select {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border: 1px solid var(--color-gold);
+  background: transparent;
+  color: var(--color-white);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.font-family-select:hover {
+  background: var(--color-gold);
+  color: var(--color-black);
+}
+
+.font-family-select option {
+  background: var(--color-black);
+  color: var(--color-white);
 }
 
 @media (max-width: 1024px) {
@@ -144,7 +186,7 @@
     flex-direction: column;
     gap: var(--spacing-xs);
   }
-  .button {
+  .button-type {
     font-size: var(--font-size-xs); /* Smaller font size */
   }
   .icon {
