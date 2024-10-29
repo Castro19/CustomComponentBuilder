@@ -289,3 +289,45 @@
   min-width: 40px;
   text-align: center;
 }
+
+.button-text-container {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  align-items: center;
+  justify-content: flex-start;
+  margin-left: var(--spacing-sm);
+  margin-top: var(--spacing-sm);
+}
+
+.button-text-title {
+  font-size: var(--font-size-sm);
+  font-weight: bold;
+  margin-right: var(--spacing-sm);
+}
+
+.button-text-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.button-text-input {
+  width: 100%;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border: 1px solid var(--color-white);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--color-white);
+  font-size: var(--font-size-sm);
+  transition: all 0.3s ease;
+}
+
+.button-text-input:focus {
+  outline: none;
+  border-color: var(--color-gold);
+  box-shadow: 0 0 0 2px rgba(205, 164, 52, 0.2);
+}
+
+.button-text-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}

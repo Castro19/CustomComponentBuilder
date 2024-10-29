@@ -82,6 +82,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const fontSizeSelect = document.querySelector(".font-size-select");
   const fontWeightSlider = document.querySelector(".font-weight-slider");
   const fontWeightValue = document.querySelector(".font-weight-value");
+  const buttonTextInput = document.querySelector(".button-text-input");
+  const customButton = document.getElementById("customButton");
 
   // Font size options (existing code)
   const fontSizes = [12, 14, 16, 18, 20, 24, 28, 32];
@@ -120,5 +122,10 @@ document.addEventListener("DOMContentLoaded", function () {
     buttonTypes.forEach((btn) => {
       btn.style.setProperty("font-weight", weight, "important");
     });
+  });
+  // Button text change handler
+  buttonTextInput.addEventListener("input", function () {
+    const newText = this.value || "Button"; // Use "Button" as fallback if empty
+    customButton.textContent = newText;
   });
 });
