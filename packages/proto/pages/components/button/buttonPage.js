@@ -79,11 +79,35 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
   const buttonTypes = document.querySelectorAll(".button-type");
   const fontSelect = document.querySelector(".font-family-select");
+  const fontSizeSelect = document.querySelector(".font-size-select");
 
+  // Font size options (in pixels)
+  const fontSizes = [12, 14, 16, 18, 20, 24, 28, 32];
+
+  // Populate font size dropdown
+  fontSizes.forEach((size) => {
+    const option = document.createElement("option");
+    option.value = `${size}px`;
+    option.textContent = `${size}px`;
+    fontSizeSelect.appendChild(option);
+  });
+
+  // Set default font size
+  fontSizeSelect.value = "16px";
+
+  // Font family change handler (existing code)
   fontSelect.addEventListener("change", function () {
     const fontFamily = this.value;
     buttonTypes.forEach((btn) => {
       btn.style.setProperty("font-family", fontFamily, "important");
+    });
+  });
+
+  // Font size change handler
+  fontSizeSelect.addEventListener("change", function () {
+    const fontSize = this.value;
+    buttonTypes.forEach((btn) => {
+      btn.style.setProperty("font-size", fontSize, "important");
     });
   });
 });
