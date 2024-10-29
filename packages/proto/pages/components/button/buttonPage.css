@@ -331,3 +331,190 @@
 .button-text-input::placeholder {
   color: rgba(255, 255, 255, 0.5);
 }
+
+/* Border Customization */
+.border-customization {
+  display: none;
+  align-items: flex-start !important;
+}
+
+/* Common styles for border containers */
+.border-width-container,
+.border-style-container,
+.border-color-container,
+.border-radius-container {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  align-items: center;
+  justify-content: flex-start;
+  margin-left: var(--spacing-sm);
+  margin-top: var(--spacing-sm);
+}
+
+/* Common styles for titles */
+.border-width-title,
+.border-style-title,
+.border-color-title,
+.border-radius-title {
+  font-size: var(--font-size-sm);
+  font-weight: bold;
+  margin-right: var(--spacing-sm);
+}
+
+/* Common styles for controls */
+.border-width-controls,
+.border-style-controls,
+.border-color-controls,
+.border-radius-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+/* Select styles */
+.border-width-select,
+.border-style-select {
+  width: 100%;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border: 1px solid var(--color-white);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--color-white);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.border-width-select option,
+.border-style-select option {
+  background: var(--color-black);
+  color: var(--color-white);
+}
+
+/* Color picker styles */
+.border-color-picker {
+  -webkit-appearance: none;
+  width: 50px;
+  height: 30px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.border-color-picker::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.border-color-picker::-webkit-color-swatch {
+  border: 1px solid var(--color-white);
+  border-radius: 4px;
+}
+
+.border-color-value {
+  color: var(--color-white);
+  font-size: var(--font-size-sm);
+}
+
+/* Radius slider styles */
+.border-radius-slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--color-white);
+  outline: none;
+}
+
+.border-radius-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--color-gold);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.border-radius-slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--color-gold);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.border-radius-value {
+  color: var(--color-white);
+  min-width: 40px;
+  text-align: center;
+}
+
+/* Hover and focus states */
+.border-width-select:hover,
+.border-style-select:hover,
+.border-radius-slider::-webkit-slider-thumb:hover {
+  border-color: var(--color-gold);
+}
+
+.border-width-select:focus,
+.border-style-select:focus {
+  outline: none;
+  border-color: var(--color-gold);
+  box-shadow: 0 0 0 2px rgba(205, 164, 52, 0.2);
+}
+
+/* Text and Button Color Containers */
+.text-color-container,
+.button-color-container {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  align-items: center;
+  justify-content: flex-start;
+  margin-left: var(--spacing-sm);
+  margin-top: var(--spacing-sm);
+}
+
+/* Text and Button Color Titles */
+.text-color-title,
+.button-color-title {
+  font-size: var(--font-size-sm);
+  font-weight: bold;
+  margin-right: var(--spacing-sm);
+}
+
+/* Text and Button Color Controls */
+.text-color-controls,
+.button-color-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+/* Color Picker Styles */
+.text-color-picker,
+.button-color-picker {
+  -webkit-appearance: none;
+  width: 50px;
+  height: 30px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.text-color-picker::-webkit-color-swatch-wrapper,
+.button-color-picker::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.text-color-picker::-webkit-color-swatch,
+.button-color-picker::-webkit-color-swatch {
+  border: 1px solid var(--color-white);
+  border-radius: 4px;
+}
+
+.text-color-value,
+.button-color-value {
+  color: var(--color-white);
+  font-size: var(--font-size-sm);
+  min-width: 70px;
+}
