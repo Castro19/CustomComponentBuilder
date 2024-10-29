@@ -80,11 +80,13 @@ document.addEventListener("DOMContentLoaded", function () {
   const buttonTypes = document.querySelectorAll(".button-type");
   const fontSelect = document.querySelector(".font-family-select");
   const fontSizeSelect = document.querySelector(".font-size-select");
+  const fontWeightSlider = document.querySelector(".font-weight-slider");
+  const fontWeightValue = document.querySelector(".font-weight-value");
 
-  // Font size options (in pixels)
+  // Font size options (existing code)
   const fontSizes = [12, 14, 16, 18, 20, 24, 28, 32];
 
-  // Populate font size dropdown
+  // Populate font size dropdown (existing code)
   fontSizes.forEach((size) => {
     const option = document.createElement("option");
     option.value = `${size}px`;
@@ -92,7 +94,7 @@ document.addEventListener("DOMContentLoaded", function () {
     fontSizeSelect.appendChild(option);
   });
 
-  // Set default font size
+  // Set default font size (existing code)
   fontSizeSelect.value = "16px";
 
   // Font family change handler (existing code)
@@ -103,11 +105,20 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // Font size change handler
+  // Font size change handler (existing code)
   fontSizeSelect.addEventListener("change", function () {
     const fontSize = this.value;
     buttonTypes.forEach((btn) => {
       btn.style.setProperty("font-size", fontSize, "important");
+    });
+  });
+
+  // Font weight change handler
+  fontWeightSlider.addEventListener("input", function () {
+    const weight = this.value;
+    fontWeightValue.textContent = weight;
+    buttonTypes.forEach((btn) => {
+      btn.style.setProperty("font-weight", weight, "important");
     });
   });
 });
