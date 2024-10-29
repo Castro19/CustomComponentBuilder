@@ -173,6 +173,46 @@
   color: var(--color-white);
 }
 
+.font-size-container {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  align-items: center;
+  justify-content: center;
+  margin-left: var(--spacing-sm);
+}
+
+.font-size-title {
+  font-size: var(--font-size-sm);
+  font-weight: bold;
+  margin-right: var(--spacing-sm);
+}
+
+.font-size-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-sm);
+  margin: var(--spacing-sm);
+}
+
+.font-size-select {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border: 1px solid var(--color-gold);
+  background: transparent;
+  color: var(--color-white);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.font-size-select:hover {
+  background: var(--color-gold);
+  color: var(--color-black);
+}
+
+.font-size-select option {
+  background: var(--color-black);
+  color: var(--color-white);
+}
+
 @media (max-width: 1024px) {
   .controls {
     flex-direction: row;
