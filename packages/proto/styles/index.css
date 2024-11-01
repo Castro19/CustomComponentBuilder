@@ -9,8 +9,8 @@ body,
 html {
   margin: 0;
   padding: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   display: flex;
   justify-content: center; /* Center horizontally */
   align-items: center; /* Center vertically */
@@ -27,7 +27,7 @@ svg.icon {
 
 /* General Magazine Page Styles */
 .magazine-page {
-  height: var(--page-height);
+  min-height: var(--page-height);
   width: var(--page-width-small);
   min-width: var(--min-page-width); /* Minimum width */
   aspect-ratio: var(
@@ -129,10 +129,12 @@ pre {
     flex-direction: column;
     width: var(--page-width-large);
     align-items: center;
+    min-height: 100vh;
+    overflow-y: auto;
   }
 
   .magazine-page {
-    height: var(--page-height-large);
+    height: var(--page-height-small-screen);
     width: var(--page-width-large);
     grid-template-rows: auto 3fr 1fr auto;
   }

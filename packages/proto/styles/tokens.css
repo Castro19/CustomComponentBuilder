@@ -41,8 +41,8 @@
   /* Layout */
   --page-width-small: 45vw;
   --page-width-large: 90vw;
-  --page-height: 90%;
-  --page-height-large: 90vh;
+  --page-height: 90vh;
+  --page-height-small-screen: 50vh;
   --min-page-width: 300px;
   --aspect-ratio-page: 3 / 4;
 

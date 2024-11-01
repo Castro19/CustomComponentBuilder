@@ -39,6 +39,15 @@
   font-size: var(--font-size-base);
 }
 
+.right-grid-item-code {
+  overflow-y: auto;
+  max-height: 300px;
+}
+.right-grid-item-instructions {
+  overflow-y: auto;
+  max-height: 400px;
+}
+
 .grid-item-customization {
   flex-direction: column;
   align-items: center;
@@ -60,4 +69,51 @@
     margin: var(--spacing-xs) 0; /* Add some vertical spacing between grid items */
     width: 100%; /* Ensure items take up full width */
   }
+}
+
+/* Right Page Specific Grid Layout */
+.right-page-docs-grid {
+  display: grid;
+  grid-template-rows: 2fr 3fr; /* Two equal rows */
+  gap: var(--spacing-xs);
+  height: calc(100% - 100px); /* Adjust based on your title and margins */
+  padding: var(--spacing-xs);
+  max-height: 77vh;
+}
+
+/* Code Section Grid Item */
+.right-page-code-section {
+  background-color: var(--color-gray-dark);
+  border: var(--border-width-thin) solid var(--color-border-light);
+  border-radius: var(--border-radius-small);
+  overflow: hidden; /* Contains the scrollable content */
+  max-height: 100%; /* Ensures it stays within grid bounds */
+}
+
+.code-container {
+  height: 100%;
+  overflow: hidden; /* Contains the scrollable content */
+  display: flex;
+  flex-direction: column;
+}
+
+.code-content {
+  flex: 1;
+  overflow-y: auto; /* Makes the code section scrollable */
+  padding: var(--spacing-xs);
+}
+
+/* Instructions Section Grid Item */
+.right-page-instructions-section {
+  background-color: var(--color-gray-dark);
+  border: var(--border-width-thin) solid var(--color-border-light);
+  border-radius: var(--border-radius-small);
+  overflow: hidden;
+  max-height: 100%;
+}
+
+.instructions-container {
+  height: 100%;
+  overflow-y: auto;
+  padding: var(--spacing-xs);
 }
