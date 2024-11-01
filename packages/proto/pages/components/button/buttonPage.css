@@ -631,4 +631,5 @@
   font-size: var(--font-size-sm);
   margin-bottom: var(--spacing-xs);
   line-height: 1.4;
+  color: var(--color-white);
 }

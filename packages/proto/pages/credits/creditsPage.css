@@ -3,3 +3,7 @@
   font-size: var(--font-size-md);
   color: var(--color-white);
 }
+
+.magazine-credits {
+  max-height: 95vh;
+}

@@ -69,6 +69,7 @@
   gap: var(--spacing-xs);
   padding: var(--spacing-xs);
   overflow: auto;
+  border: var(--border-width-thick) solid var(--color-border-dark);
 }
 
 /* Code Section Grid Item */
