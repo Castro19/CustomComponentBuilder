@@ -597,22 +597,6 @@
   color: #f1fa8c;
 }
 
-/* Instructions Styles */
-.instructions-container {
-  background-color: var(--color-black-light);
-  border-radius: 8px;
-  padding: var(--spacing-md);
-  height: 100%;
-  color: var(--color-white);
-}
-
-.instructions-title {
-  font-size: var(--font-size-md);
-  font-weight: bold;
-  margin-bottom: var(--spacing-md);
-  color: var(--color-gold);
-}
-
 .instruction-step {
   display: flex;
   gap: var(--spacing-md);
@@ -647,23 +631,4 @@
   font-size: var(--font-size-sm);
   margin-bottom: var(--spacing-xs);
   line-height: 1.4;
-}
-
-.customization-list {
-  list-style-type: disc;
-  margin-left: var(--spacing-md);
-  font-size: var(--font-size-sm);
-}
-
-.customization-list li {
-  margin-bottom: var(--spacing-xs);
-}
-
-.step-content code {
-  background-color: var(--color-black);
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-family: "Courier New", monospace;
-  font-size: var(--font-size-xs);
-  color: var(--color-gold);
 }
