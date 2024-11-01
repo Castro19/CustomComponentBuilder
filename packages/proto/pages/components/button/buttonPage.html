@@ -226,11 +226,120 @@
       <div class="magazine-page magazine-page-right">
         <div class="page-number-right">6</div>
         <h1 class="title">Button Docs</h1>
+
         <!-- Right Page Grid Layout -->
-        <div class="grid-container right-page-grid-2-rows">
-          <div class="grid-item">Button Code</div>
-          <div class="grid-item">Instructions</div>
+        <div class="right-page-docs-grid">
+          <!-- Code Section -->
+          <div class="right-page-code-section">
+            <div class="code-container">
+              <div class="code-tabs">
+                <button class="code-tab active" data-tab="html">HTML</button>
+                <button class="code-tab" data-tab="css">CSS</button>
+                <button class="code-tab" data-tab="js">JavaScript</button>
+              </div>
+              <div class="code-content">
+                <pre class="code-panel active" id="htmlCode">
+                  <span class="code-tag">&lt;button</span> <span class="code-attribute">class</span>=<span class="code-value">"customButton"</span><span class="code-tag">&gt;</span>
+                    Button Text
+                  <span class="code-tag">&lt;/button&gt;</span></pre>
+                <pre class="code-panel" id="cssCode">
+                  <span class="code-comment">/* Button styles */</span>
+                  <span class="code-keyword">.customButton</span> {
+                    background-color: #cda434;
+                    color: #000000;
+                    padding: 10px 20px;
+                    border-radius: 4px;
+                    font-size: 16px;
+                    border: none;
+                    cursor: pointer;
+                  }</pre>
+                <pre class="code-panel" id="jsCode">
+                  <span class="code-comment">// Button click handler</span>
+                  <span class="code-keyword">const</span> button = document.querySelector('.customButton');
+                  button.addEventListener('click', () => {
+                    console.log('Button clicked!');
+                  });</pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- Instructions Section -->
+          <div class="right-page-instructions-section">
+            <div class="instructions-container">
+              <h3 class="instructions-title">How to Use This Button</h3>
+
+              <div class="instruction-step">
+                <span class="step-number">1</span>
+                <div class="step-content">
+                  <h4>Include Required CSS</h4>
+                  <p>
+                    Copy the CSS code from the CSS tab above and include it in
+                    your stylesheet.
+                  </p>
+                </div>
+              </div>
+
+              <div class="instruction-step">
+                <span class="step-number">2</span>
+                <div class="step-content">
+                  <h4>Add HTML Structure</h4>
+                  <p>
+                    Copy the HTML code from the HTML tab and paste it into your
+                    webpage where you want the button to appear.
+                  </p>
+                </div>
+              </div>
+
+              <div class="instruction-step">
+                <span class="step-number">3</span>
+                <div class="step-content">
+                  <h4>Include JavaScript (Optional)</h4>
+                  <p>
+                    If you want the interactive features, copy the JavaScript
+                    code from the JS tab into your script file.
+                  </p>
+                </div>
+              </div>
+
+              <div class="instruction-step">
+                <span class="step-number">4</span>
+                <div class="step-content">
+                  <h4>Customize the Button</h4>
+                  <p>
+                    Modify the CSS variables or classes to match your website's
+                    theme:
+                  </p>
+                  <ul class="customization-list">
+                    <li>
+                      Change colors using the <code>background-color</code> and
+                      <code>color</code> properties
+                    </li>
+                    <li>
+                      Adjust sizing with <code>padding</code> and
+                      <code>font-size</code>
+                    </li>
+                    <li>
+                      Modify borders using <code>border-radius</code> and
+                      <code>border</code> properties
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="instruction-step">
+                <span class="step-number">5</span>
+                <div class="step-content">
+                  <h4>Test Responsiveness</h4>
+                  <p>
+                    Ensure the button works well across different screen sizes
+                    and devices.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+
         <div class="footer-container footer-container-right-page">
           <button class="arrow-button">
             <a href="../../credits/creditsPage.html">
