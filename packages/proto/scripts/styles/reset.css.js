@@ -59,6 +59,7 @@ const styles = css`
     gap: var(--spacing-xs);
     padding: var(--spacing-xs);
     overflow: auto;
+    border: var(--border-width-thick) solid var(--color-border-dark);
   }
 
   /* Code Section Grid Item */
@@ -112,6 +113,17 @@ const styles = css`
     font-size: var(--font-size-sm);
     margin-bottom: var(--spacing-xs);
     line-height: 1.4;
+  }
+
+  body.light-mode {
+    --color-background: #e4e4e4;
+    --color-gray-dark: #929292;
+    --color-gold: #ffce47;
+    --color-white: #000000;
+    --color-border-dark: rgba(48, 48, 48, 0.8);
+    --color-border-light: rgba(255, 255, 255, 0.2);
+    --color-shadow-light: rgba(0, 0, 0, 0.1);
+    --color-shadow-dark: rgba(0, 0, 0, 0.6);
   }
 `;
 

@@ -19,12 +19,30 @@ html {
   font-weight: var(--font-weight-normal);
 }
 
+#lightModeLabel {
+  position: absolute;
+  top: 20px; /* Adjust to align vertically */
+  right: 20px; /* Adjust to align horizontally */
+  /* Optional styling */
+  font-size: var(--font-size-md);
+  cursor: pointer;
+  color: var(--color-white);
+}
+
+#lightModeLabel input[type="checkbox"] {
+  margin-right: 5px; /* Space between checkbox and label text */
+}
+
 svg.icon {
   display: inline;
   vertical-align: top;
   fill: var(--color-white);
 }
 
+.header-title {
+  font-size: var(--font-size-sm);
+  color: var(--color-gold);
+}
 /* General Magazine Page Styles */
 .magazine-page {
   min-height: var(--page-height);

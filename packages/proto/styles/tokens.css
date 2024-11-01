@@ -73,4 +73,15 @@
   --padding-small: 8px;
   --padding-medium: 12px;
   --padding-large: 16px;
+
+  body.light-mode {
+    --color-background: #e4e4e4;
+    --color-gray-dark: #929292;
+    --color-gold: #ffce47;
+    --color-white: #000000;
+    --color-border-dark: rgba(48, 48, 48, 0.8);
+    --color-border-light: rgba(255, 255, 255, 0.2);
+    --color-shadow-light: rgba(0, 0, 0, 0.1);
+    --color-shadow-dark: rgba(0, 0, 0, 0.6);
+  }
 }

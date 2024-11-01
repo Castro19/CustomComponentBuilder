@@ -13,6 +13,10 @@
     <link rel="stylesheet" href="./custom-button-styles.css" />
   </head>
   <body>
+    <label id="lightModeLabel">
+      <input type="checkbox" autocomplete="off" id="lightModeToggle" />
+      Light Mode
+    </label>
     <div class="magazine-wrapper">
       <div class="magazine-page magazine-page-left">
         <div class="page-number-left">5</div>
@@ -227,55 +231,69 @@
       <div class="magazine-page magazine-page-right">
         <div class="page-number-right">6</div>
         <h1 class="title">Button Docs</h1>
-      
+
         <!-- Right Page Grid Layout -->
         <div class="right-page-docs-grid">
           <!-- Code Section -->
           <div class="right-page-code-section">
             <code-container
-            html-code="&lt;button class='customButton'&gt;Button Text&lt;/button&gt;"
-            css-code=".customButton { background-color: #cda434; /* styles */ }"
-            js-code="const button = document.querySelector('.customButton'); /* code */"
-          ></code-container>
-          
+              html-code="&lt;button class='customButton'&gt;Button Text&lt;/button&gt;"
+              css-code=".customButton { background-color: #cda434; /* styles */ }"
+              js-code="const button = document.querySelector('.customButton'); /* code */"
+            ></code-container>
           </div>
           <!-- Instructions Section -->
           <div class="right-page-instructions-section">
             <code-instructions>
               <div slot="instructions">
-              <div class="instruction-step">
-                <span class="step-number">1</span>
-                <div class="step-content">
-                  <h4>Include Required CSS</h4>
-                  <p>
-                    Copy the CSS code from the CSS tab above and include it in your stylesheet.
-                  </p>
+                <div class="instruction-step">
+                  <span class="step-number">1</span>
+                  <div class="step-content">
+                    <h4>Include Required CSS</h4>
+                    <p>
+                      Copy the CSS code from the CSS tab above and include it in
+                      your stylesheet.
+                    </p>
+                  </div>
                 </div>
-              </div>
-              <div class="instruction-step">
-                <span class="step-number">2</span>
-                <div class="step-content">
-                  <h4>Include Required HTML</h4>
-                  <p>
-                    Copy the HTML code from the HTML tab above and include it in your HTML file.
-                  </p>
+                <div class="instruction-step">
+                  <span class="step-number">2</span>
+                  <div class="step-content">
+                    <h4>Include Required HTML</h4>
+                    <p>
+                      Copy the HTML code from the HTML tab above and include it
+                      in your HTML file.
+                    </p>
+                  </div>
                 </div>
-              </div>
-              <div class="instruction-step">
-                <span class="step-number">3</span>
-                <div class="step-content">
-                  <h4>Include Required JavaScript</h4>
-                  <p>
-                    Copy the JavaScript code from the JavaScript tab above and include it in your JavaScript file.
-                  </p>
+                <div class="instruction-step">
+                  <span class="step-number">3</span>
+                  <div class="step-content">
+                    <h4>Include Required JavaScript</h4>
+                    <p>
+                      Copy the JavaScript code from the JavaScript tab above and
+                      include it in your JavaScript file.
+                    </p>
+                  </div>
                 </div>
+                <!-- Additional instruction steps -->
               </div>
-              <!-- Additional instruction steps -->
-            </div>
-          </code-instructions>
+            </code-instructions>
           </div>
         </div>
-      </div>  
+        <div class="footer-container footer-container-right-page">
+          <button class="arrow-button">
+            <a href="../../credits/creditsPage.html">
+              <svg class="icon arrow" width="50" height="50">
+                <use
+                  href="../../../public/icons/componentOptions.svg#icon-arrow"
+                />
+              </svg>
+            </a>
+          </button>
+        </div>
+      </div>
+    </div>
     <!-- In the head or before the closing body tag -->
     <script type="importmap">
       {
@@ -294,5 +312,6 @@
       });
     </script>
     <script src="./buttonPage.js"></script>
+    <script src="../../../scripts/index.js"></script>
   </body>
 </html>
