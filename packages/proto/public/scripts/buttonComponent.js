@@ -1,7 +1,8 @@
 // scripts/codeInstructions.js
 import { css, html, shadow } from "@calpoly/mustang";
-import reset from "./styles/reset.css.js";
+import reset from "../styles/reset.css.js";
 
+console.log("BUTTON COMPONENT");
 export class ButtonCustomComponent extends HTMLElement {
   static template = html`
     <template>
