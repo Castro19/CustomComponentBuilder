@@ -122,43 +122,6 @@ const styles = css`
     overflow: auto;
   }
 
-  /* Instructions Styles */
-  .instruction-step {
-    display: flex;
-    gap: var(--spacing-md);
-    margin-bottom: var(--spacing-md);
-  }
-
-  .step-number {
-    background-color: var(--color-gold);
-    color: var(--color-black);
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    flex-shrink: 0;
-  }
-
-  .step-content {
-    flex: 1;
-  }
-
-  .step-content h4 {
-    font-size: var(--font-size-sm);
-    font-weight: bold;
-    margin-bottom: var(--spacing-xs);
-    color: var(--color-gold);
-  }
-
-  .step-content p {
-    font-size: var(--font-size-sm);
-    margin-bottom: var(--spacing-xs);
-    line-height: 1.4;
-  }
-
   /* Button List Container */
   .button-type-list {
     display: grid;
@@ -197,6 +160,14 @@ const styles = css`
     color: var(--color-gold); /* Change color on hover */
   }
 
+  .instructions-container {
+    background-color: var(--color-black-light);
+    border-radius: 8px;
+    padding: var(--spacing-md);
+    height: 100%;
+    color: var(--color-white);
+    overflow: auto;
+  }
   body.light-mode {
     --color-background: #e4e4e4;
     --color-gray-dark: #929292;

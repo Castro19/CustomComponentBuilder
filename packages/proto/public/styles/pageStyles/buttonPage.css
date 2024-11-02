@@ -463,6 +463,13 @@
   box-shadow: 0 0 0 2px rgba(205, 164, 52, 0.2);
 }
 
+.instructions-title {
+  font-size: var(--font-size-md);
+  font-weight: bold;
+  margin-bottom: var(--spacing-md);
+  color: var(--color-gold);
+}
+
 /* Text and Button Color Containers */
 .text-color-container,
 .button-color-container {
@@ -573,6 +580,15 @@
   text-align: left;
 }
 
+.instructions-container {
+  background-color: var(--color-black-light);
+  border-radius: 8px;
+  padding: var(--spacing-md);
+  height: 100%;
+  color: var(--color-white);
+  overflow: auto;
+}
+
 .code-panel.active {
   display: block;
 }
@@ -595,41 +611,4 @@
 }
 .code-value {
   color: #f1fa8c;
-}
-
-.instruction-step {
-  display: flex;
-  gap: var(--spacing-md);
-  margin-bottom: var(--spacing-md);
-}
-
-.step-number {
-  background-color: var(--color-gold);
-  color: var(--color-black);
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  flex-shrink: 0;
-}
-
-.step-content {
-  flex: 1;
-}
-
-.step-content h4 {
-  font-size: var(--font-size-sm);
-  font-weight: bold;
-  margin-bottom: var(--spacing-xs);
-  color: var(--color-gold);
-}
-
-.step-content p {
-  font-size: var(--font-size-sm);
-  margin-bottom: var(--spacing-xs);
-  line-height: 1.4;
-  color: var(--color-white);
 }

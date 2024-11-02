@@ -2,7 +2,12 @@
 import { PageParts, renderWithDefaults } from "@calpoly/mustang/server";
 
 const defaults = {
-  stylesheets: ["/styles/reset.css.js", "/styles/tokens.css"],
+  stylesheets: [
+    "/styles/reset.css.js",
+    "/styles/tokens.css",
+    "/styles/index.css",
+    "/styles/gridUtility.css",
+  ],
   googleFontURL: "https://fonts.googleapis.com/css2?family=Roboto&display=swap",
   styles: [],
   scripts: [

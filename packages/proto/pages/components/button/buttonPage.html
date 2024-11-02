@@ -5,11 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PublishUI - Button</title>
     <link rel="stylesheet" href="../../../public/styles/index.css" />
-    <link rel="stylesheet" href="../../componentPage.css" />
-    <link rel="stylesheet" href="../../gridUtility.css" />
-    <link rel="stylesheet" href="./buttonPage.css" />
+    <link rel="stylesheet" href="../../../public/styles/gridUtility.css" />
     <link rel="stylesheet" href="../../../public/styles/tokens.css" />
-    <link rel="stylesheet" href="../../../public/styles/button-token.css" />
+    <link
+      rel="stylesheet"
+      href="../../../public/styles/pageStyles/buttonPage.css"
+    />
     <link
       rel="stylesheet"
       href="../../../public/styles/custom-button-styles.css"
@@ -40,14 +41,14 @@
                 <button-custom data-icon-only>
                   <svg slot="icon" class="icon">
                     <use
-                      href="../../../public/icons/componentOptions.svg#icon-options"
+                      href="../../../public/icons/componentOptions.svg#icon-type"
                     />
                   </svg>
                   <p slot="icon-label">Type</p>
                 </button-custom>
               </div>
               <div class="icon-container" id="font-icon">
-                <button-custom data-icon="font-icon" data-icon-only>
+                <button-custom data-icon-only>
                   <svg slot="icon" class="icon">
                     <use
                       href="../../../public/icons/componentOptions.svg#icon-font"
@@ -244,41 +245,41 @@
           </div>
           <!-- Instructions Section -->
           <div class="right-page-instructions-section">
-            <code-instructions>
-              <div slot="instructions">
-                <div class="instruction-step">
-                  <span class="step-number">1</span>
-                  <div class="step-content">
-                    <h4>Include Required CSS</h4>
-                    <p>
-                      Copy the CSS code from the CSS tab above and include it in
-                      your stylesheet.
-                    </p>
-                  </div>
+            <h4 class="instructions-title">How to Use This Button</h4>
+
+            <div class="instructions-container">
+              <code-instruction>
+                <span slot="step-number">1</span>
+                <h4 slot="step-title">Include Required CSS</h4>
+                <div slot="step-content">
+                  <p>
+                    Copy the CSS code from the CSS tab above and include it in
+                    your stylesheet.
+                  </p>
                 </div>
-                <div class="instruction-step">
-                  <span class="step-number">2</span>
-                  <div class="step-content">
-                    <h4>Include Required HTML</h4>
-                    <p>
-                      Copy the HTML code from the HTML tab above and include it
-                      in your HTML file.
-                    </p>
-                  </div>
+              </code-instruction>
+              <code-instruction>
+                <span slot="step-number">2</span>
+                <h4 slot="step-title">Include Required HTML</h4>
+                <div slot="step-content">
+                  <p>
+                    Copy the HTML code from the HTML tab above and include it in
+                    your HTML file.
+                  </p>
                 </div>
-                <div class="instruction-step">
-                  <span class="step-number">3</span>
-                  <div class="step-content">
-                    <h4>Include Required JavaScript</h4>
-                    <p>
-                      Copy the JavaScript code from the JavaScript tab above and
-                      include it in your JavaScript file.
-                    </p>
-                  </div>
+              </code-instruction>
+              <code-instruction>
+                <span slot="step-number">3</span>
+                <h4 slot="step-title">Include Required JavaScript</h4>
+                <div slot="step-content">
+                  <p>
+                    Copy the JavaScript code from the JavaScript tab above and
+                    include it in your JavaScript file.
+                  </p>
                 </div>
-                <!-- Additional instruction steps -->
-              </div>
-            </code-instructions>
+              </code-instruction>
+              <!-- Additional instruction steps -->
+            </div>
           </div>
         </div>
         <div class="footer-container footer-container-right-page">
@@ -304,16 +305,16 @@
     </script>
     <script type="module">
       import { define } from "@calpoly/mustang";
-      import { CodeInstructions } from "../../../public/scripts/codeInstructions.js";
+      import { CodeInstruction } from "../../../public/scripts/codeInstruction.js";
       import { CodeContainer } from "../../../public/scripts/codeContainer.js";
       import { ButtonCustomComponent } from "../../../public/scripts/buttonComponent.js";
       define({
         "code-container": CodeContainer,
-        "code-instructions": CodeInstructions,
+        "code-instruction": CodeInstruction,
         "button-custom": ButtonCustomComponent,
       });
     </script>
-    <script src="./buttonPage.js"></script>
+    <script src="../../../public/scripts/buttonPage.js"></script>
     <script src="../../../public/scripts/index.js"></script>
   </body>
 </html>
