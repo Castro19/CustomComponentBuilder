@@ -1,6 +1,6 @@
 // scripts/codeInstructions.js
 import { css, html, shadow } from "@calpoly/mustang";
-import reset from "./styles/reset.css.js";
+import reset from "../styles/reset.css.js";
 
 export class CodeInstructions extends HTMLElement {
   static template = html`
