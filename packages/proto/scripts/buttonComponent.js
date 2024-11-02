@@ -5,9 +5,11 @@ import reset from "./styles/reset.css.js";
 export class ButtonCustomComponent extends HTMLElement {
   static template = html`
     <template>
-      <button id="buttonComponent" class="button-type">
-        <slot></slot>
+      <button id="buttonComponent">
+        <slot name="icon"></slot>
         <slot name="button-text"></slot>
+        <slot name="icon-label"></slot>
+        <slot></slot>
       </button>
     </template>
   `;
@@ -60,6 +62,17 @@ export class ButtonCustomComponent extends HTMLElement {
       background-color: var(--button-destructive-hover-background);
     }
 
+    .icon-only {
+      background: rgba(0, 0, 0, 0);
+      border: 0;
+    }
+    .icon {
+      filter: brightness(0) invert(1); /* Makes the icon white */
+    }
+    .icon-label {
+      font-size: 14px;
+      color: var(--color-white);
+    }
     @media (max-width: 1024px) {
       .button-type {
         font-size: var(--font-size-xs); /* Smaller font size */
@@ -77,10 +90,16 @@ export class ButtonCustomComponent extends HTMLElement {
   // Code that runs once button is on the Document
   connectedCallback() {
     const variant = this.getAttribute("data-variant");
-    if (variant) {
+    const iconOnly = this.hasAttribute("data-icon-only");
+
+    if (iconOnly) {
       this.shadowRoot
-        .querySelector(".button-type")
-        .classList.add(`button-${variant}`);
+        .getElementById("buttonComponent")
+        .classList.add("icon-only", "icon");
+    } else if (variant) {
+      this.shadowRoot
+        .getElementById("buttonComponent")
+        .classList.add("button-type", `button-${variant}`);
     }
   }
 }

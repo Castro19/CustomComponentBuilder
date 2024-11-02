@@ -167,6 +167,35 @@ const styles = css`
     margin: var(--spacing-sm);
     width: 70%;
   }
+  .controls {
+    display: flex;
+    flex-direction: column;
+
+    max-height: 400px;
+    overflow-y: auto;
+    gap: 10px;
+    padding: 10px;
+  }
+  .icon-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .icon-container button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .icon-container:hover .icon-label {
+    color: var(--color-gold); /* Change color on hover */
+  }
 
   body.light-mode {
     --color-background: #e4e4e4;

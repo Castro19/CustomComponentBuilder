@@ -1,5 +1,6 @@
 // Function to handle click events and log the icon that was clicked
 function showCustomizationTools(iconId) {
+  console.log("iconId:", iconId);
   const buttonTypeSection = document.getElementById(
     "customization-button-types"
   );
@@ -34,8 +35,10 @@ function showCustomizationTools(iconId) {
 // Add event listeners for each icon to ensure all icons log their clicks
 document.addEventListener("DOMContentLoaded", function () {
   // Get all the icon buttons
-  const iconButtons = document.querySelectorAll(".icon-container button");
-
+  const iconButtons = document.querySelectorAll(
+    ".icon-container button-custom"
+  );
+  console.log("iconButtons:", iconButtons);
   // Add click event listeners to each button
   iconButtons.forEach((button) => {
     button.addEventListener("click", function () {
