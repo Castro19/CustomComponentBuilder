@@ -46,12 +46,56 @@ const styles = css`
     display: grid;
     grid-template-rows: auto 7fr 1fr auto; /* Title, content area, and footer */
   }
+  .magazine-page-left {
+    border-radius: var(
+      --border-radius-large-left
+    ); /* Rounded bottom-left corner */
+  }
   .magazine-page-right {
     border-radius: var(
       --border-radius-large-right
     ); /* Rounded bottom-right corner */
   }
-
+  .grid-container {
+    display: grid;
+    gap: var(--spacing-xs); /* Default spacing between grid items */
+    padding: var(--spacing-xs); /* Add some padding for internal spacing */
+    border: var(--border-width-thick) solid var(--color-border-dark); /* Border for visual distinction */
+    border-radius: var(--border-radius-small); /* Rounded corners */
+  }
+  .left-page-grid-2-rows {
+    grid-template-rows: 1fr 3fr; /* Two rows, the second row is three times the height of the first */
+    grid-template-columns: 1fr 2fr;
+  }
+  .grid-item,
+  .grid-item-customization {
+    background-color: var(
+      --color-gray-dark
+    ); /* Dark gray background for grid items */
+    border: var(--border-width-thin) solid var(--color-border-light); /* Border to outline each grid item */
+    border-radius: var(
+      --border-radius-small
+    ); /* Rounded corners for grid items */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--color-white);
+    font-size: var(--font-size-base);
+  }
+  .grid-item-customization {
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  .left-page-first-row {
+    grid-column: 1 / -1; /* Span the entire width of the grid in the first row */
+  }
+  .button-display-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    margin: var(--spacing-sm);
+  }
   /* Right Page Specific Grid Layout */
   .right-page-docs-grid {
     display: grid;
@@ -113,6 +157,44 @@ const styles = css`
     font-size: var(--font-size-sm);
     margin-bottom: var(--spacing-xs);
     line-height: 1.4;
+  }
+
+  /* Button List Container */
+  .button-type-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 5px; /* Reduced space between buttons */
+    margin: var(--spacing-sm);
+    width: 70%;
+  }
+  .controls {
+    display: flex;
+    flex-direction: column;
+
+    max-height: 400px;
+    overflow-y: auto;
+    gap: 10px;
+    padding: 10px;
+  }
+  .icon-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .icon-container button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .icon-container:hover .icon-label {
+    color: var(--color-gold); /* Change color on hover */
   }
 
   body.light-mode {

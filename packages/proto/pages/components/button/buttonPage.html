@@ -33,53 +33,50 @@
 
           <div class="grid-item">
             <div class="controls">
-              <div class="icon-container type-icon" id="type-icon">
-                <button onclick="showCustomizationTools('type-icon')">
-                  <svg class="icon">
+              <div class="icon-container" id="type-icon">
+                <button-custom data-icon-only>
+                  <svg slot="icon" class="icon">
                     <use
                       href="../../../public/icons/componentOptions.svg#icon-options"
                     />
                   </svg>
-                  <p class="icon-label">Type</p>
-                </button>
+                  <p slot="icon-label">Type</p>
+                </button-custom>
               </div>
-              <div class="icon-container font-icon" id="font-icon">
-                <button onclick="showCustomizationTools('font-icon')">
-                  <svg class="icon">
+              <div class="icon-container" id="font-icon">
+                <button-custom data-icon="font-icon" data-icon-only>
+                  <svg slot="icon" class="icon">
                     <use
                       href="../../../public/icons/componentOptions.svg#icon-font"
                     />
                   </svg>
                   <p class="icon-label">Font</p>
-                </button>
+                </button-custom>
               </div>
-              <div class="icon-container border-icon" id="border-icon">
-                <button onclick="showCustomizationTools('border-icon')">
-                  <svg class="icon">
+              <div class="icon-container" id="border-icon">
+                <button-custom data-icon-only>
+                  <svg slot="icon" class="icon">
                     <use
                       href="../../../public/icons/componentOptions.svg#icon-border"
                     />
                   </svg>
-                  <p class="icon-label">Border</p>
-                </button>
+                  <p slot="icon-label">Border</p>
+                </button-custom>
               </div>
             </div>
           </div>
           <div class="grid-item-customization" id="customization-button-types">
             <h3 class="customization-tools-type-title">Button Types</h3>
             <div class="button-type-list">
-              <button class="button-type button-primary" id="primaryButton">
+              <button-custom id="primaryButton" data-variant="primary">
                 Primary Button
-              </button>
-              <button class="button-type button-secondary" id="secondaryButton">
+              </button-custom>
+              <button-custom id="secondaryButton" data-variant="secondary">
                 Secondary Button
-              </button>
-              <button
-                class="button-type button-destructive"
-                id="destructiveButton"
-              >
+              </button-custom>
+              <button-custom id="destructiveButton" data-variant="destructive">
                 Destructive Button
-              </button>
+              </button-custom>
             </div>
           </div>
           <div
@@ -306,9 +303,11 @@
       import { define } from "@calpoly/mustang";
       import { CodeInstructions } from "../../../scripts/codeInstructions.js";
       import { CodeContainer } from "../../../scripts/codeContainer.js";
+      import { ButtonCustomComponent } from "../../../scripts/buttonComponent.js";
       define({
         "code-container": CodeContainer,
         "code-instructions": CodeInstructions,
+        "button-custom": ButtonCustomComponent,
       });
     </script>
     <script src="./buttonPage.js"></script>
