@@ -107,7 +107,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const textColorValue = document.querySelector(".text-color-value");
   const buttonColorPicker = document.querySelector(".button-color-picker");
   const buttonColorValue = document.querySelector(".button-color-value");
-
   const fontSizes = [12, 14, 16, 18, 20, 24, 28, 32];
 
   fontSizes.forEach((size) => {

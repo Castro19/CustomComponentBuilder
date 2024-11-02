@@ -68,18 +68,15 @@
           <div class="grid-item-customization" id="customization-button-types">
             <h3 class="customization-tools-type-title">Button Types</h3>
             <div class="button-type-list">
-              <button class="button-type button-primary" id="primaryButton">
+              <button-custom id="primaryButton" data-variant="primary">
                 Primary Button
-              </button>
-              <button class="button-type button-secondary" id="secondaryButton">
+              </button-custom>
+              <button-custom id="secondaryButton" data-variant="secondary">
                 Secondary Button
-              </button>
-              <button
-                class="button-type button-destructive"
-                id="destructiveButton"
-              >
+              </button-custom>
+              <button-custom id="destructiveButton" data-variant="destructive">
                 Destructive Button
-              </button>
+              </button-custom>
             </div>
           </div>
           <div
@@ -306,9 +303,11 @@
       import { define } from "@calpoly/mustang";
       import { CodeInstructions } from "../../../scripts/codeInstructions.js";
       import { CodeContainer } from "../../../scripts/codeContainer.js";
+      import { ButtonCustomComponent } from "../../../scripts/buttonComponent.js";
       define({
         "code-container": CodeContainer,
         "code-instructions": CodeInstructions,
+        "button-custom": ButtonCustomComponent,
       });
     </script>
     <script src="./buttonPage.js"></script>
