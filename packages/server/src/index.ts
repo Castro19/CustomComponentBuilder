@@ -1,7 +1,7 @@
 // src/index.ts
 import express, { Request, Response } from "express";
-import { getButtonConfig } from "./services/buttonService";
-import { ButtonPage } from "./pages/buttonPage";
+import { getComponentConfig } from "./services/componentServices";
+import { ComponentPage } from "./pages/componentPage";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -19,10 +19,10 @@ app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
 
-app.get("/button/:buttonId", (req: Request, res: Response) => {
-  const { buttonId } = req.params;
-  const data = getButtonConfig(buttonId);
-  const page = new ButtonPage(data);
+app.get("/component/:componentId", (req: Request, res: Response) => {
+  const { componentId } = req.params;
+  const data = getComponentConfig(componentId);
+  const page = new ComponentPage(data);
 
   res.set("Content-Type", "text/html").send(page.render());
 });
