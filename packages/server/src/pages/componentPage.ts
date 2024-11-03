@@ -274,7 +274,7 @@ export class ComponentPage {
             </div>
           </div>
         </div>
-        <script src="/scripts/buttonPage.js"></script>
+        <script type="module" src="/scripts/buttonPage.js"></script>
         <script src="/scripts/index.js"></script>
       </body>
     `;

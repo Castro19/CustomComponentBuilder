@@ -7,13 +7,15 @@ export class CodeContainer extends HTMLElement {
     <template>
       <div class="code-container">
         <div class="code-tabs">
-          <button class="code-tab active" data-tab="html">HTML</button>
-          <button class="code-tab" data-tab="css">CSS</button>
+          <button class="code-tab" data-tab="html">HTML</button>
+          <button class="code-tab active" data-tab="css">CSS</button>
+          <button class="code-tab" data-tab="tokens">CSS Tokens</button>
           <button class="code-tab" data-tab="js">JavaScript</button>
         </div>
         <div class="code-content">
-          <pre class="code-panel active" id="htmlCode"></pre>
-          <pre class="code-panel" id="cssCode"></pre>
+          <pre class="code-panel" id="htmlCode"></pre>
+          <pre class="code-panel active" id="cssCode"></pre>
+          <pre class="code-panel" id="tokensCode"></pre>
           <pre class="code-panel" id="jsCode"></pre>
         </div>
       </div>
@@ -113,11 +115,10 @@ export class CodeContainer extends HTMLElement {
   `;
 
   static get observedAttributes() {
-    return ["html-code", "css-code", "js-code"];
+    return ["html-code", "css-code", "tokens-code", "js-code"];
   }
 
   constructor() {
-    console.log("WORK");
     super();
     shadow(this)
       .template(CodeContainer.template)
@@ -135,11 +136,13 @@ export class CodeContainer extends HTMLElement {
   render() {
     const htmlCode = this.getAttribute("html-code") || "";
     const cssCode = this.getAttribute("css-code") || "";
+    const cssTokens = this.getAttribute("tokens-code") || "";
     const jsCode = this.getAttribute("js-code") || "";
 
     // Update code panels
     const htmlPanel = this.shadowRoot.querySelector("#htmlCode");
     const cssPanel = this.shadowRoot.querySelector("#cssCode");
+    const cssTokensPanel = this.shadowRoot.querySelector("#tokensCode");
     const jsPanel = this.shadowRoot.querySelector("#jsCode");
 
     if (htmlPanel) {
@@ -148,11 +151,13 @@ export class CodeContainer extends HTMLElement {
     if (cssPanel) {
       cssPanel.innerHTML = this.formatCode(cssCode, "css");
     }
+    if (cssTokensPanel) {
+      cssTokensPanel.innerHTML = this.formatCode(cssTokens, "css");
+    }
     if (jsPanel) {
       jsPanel.innerHTML = this.formatCode(jsCode, "js");
     }
   }
-
   formatCode(code, type) {
     // Escape HTML entities
     let formattedCode = code
@@ -163,17 +168,20 @@ export class CodeContainer extends HTMLElement {
     // Basic syntax highlighting
     if (type === "html") {
       formattedCode = formattedCode
+        // Handle HTML comments
         .replace(
           /(&lt;!--[\s\S]*?--&gt;)/g,
           '<span class="code-comment">$1</span>'
         )
+        // Handle attributes first
         .replace(
-          /(&lt;[^\s&]+)([\s\S]*?)(\/?&gt;)/g,
-          '<span class="code-tag">$1</span>$2<span class="code-tag">$3</span>'
+          /(\s+)([\w-]+)(=)(&quot;|')(.*?)(&quot;|')/g,
+          '$1<span class="code-attribute">$2</span>$3<span class="code-value">$4$5$6</span>'
         )
+        // Then handle the full tags (including their content)
         .replace(
-          /(\w+)=(".*?"|'.*?')/g,
-          '<span class="code-attribute">$1</span>=<span class="code-value">$2</span>'
+          /(&lt;\/?)(\w+)(.*?)(&gt;)/g,
+          '<span class="code-tag">$1$2</span>$3<span class="code-tag">$4</span>'
         );
     } else if (type === "css") {
       formattedCode = formattedCode
@@ -197,7 +205,6 @@ export class CodeContainer extends HTMLElement {
     const switchTab = (tabId) => {
       codeTabs.forEach((tab) => tab.classList.remove("active"));
       codePanels.forEach((panel) => panel.classList.remove("active"));
-
       const selectedTab = this.shadowRoot.querySelector(
         `.code-tab[data-tab="${tabId}"]`
       );
