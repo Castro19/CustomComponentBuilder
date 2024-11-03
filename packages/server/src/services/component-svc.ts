@@ -59,7 +59,7 @@ const ComponentConfigModel = model<ComponentConfigWithId>(
 );
 
 // CRUD Operations
-function get(componentId: string): Promise<ComponentConfigWithId> {
+async function get(componentId: string): Promise<ComponentConfigWithId> {
   return ComponentConfigModel.findOne({ componentId })
     .then((data) => {
       if (data) return data;
