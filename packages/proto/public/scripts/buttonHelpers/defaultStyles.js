@@ -1,7 +1,5 @@
-export function outputButtonStyles() {
-  const customButton = document.getElementById("customButton");
+export function outputButtonStyles(customButton) {
   const cssText = customButton.style.cssText;
-  console.log("cssText:", cssText);
   // Split the cssText into individual rules and format them
   const cssRules = cssText
     .split(";")
@@ -9,7 +7,6 @@ export function outputButtonStyles() {
     .filter((rule) => rule !== "");
 
   const cssOutput = `#customButton {\n  ${cssRules.join(";\n  ")};\n}`;
-
   // Log the formatted CSS to the console
   return cssOutput;
 }

@@ -159,7 +159,6 @@ export class CodeContainer extends HTMLElement {
       jsPanel.innerHTML = this.formatCode(jsCode, "js");
     }
   }
-
   formatCode(code, type) {
     // Escape HTML entities
     let formattedCode = code
@@ -170,17 +169,20 @@ export class CodeContainer extends HTMLElement {
     // Basic syntax highlighting
     if (type === "html") {
       formattedCode = formattedCode
+        // Handle HTML comments
         .replace(
           /(&lt;!--[\s\S]*?--&gt;)/g,
           '<span class="code-comment">$1</span>'
         )
+        // Handle attributes first
         .replace(
-          /(&lt;[^\s&]+)([\s\S]*?)(\/?&gt;)/g,
-          '<span class="code-tag">$1</span>$2<span class="code-tag">$3</span>'
+          /(\s+)([\w-]+)(=)(&quot;|')(.*?)(&quot;|')/g,
+          '$1<span class="code-attribute">$2</span>$3<span class="code-value">$4$5$6</span>'
         )
+        // Then handle the full tags (including their content)
         .replace(
-          /(\w+)=(".*?"|'.*?')/g,
-          '<span class="code-attribute">$1</span>=<span class="code-value">$2</span>'
+          /(&lt;\/?)(\w+)(.*?)(&gt;)/g,
+          '<span class="code-tag">$1$2</span>$3<span class="code-tag">$4</span>'
         );
     } else if (type === "css") {
       formattedCode = formattedCode

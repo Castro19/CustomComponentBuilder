@@ -56,10 +56,10 @@ document.addEventListener("DOMContentLoaded", function () {
   customButton.style.borderRadius = borderRadiusSlider.value + "px";
 
   // Set initial CSS code with initial styles
-  const cssCode = outputButtonStyles();
   const cssTokens = outputButtonTokens();
-  codeContainer.setAttribute("css-code", cssCode);
+  let cssCode = outputButtonStyles(customButton);
   codeContainer.setAttribute("tokens-code", cssTokens);
+  codeContainer.setAttribute("css-code", cssCode);
 
   // Function to handle click events and log the icon that was clicked
   function showCustomizationTools(iconId) {
@@ -96,24 +96,34 @@ document.addEventListener("DOMContentLoaded", function () {
       "button-secondary",
       "button-destructive"
     );
-    const buttonStyles = [
-      "font-family",
-      "font-size",
-      "font-weight",
-      "color",
-      "background-color",
-      "border-width",
-      "border-style",
-      "border-color",
-      "border-radius",
-    ];
-    // Remove custom colors when switching button types
-    buttonStyles.forEach((style) => {
-      customButton.style.removeProperty(style);
-    });
+    // Set initial colors
+    customButton.style.setProperty("color", textColorPicker.value);
+    customButton.style.setProperty("background-color", buttonColorPicker.value);
+
+    // Set initial font styles
+    customButton.style.fontSize = fontSizeSelect.value;
+    customButton.style.fontFamily = fontSelect.value;
+    customButton.style.fontWeight = fontWeightSlider.value;
+
+    // Set initial border styles
+    customButton.style.borderWidth = borderWidthSelect.value;
+    customButton.style.borderStyle = borderStyleSelect.value;
+    customButton.style.borderColor = borderColorPicker.value;
+    customButton.style.borderRadius = borderRadiusSlider.value + "px";
+
     // Reset color pickers to default values
     document.querySelector(".text-color-value").textContent = "#000000";
     document.querySelector(".button-color-value").textContent = "#CDA434";
+  }
+
+  function createEventListenerWithCSSUpdate(element, eventType, handler) {
+    element.addEventListener(eventType, function (event) {
+      // Run the original handler
+      handler.call(this, event);
+      // Update CSS code
+      cssCode = outputButtonStyles(customButton);
+      codeContainer.setAttribute("css-code", cssCode);
+    });
   }
 
   // Add click event listeners to each button
@@ -126,33 +136,46 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // Event listener for Primary Button
-  primaryButton.addEventListener("click", function () {
+  createEventListenerWithCSSUpdate(primaryButton, "click", function () {
     clearButtonStyles(); // Remove existing styles
-    customButton.classList.add("button-primary"); // Apply primary style
-    // Update CSS code
-    const cssCode = updateCodeContainerCSS("primary");
-    const codeContainer = document.querySelector("code-container");
-    codeContainer.setAttribute("css-code", cssCode);
+    customButton.style.setProperty("color", "var(--button-primary-color)");
+    customButton.style.setProperty(
+      "background-color",
+      "var(--button-primary-background)"
+    );
+    customButton.style.setProperty(
+      "border-color",
+      "var(--button-primary-border-color)"
+    );
+    console.log("After styling button:", customButton.style.cssText);
   });
 
   // Event listener for Secondary Button
-  secondaryButton.addEventListener("click", function () {
+  createEventListenerWithCSSUpdate(secondaryButton, "click", function () {
     clearButtonStyles(); // Remove existing styles
-    customButton.classList.add("button-secondary"); // Apply secondary style
-    // Update CSS code
-    const cssCode = updateCodeContainerCSS("secondary");
-    const codeContainer = document.querySelector("code-container");
-    codeContainer.setAttribute("css-code", cssCode);
+    customButton.style.setProperty("color", "var(--button-secondary-color)");
+    customButton.style.setProperty(
+      "background-color",
+      "var(--button-secondary-background)"
+    );
+    customButton.style.setProperty(
+      "border-color",
+      "var(--button-secondary-border-color)"
+    );
   });
 
   // Event listener for Destructive Button
-  destructiveButton.addEventListener("click", function () {
+  createEventListenerWithCSSUpdate(destructiveButton, "click", function () {
     clearButtonStyles(); // Remove existing styles
-    customButton.classList.add("button-destructive"); // Apply destructive style
-    // Update CSS code
-    const cssCode = updateCodeContainerCSS("destructive");
-    const codeContainer = document.querySelector("code-container");
-    codeContainer.setAttribute("css-code", cssCode);
+    customButton.style.setProperty("color", "var(--button-destructive-color)");
+    customButton.style.setProperty(
+      "background-color",
+      "var(--button-destructive-background)"
+    );
+    customButton.style.setProperty(
+      "border-color",
+      "var(--button-destructive-border-color)"
+    );
   });
 
   /* FONT CUSTOMIZATION */
@@ -165,7 +188,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // Font family change handler
-  fontSelect.addEventListener("change", function () {
+  createEventListenerWithCSSUpdate(fontSelect, "change", function () {
     const fontFamily = this.value;
     buttonTypes.forEach((btn) => {
       btn.style.setProperty("font-family", fontFamily);
@@ -173,7 +196,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // Font size change handler
-  fontSizeSelect.addEventListener("change", function () {
+  createEventListenerWithCSSUpdate(fontSizeSelect, "change", function () {
     const fontSize = this.value;
     buttonTypes.forEach((btn) => {
       btn.style.setProperty("font-size", fontSize);
@@ -181,7 +204,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // Font weight change handler
-  fontWeightSlider.addEventListener("input", function () {
+  createEventListenerWithCSSUpdate(fontWeightSlider, "input", function () {
     const weight = this.value;
     fontWeightValue.textContent = weight;
     buttonTypes.forEach((btn) => {
@@ -196,14 +219,14 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // Text color handler
-  textColorPicker.addEventListener("input", function () {
+  createEventListenerWithCSSUpdate(textColorPicker, "input", function () {
     const color = this.value;
     textColorValue.textContent = color.toUpperCase();
     customButton.style.setProperty("color", color);
   });
 
   // Button color handler
-  buttonColorPicker.addEventListener("input", function () {
+  createEventListenerWithCSSUpdate(buttonColorPicker, "input", function () {
     const color = this.value;
     buttonColorValue.textContent = color.toUpperCase();
     customButton.style.setProperty("background-color", color);
@@ -211,26 +234,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
   /* BORDER CUSTOMIZATION */
   // Border width handler
-  borderWidthSelect.addEventListener("change", function () {
+  createEventListenerWithCSSUpdate(borderWidthSelect, "change", function () {
     const width = this.value;
     customButton.style.borderWidth = width;
   });
 
   // Border style handler
-  borderStyleSelect.addEventListener("change", function () {
+  createEventListenerWithCSSUpdate(borderStyleSelect, "change", function () {
     const style = this.value;
     customButton.style.borderStyle = style;
   });
 
   // Border color handler
-  borderColorPicker.addEventListener("input", function () {
+  createEventListenerWithCSSUpdate(borderColorPicker, "input", function () {
     const color = this.value;
     borderColorValue.textContent = color.toUpperCase();
     customButton.style.borderColor = color;
   });
 
   // Border radius handler
-  borderRadiusSlider.addEventListener("input", function () {
+  createEventListenerWithCSSUpdate(borderRadiusSlider, "input", function () {
     const radius = this.value + "px";
     borderRadiusValue.textContent = radius;
     customButton.style.borderRadius = radius;
