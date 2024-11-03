@@ -54,7 +54,7 @@ export class ComponentPage {
       `;
     });
 
-    const instructionSteps = Object.entries(instructions).map(
+    const instructionSteps = Array.from(instructions.entries()).map(
       ([stepNumber, instruction]) => {
         return html`<code-instruction>
           <span slot="step-number">${stepNumber}</span>
