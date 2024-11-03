@@ -2,6 +2,9 @@
 import express, { Request, Response } from "express";
 import { getComponentConfig } from "./services/componentServices";
 import { ComponentPage } from "./pages/componentPage";
+import { connect } from "./services/mongo";
+
+connect("publish-ui");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -19,12 +22,14 @@ app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
 
-app.get("/component/:componentId", (req: Request, res: Response) => {
+app.get("/component/:componentId", async (req: Request, res: Response) => {
   const { componentId } = req.params;
-  const data = getComponentConfig(componentId);
-  const page = new ComponentPage(data);
+  try {
+    const data = await getComponentConfig(componentId);
+    const page = new ComponentPage(data);
 
-  res.set("Content-Type", "text/html").send(page.render());
+    res.set("Content-Type", "text/html").send(page.render());
+  } catch (err) {
+    res.status(404).send(`Component ${componentId} not found`);
+  }
 });
-
-// Existing code...
