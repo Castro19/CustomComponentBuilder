@@ -240,6 +240,7 @@
             <code-container
               html-code="&lt;button class='customButton'&gt;Button Text&lt;/button&gt;"
               css-code=".customButton { background-color: #cda434; /* styles */ }"
+              tokens-code=":host { --color-gold: #cda434; }"
               js-code="const button = document.querySelector('.customButton'); /* code */"
             ></code-container>
           </div>
@@ -314,7 +315,7 @@
         "button-custom": ButtonCustomComponent,
       });
     </script>
-    <script src="../../../public/scripts/buttonPage.js"></script>
     <script src="../../../public/scripts/index.js"></script>
+    <script type="module" src="../../../public/scripts/buttonPage.js"></script>
   </body>
 </html>

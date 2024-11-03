@@ -7,13 +7,15 @@ export class CodeContainer extends HTMLElement {
     <template>
       <div class="code-container">
         <div class="code-tabs">
-          <button class="code-tab active" data-tab="html">HTML</button>
-          <button class="code-tab" data-tab="css">CSS</button>
+          <button class="code-tab" data-tab="html">HTML</button>
+          <button class="code-tab active" data-tab="css">CSS</button>
+          <button class="code-tab" data-tab="tokens">CSS Tokens</button>
           <button class="code-tab" data-tab="js">JavaScript</button>
         </div>
         <div class="code-content">
-          <pre class="code-panel active" id="htmlCode"></pre>
-          <pre class="code-panel" id="cssCode"></pre>
+          <pre class="code-panel" id="htmlCode"></pre>
+          <pre class="code-panel active" id="cssCode"></pre>
+          <pre class="code-panel" id="tokensCode"></pre>
           <pre class="code-panel" id="jsCode"></pre>
         </div>
       </div>
@@ -113,7 +115,7 @@ export class CodeContainer extends HTMLElement {
   `;
 
   static get observedAttributes() {
-    return ["html-code", "css-code", "js-code"];
+    return ["html-code", "css-code", "tokens-code", "js-code"];
   }
 
   constructor() {
@@ -135,11 +137,13 @@ export class CodeContainer extends HTMLElement {
   render() {
     const htmlCode = this.getAttribute("html-code") || "";
     const cssCode = this.getAttribute("css-code") || "";
+    const cssTokens = this.getAttribute("tokens-code") || "";
     const jsCode = this.getAttribute("js-code") || "";
 
     // Update code panels
     const htmlPanel = this.shadowRoot.querySelector("#htmlCode");
     const cssPanel = this.shadowRoot.querySelector("#cssCode");
+    const cssTokensPanel = this.shadowRoot.querySelector("#tokensCode");
     const jsPanel = this.shadowRoot.querySelector("#jsCode");
 
     if (htmlPanel) {
@@ -147,6 +151,9 @@ export class CodeContainer extends HTMLElement {
     }
     if (cssPanel) {
       cssPanel.innerHTML = this.formatCode(cssCode, "css");
+    }
+    if (cssTokensPanel) {
+      cssTokensPanel.innerHTML = this.formatCode(cssTokens, "css");
     }
     if (jsPanel) {
       jsPanel.innerHTML = this.formatCode(jsCode, "js");
@@ -197,7 +204,7 @@ export class CodeContainer extends HTMLElement {
     const switchTab = (tabId) => {
       codeTabs.forEach((tab) => tab.classList.remove("active"));
       codePanels.forEach((panel) => panel.classList.remove("active"));
-
+      console.log("tabId:", tabId);
       const selectedTab = this.shadowRoot.querySelector(
         `.code-tab[data-tab="${tabId}"]`
       );

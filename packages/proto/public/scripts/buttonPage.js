@@ -1,36 +1,8 @@
-// Function to handle click events and log the icon that was clicked
-function showCustomizationTools(iconId) {
-  console.log("iconId:", iconId);
-  const buttonTypeSection = document.getElementById(
-    "customization-button-types"
-  );
-  const buttonFontSection = document.getElementById(
-    "customization-button-font"
-  );
-  const buttonBorderSection = document.getElementById(
-    "customization-button-border"
-  );
-
-  buttonTypeSection.style.display = "none";
-  buttonFontSection.style.display = "none";
-  buttonBorderSection.style.display = "none";
-
-  // For now, just log the clicked icon's ID
-  // Later I will extend this to display the customization tools
-  if (iconId === "type-icon") {
-    console.log("Type icon clicked");
-    buttonTypeSection.style.display = "flex";
-    // render the type icon customization tools
-  } else if (iconId === "font-icon") {
-    console.log("Font icon clicked");
-    buttonFontSection.style.display = "flex";
-    // render the font icon customization tools
-  } else if (iconId === "border-icon") {
-    console.log("Border icon clicked");
-    buttonBorderSection.style.display = "flex";
-    // render the border icon customization tools
-  }
-}
+import {
+  outputButtonStyles,
+  outputButtonTokens,
+  updateCodeContainerCSS,
+} from "./buttonHelpers/defaultStyles.js";
 
 // Add event listeners for each icon to ensure all icons log their clicks
 document.addEventListener("DOMContentLoaded", function () {
@@ -38,7 +10,112 @@ document.addEventListener("DOMContentLoaded", function () {
   const iconButtons = document.querySelectorAll(
     ".icon-container button-custom"
   );
-  console.log("iconButtons:", iconButtons);
+  // Get references to the display button and the customization buttons
+  const buttonTypes = document.querySelectorAll(".button-type");
+  const customButton = document.getElementById("customButton");
+  const primaryButton = document.getElementById("primaryButton");
+  const secondaryButton = document.getElementById("secondaryButton");
+  const destructiveButton = document.getElementById("destructiveButton");
+
+  // Font Section Styles
+  const fontSizes = [12, 14, 16, 18, 20, 24, 28, 32];
+  const fontSelect = document.querySelector(".font-family-select");
+  const fontSizeSelect = document.querySelector(".font-size-select");
+  const fontWeightSlider = document.querySelector(".font-weight-slider");
+  const fontWeightValue = document.querySelector(".font-weight-value");
+  const buttonTextInput = document.querySelector(".button-text-input");
+  const textColorPicker = document.querySelector(".text-color-picker");
+  const textColorValue = document.querySelector(".text-color-value");
+  const buttonColorPicker = document.querySelector(".button-color-picker");
+  const buttonColorValue = document.querySelector(".button-color-value");
+
+  // Border control elements
+  const borderWidthSelect = document.querySelector(".border-width-select");
+  const borderStyleSelect = document.querySelector(".border-style-select");
+  const borderColorPicker = document.querySelector(".border-color-picker");
+  const borderColorValue = document.querySelector(".border-color-value");
+  const borderRadiusSlider = document.querySelector(".border-radius-slider");
+  const borderRadiusValue = document.querySelector(".border-radius-value");
+
+  // Code Container elements:
+  const codeContainer = document.querySelector("code-container");
+
+  // Set initial colors
+  customButton.style.setProperty("color", textColorPicker.value);
+  customButton.style.setProperty("background-color", buttonColorPicker.value);
+
+  // Set initial font styles
+  customButton.style.fontSize = fontSizeSelect.value;
+  customButton.style.fontFamily = fontSelect.value;
+  customButton.style.fontWeight = fontWeightSlider.value;
+
+  // Set initial border styles
+  customButton.style.borderWidth = borderWidthSelect.value;
+  customButton.style.borderStyle = borderStyleSelect.value;
+  customButton.style.borderColor = borderColorPicker.value;
+  customButton.style.borderRadius = borderRadiusSlider.value + "px";
+
+  // Set initial CSS code with initial styles
+  const cssCode = outputButtonStyles();
+  const cssTokens = outputButtonTokens();
+  codeContainer.setAttribute("css-code", cssCode);
+  codeContainer.setAttribute("tokens-code", cssTokens);
+
+  // Function to handle click events and log the icon that was clicked
+  function showCustomizationTools(iconId) {
+    const buttonTypeSection = document.getElementById(
+      "customization-button-types"
+    );
+    const buttonFontSection = document.getElementById(
+      "customization-button-font"
+    );
+    const buttonBorderSection = document.getElementById(
+      "customization-button-border"
+    );
+
+    buttonTypeSection.style.display = "none";
+    buttonFontSection.style.display = "none";
+    buttonBorderSection.style.display = "none";
+
+    // render the type icon customization tools
+    if (iconId === "type-icon") {
+      buttonTypeSection.style.display = "flex";
+      // render the font icon customization tools
+    } else if (iconId === "font-icon") {
+      buttonFontSection.style.display = "flex";
+      // render the border icon customization tools
+    } else if (iconId === "border-icon") {
+      buttonBorderSection.style.display = "flex";
+    }
+  }
+
+  // Function to remove existing style classes from the button
+  function clearButtonStyles() {
+    customButton.classList.remove(
+      "button-primary",
+      "button-secondary",
+      "button-destructive"
+    );
+    const buttonStyles = [
+      "font-family",
+      "font-size",
+      "font-weight",
+      "color",
+      "background-color",
+      "border-width",
+      "border-style",
+      "border-color",
+      "border-radius",
+    ];
+    // Remove custom colors when switching button types
+    buttonStyles.forEach((style) => {
+      customButton.style.removeProperty(style);
+    });
+    // Reset color pickers to default values
+    document.querySelector(".text-color-value").textContent = "#000000";
+    document.querySelector(".button-color-value").textContent = "#CDA434";
+  }
+
   // Add click event listeners to each button
   iconButtons.forEach((button) => {
     button.addEventListener("click", function () {
@@ -47,80 +124,45 @@ document.addEventListener("DOMContentLoaded", function () {
       showCustomizationTools(iconContainer.id);
     });
   });
-});
-
-document.addEventListener("DOMContentLoaded", function () {
-  // Get references to the display button and the customization buttons
-  const displayButton = document.getElementById("customButton");
-  const primaryButton = document.getElementById("primaryButton");
-  const secondaryButton = document.getElementById("secondaryButton");
-  const destructiveButton = document.getElementById("destructiveButton");
-  const textColorPicker = document.querySelector(".text-color-picker");
-  const buttonColorPicker = document.querySelector(".button-color-picker");
-
-  // Function to remove existing style classes from the button
-  function clearButtonStyles() {
-    displayButton.classList.remove(
-      "button-primary",
-      "button-secondary",
-      "button-destructive"
-    );
-    // Remove custom colors when switching button types
-    displayButton.style.removeProperty("color");
-    displayButton.style.removeProperty("background-color");
-    // Reset color pickers to default values
-    textColorPicker.value = "#000000";
-    buttonColorPicker.value = "#CDA434";
-    document.querySelector(".text-color-value").textContent = "#000000";
-    document.querySelector(".button-color-value").textContent = "#CDA434";
-  }
 
   // Event listener for Primary Button
   primaryButton.addEventListener("click", function () {
     clearButtonStyles(); // Remove existing styles
-    console.log("Primary button clicked");
-    displayButton.classList.add("button-primary"); // Apply primary style
+    customButton.classList.add("button-primary"); // Apply primary style
+    // Update CSS code
+    const cssCode = updateCodeContainerCSS("primary");
+    const codeContainer = document.querySelector("code-container");
+    codeContainer.setAttribute("css-code", cssCode);
   });
 
   // Event listener for Secondary Button
   secondaryButton.addEventListener("click", function () {
     clearButtonStyles(); // Remove existing styles
-    displayButton.classList.add("button-secondary"); // Apply secondary style
+    customButton.classList.add("button-secondary"); // Apply secondary style
+    // Update CSS code
+    const cssCode = updateCodeContainerCSS("secondary");
+    const codeContainer = document.querySelector("code-container");
+    codeContainer.setAttribute("css-code", cssCode);
   });
 
   // Event listener for Destructive Button
   destructiveButton.addEventListener("click", function () {
     clearButtonStyles(); // Remove existing styles
-    displayButton.classList.add("button-destructive"); // Apply destructive style
+    customButton.classList.add("button-destructive"); // Apply destructive style
+    // Update CSS code
+    const cssCode = updateCodeContainerCSS("destructive");
+    const codeContainer = document.querySelector("code-container");
+    codeContainer.setAttribute("css-code", cssCode);
   });
 
-  // Optional: On initial load, set the default button style
-  displayButton.classList.add("button-primary");
-});
-
-document.addEventListener("DOMContentLoaded", function () {
-  const buttonTypes = document.querySelectorAll(".button-type");
-  const fontSelect = document.querySelector(".font-family-select");
-  const fontSizeSelect = document.querySelector(".font-size-select");
-  const fontWeightSlider = document.querySelector(".font-weight-slider");
-  const fontWeightValue = document.querySelector(".font-weight-value");
-  const buttonTextInput = document.querySelector(".button-text-input");
-  const customButton = document.getElementById("customButton");
-  const textColorPicker = document.querySelector(".text-color-picker");
-  const textColorValue = document.querySelector(".text-color-value");
-  const buttonColorPicker = document.querySelector(".button-color-picker");
-  const buttonColorValue = document.querySelector(".button-color-value");
-  const fontSizes = [12, 14, 16, 18, 20, 24, 28, 32];
-
+  /* FONT CUSTOMIZATION */
+  // Populate font size options
   fontSizes.forEach((size) => {
     const option = document.createElement("option");
     option.value = `${size}px`;
     option.textContent = `${size}px`;
     fontSizeSelect.appendChild(option);
   });
-
-  // Set default font size
-  fontSizeSelect.value = "16px";
 
   // Font family change handler
   fontSelect.addEventListener("change", function () {
@@ -146,11 +188,13 @@ document.addEventListener("DOMContentLoaded", function () {
       btn.style.setProperty("font-weight", weight);
     });
   });
+
   // Button text change handler
   buttonTextInput.addEventListener("input", function () {
     const newText = this.value || "Button"; // Use "Button" as fallback if empty
     customButton.textContent = newText;
   });
+
   // Text color handler
   textColorPicker.addEventListener("input", function () {
     const color = this.value;
@@ -165,25 +209,7 @@ document.addEventListener("DOMContentLoaded", function () {
     customButton.style.setProperty("background-color", color);
   });
 
-  // Set initial colors
-  customButton.style.setProperty("color", textColorPicker.value);
-  customButton.style.setProperty(
-    "background-color",
-    buttonColorPicker.value,
-    "important"
-  );
-});
-
-document.addEventListener("DOMContentLoaded", function () {
-  // Border control elements
-  const borderWidthSelect = document.querySelector(".border-width-select");
-  const borderStyleSelect = document.querySelector(".border-style-select");
-  const borderColorPicker = document.querySelector(".border-color-picker");
-  const borderColorValue = document.querySelector(".border-color-value");
-  const borderRadiusSlider = document.querySelector(".border-radius-slider");
-  const borderRadiusValue = document.querySelector(".border-radius-value");
-  const customButton = document.getElementById("customButton");
-
+  /* BORDER CUSTOMIZATION */
   // Border width handler
   borderWidthSelect.addEventListener("change", function () {
     const width = this.value;
@@ -208,24 +234,5 @@ document.addEventListener("DOMContentLoaded", function () {
     const radius = this.value + "px";
     borderRadiusValue.textContent = radius;
     customButton.style.borderRadius = radius;
-  });
-
-  // Set initial border styles
-  customButton.style.borderWidth = borderWidthSelect.value;
-  customButton.style.borderStyle = borderStyleSelect.value;
-  customButton.style.borderColor = borderColorPicker.value;
-  customButton.style.borderRadius = borderRadiusSlider.value + "px";
-});
-
-document.addEventListener("DOMContentLoaded", function () {
-  const textColorPicker = document.querySelector(".text-color-picker");
-  const textColorValue = document.querySelector(".text-color-value");
-  const customButton = document.getElementById("customButton");
-
-  // Text color handler
-  textColorPicker.addEventListener("input", function () {
-    const color = this.value;
-    textColorValue.textContent = color.toUpperCase();
-    customButton.style.setProperty("color", color);
   });
 });
