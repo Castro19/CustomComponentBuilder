@@ -147,7 +147,6 @@ document.addEventListener("DOMContentLoaded", function () {
       "border-color",
       "var(--button-primary-border-color)"
     );
-    console.log("After styling button:", customButton.style.cssText);
   });
 
   // Event listener for Secondary Button

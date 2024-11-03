@@ -119,7 +119,6 @@ export class CodeContainer extends HTMLElement {
   }
 
   constructor() {
-    console.log("WORK");
     super();
     shadow(this)
       .template(CodeContainer.template)
@@ -206,7 +205,6 @@ export class CodeContainer extends HTMLElement {
     const switchTab = (tabId) => {
       codeTabs.forEach((tab) => tab.classList.remove("active"));
       codePanels.forEach((panel) => panel.classList.remove("active"));
-      console.log("tabId:", tabId);
       const selectedTab = this.shadowRoot.querySelector(
         `.code-tab[data-tab="${tabId}"]`
       );
