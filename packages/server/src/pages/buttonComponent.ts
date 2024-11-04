@@ -21,8 +21,9 @@ export class ButtonPage {
     });
   }
   renderBody() {
-    const { variant, iconOnly, icon, iconLabel, text } = this.data;
+    const { variant, iconOnly, icon, iconLabel, text, code } = this.data;
     console.log("DATA", this.data);
+    console.log("CODE", code);
     return html`
       <body>
         <main class="page">

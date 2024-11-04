@@ -6,3 +6,5 @@ export interface ButtonConfig {
   text?: string;
   code?: string;
 }
+
+export type ButtonConfigWithId = ButtonConfig & { buttonId: string };

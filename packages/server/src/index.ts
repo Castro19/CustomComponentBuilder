@@ -1,10 +1,8 @@
 // src/index.ts
 import express, { Request, Response } from "express";
-import { getComponentConfig } from "./services/componentServices";
-import { ComponentPage } from "./pages/componentPage";
+import componentRouter from "./routes/component";
+import buttonRouter from "./routes/button";
 import { connect } from "./services/mongo";
-import { ButtonPage } from "./pages/buttonComponent";
-import { getButtonConfig } from "./services/buttonServices";
 
 connect("publish-ui");
 
@@ -23,25 +21,5 @@ app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
 
-app.get("/component/:componentId", async (req: Request, res: Response) => {
-  const { componentId } = req.params;
-  try {
-    const data = await getComponentConfig(componentId);
-    const page = new ComponentPage(data);
-
-    res.set("Content-Type", "text/html").send(page.render());
-  } catch (err) {
-    res.status(404).send(`Component ${componentId} not found`);
-  }
-});
-
-app.get("/button/:buttonId", async (req: Request, res: Response) => {
-  const { buttonId } = req.params;
-  try {
-    const data = await getButtonConfig(buttonId);
-    const page = new ButtonPage(data);
-    res.set("Content-Type", "text/html").send(page.render());
-  } catch (err) {
-    res.status(404).send(`Button ${buttonId} not found`);
-  }
-});
+app.use("/component", componentRouter);
+app.use("/button", buttonRouter);
