@@ -1,7 +1,6 @@
+// src/services/button-svc.ts
 import { Schema, model } from "mongoose";
-import { ButtonConfig } from "../models/button";
-
-type ButtonConfigWithId = ButtonConfig & { buttonId: string };
+import { ButtonConfigWithId } from "../models/button";
 
 const ButtonConfigSchema = new Schema<ButtonConfigWithId>(
   {
@@ -24,8 +23,13 @@ const ButtonConfigModel = model<ButtonConfigWithId>(
   ButtonConfigSchema
 );
 
+// Existing functions
+function index(): Promise<ButtonConfigWithId[]> {
+  return ButtonConfigModel.find();
+}
+
 async function get(buttonId: string): Promise<ButtonConfigWithId> {
-  return ButtonConfigModel.findOne({ variant: buttonId })
+  return ButtonConfigModel.findOne({ buttonId })
     .then((data) => {
       if (data) return data;
       else throw new Error(`Button ${buttonId} Not Found`);
@@ -35,8 +39,29 @@ async function get(buttonId: string): Promise<ButtonConfigWithId> {
     });
 }
 
-function index(): Promise<ButtonConfigWithId[]> {
-  return ButtonConfigModel.find();
+// New functions
+async function create(button: ButtonConfigWithId): Promise<ButtonConfigWithId> {
+  const newButton = new ButtonConfigModel(button);
+  console.log("NEW BUTTON", newButton);
+  return newButton.save();
 }
 
-export default { get, index };
+async function update(
+  buttonId: string,
+  button: ButtonConfigWithId
+): Promise<ButtonConfigWithId> {
+  return ButtonConfigModel.findOneAndUpdate({ buttonId }, button, {
+    new: true,
+  }).then((updated) => {
+    if (!updated) throw new Error(`${buttonId} not updated`);
+    else return updated;
+  });
+}
+
+async function remove(buttonId: string): Promise<void> {
+  return ButtonConfigModel.findOneAndDelete({ buttonId }).then((deleted) => {
+    if (!deleted) throw new Error(`${buttonId} not deleted`);
+  });
+}
+
+export default { index, get, create, update, remove };
