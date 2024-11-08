@@ -1,8 +1,7 @@
-// scripts/codeInstruction.js
+// scripts/buttonComponent.js
 import { css, html, shadow } from "@calpoly/mustang";
 import reset from "../styles/reset.css.js";
 
-console.log("BUTTON COMPONENT");
 export class ButtonCustomComponent extends HTMLElement {
   static template = html`
     <template>
@@ -67,19 +66,30 @@ export class ButtonCustomComponent extends HTMLElement {
       background: rgba(0, 0, 0, 0);
       border: 0;
     }
+
     .icon {
       filter: brightness(0) invert(1); /* Makes the icon white */
     }
+
     .icon-label {
       font-size: 14px;
       color: var(--color-white);
     }
+
     @media (max-width: 1024px) {
       .button-type {
         font-size: var(--font-size-xs); /* Smaller font size */
       }
     }
   `;
+
+  static get observedAttributes() {
+    return ["data-variant", "data-icon-only", "src"];
+  }
+
+  get src() {
+    return this.getAttribute("src");
+  }
 
   constructor() {
     super();
@@ -88,19 +98,81 @@ export class ButtonCustomComponent extends HTMLElement {
       .styles(reset.styles, ButtonCustomComponent.styles);
   }
 
-  // Code that runs once button is on the Document
   connectedCallback() {
-    const variant = this.getAttribute("data-variant");
-    const iconOnly = this.hasAttribute("data-icon-only");
-
-    if (iconOnly) {
-      this.shadowRoot
-        .getElementById("buttonComponent")
-        .classList.add("icon-only", "icon");
-    } else if (variant) {
-      this.shadowRoot
-        .getElementById("buttonComponent")
-        .classList.add("button-type", `button-${variant}`);
+    if (this.src) {
+      this.hydrate(this.src);
+    } else {
+      this.renderButton();
     }
   }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (name === "src" && newValue) {
+      this.hydrate(newValue);
+    } else {
+      this.renderButton();
+    }
+  }
+
+  hydrate(url) {
+    fetch(url)
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+        return res.json();
+      })
+      .then((json) => this.renderButton(json))
+      .catch((error) => {
+        console.error(`Failed to fetch data from ${url}:`, error);
+        this.renderError();
+      });
+  }
+
+  renderButton(data = {}) {
+    const button = this.shadowRoot.getElementById("buttonComponent");
+
+    // Set attributes based on data or existing attributes
+    const variant = data.variant || this.getAttribute("data-variant");
+    const iconOnly = data.iconOnly || this.hasAttribute("data-icon-only");
+
+    // Apply classes based on variant
+    button.className = ""; // Reset classes
+    if (iconOnly) {
+      button.classList.add("icon-only", "icon");
+    } else if (variant) {
+      button.classList.add("button-type", `button-${variant}`);
+    }
+
+    // Create and append slots
+    if (icon) {
+      const iconElement = document.createElement("svg");
+      iconElement.setAttribute("slot", "icon");
+      iconElement.classList.add("icon");
+      const useElement = document.createElement("use");
+      useElement.setAttribute("href", icon);
+      iconElement.appendChild(useElement);
+      button.appendChild(iconElement);
+    }
+
+    if (text) {
+      const textElement = document.createElement("span");
+      textElement.setAttribute("slot", "button-text");
+      textElement.textContent = text;
+      button.appendChild(textElement);
+    }
+
+    if (iconLabel) {
+      const labelElement = document.createElement("p");
+      labelElement.setAttribute("slot", "icon-label");
+      labelElement.textContent = iconLabel;
+      button.appendChild(labelElement);
+    }
+  }
+
+  renderError() {
+    const button = this.shadowRoot.getElementById("buttonComponent");
+    button.textContent = "Error loading button";
+    button.classList.add("error");
+  }
 }
+
+customElements.define("button-custom", ButtonCustomComponent);
