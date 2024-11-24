@@ -11,7 +11,13 @@ const defaults = {
   googleFontURL: "https://fonts.googleapis.com/css2?family=Roboto&display=swap",
   styles: [],
   scripts: [
-    `import { define } from "@calpoly/mustang";
+    `
+    import { define } from "@calpoly/mustang";
+    import { HeaderElement } from "/scripts/header.js";
+    define({
+      "blz-header": HeaderElement,
+      });
+    HeaderElement.initializeOnce();
     `,
   ],
   imports: {
