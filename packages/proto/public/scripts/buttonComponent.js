@@ -5,7 +5,7 @@ import reset from "../styles/reset.css.js";
 export class ButtonCustomComponent extends HTMLElement {
   static template = html`
     <template>
-      <button id="buttonComponent">
+      <button id="customButton">
         <slot name="icon"></slot>
         <slot name="button-text"></slot>
         <slot name="icon-label"></slot>
@@ -69,6 +69,7 @@ export class ButtonCustomComponent extends HTMLElement {
 
     .icon {
       filter: brightness(0) invert(1); /* Makes the icon white */
+      fill: currentColor; /* Ensures the icon inherits the text color */
     }
 
     .icon-label {
@@ -99,31 +100,20 @@ export class ButtonCustomComponent extends HTMLElement {
   }
 
   connectedCallback() {
-    if (this.src) {
-      this.hydrate(this.src);
-    } else {
-      this.renderButton();
-    }
-    this._authObserver.observe(({ user }) => {
-      this._user = user;
-    });
+    this.renderButton(); // Apply initial classes based on attributes
+    // Uncomment and implement authentication observer if needed
+    // this._authObserver.observe(({ user }) => {
+    //   this._user = user;
+    // });
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
     if (name === "src" && newValue) {
       this.hydrate(newValue);
     } else {
-      this.renderButton();
+      this.renderButton(); // Update classes when attributes change
     }
   }
-  // _authObserver = new Observer(this, "blazing:auth");
-  // get authorization() {
-  //   return (
-  //     this._user?.authenticated && {
-  //       Authorization: `Bearer ${this._user.token}`,
-  //     }
-  //   );
-  // }
 
   hydrate(url) {
     // fetch(url, { headers: this.authorization })
@@ -140,48 +130,31 @@ export class ButtonCustomComponent extends HTMLElement {
   }
 
   renderButton(data = {}) {
-    const button = this.shadowRoot.getElementById("buttonComponent");
+    const button = this.shadowRoot.getElementById("customButton");
 
-    // Set attributes based on data or existing attributes
+    // Apply classes based on variant
     const variant = data.variant || this.getAttribute("data-variant");
     const iconOnly = data.iconOnly || this.hasAttribute("data-icon-only");
 
-    // Apply classes based on variant
-    button.className = ""; // Reset classes
+    // Remove existing variant and icon-only classes
+    button.classList.remove(
+      "button-primary",
+      "button-secondary",
+      "button-destructive",
+      "icon-only",
+      "icon"
+    );
+
+    // Apply new classes based on current attributes
     if (iconOnly) {
       button.classList.add("icon-only", "icon");
     } else if (variant) {
       button.classList.add("button-type", `button-${variant}`);
     }
-
-    // Create and append slots
-    if (icon) {
-      const iconElement = document.createElement("svg");
-      iconElement.setAttribute("slot", "icon");
-      iconElement.classList.add("icon");
-      const useElement = document.createElement("use");
-      useElement.setAttribute("href", icon);
-      iconElement.appendChild(useElement);
-      button.appendChild(iconElement);
-    }
-
-    if (text) {
-      const textElement = document.createElement("span");
-      textElement.setAttribute("slot", "button-text");
-      textElement.textContent = text;
-      button.appendChild(textElement);
-    }
-
-    if (iconLabel) {
-      const labelElement = document.createElement("p");
-      labelElement.setAttribute("slot", "icon-label");
-      labelElement.textContent = iconLabel;
-      button.appendChild(labelElement);
-    }
   }
 
   renderError() {
-    const button = this.shadowRoot.getElementById("buttonComponent");
+    const button = this.shadowRoot.getElementById("customButton");
     button.textContent = "Error loading button";
     button.classList.add("error");
   }
