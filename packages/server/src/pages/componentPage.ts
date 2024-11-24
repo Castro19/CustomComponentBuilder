@@ -98,7 +98,7 @@ export class ComponentPage {
                 <div class="font-family-container">
                   <p class="font-family-title">Font Family:</p>
                   <div class="font-family-list">
-                    <select class="font-family-select">
+                    <select class="font-family-select" id="fontFamilySelect">
                       <option value="Arial, sans-serif">Arial</option>
                       <option value="Helvetica, sans-serif">Helvetica</option>
                       <option value="Georgia, serif">Georgia</option>
@@ -115,7 +115,14 @@ export class ComponentPage {
                 <div class="font-size-container">
                   <p class="font-size-title">Font Size:</p>
                   <div class="font-size-list">
-                    <select class="font-size-select"></select>
+                    <input
+                      type="number"
+                      class="font-size-select"
+                      id="fontSizeInput"
+                      min="8"
+                      max="72"
+                      value="16"
+                    />
                   </div>
                 </div>
                 <div class="font-weight-container">
@@ -124,12 +131,15 @@ export class ComponentPage {
                     <input
                       type="range"
                       class="font-weight-slider"
+                      id="fontWeightSlider"
                       min="100"
                       max="900"
                       step="100"
                       value="400"
                     />
-                    <span class="font-weight-value">400</span>
+                    <span class="font-weight-value" id="fontWeightValue"
+                      >400</span
+                    >
                   </div>
                 </div>
                 <div class="button-text-container">
@@ -138,6 +148,7 @@ export class ComponentPage {
                     <input
                       type="text"
                       class="button-text-input"
+                      id="buttonTextInput"
                       placeholder="Enter button text..."
                       value="Button"
                     />
@@ -149,9 +160,12 @@ export class ComponentPage {
                     <input
                       type="color"
                       class="text-color-picker"
+                      id="textColorPicker"
                       value="#000000"
                     />
-                    <span class="text-color-value">#000000</span>
+                    <span class="text-color-value" id="textColorValue"
+                      >#000000</span
+                    >
                   </div>
                 </div>
                 <div class="button-color-container">
@@ -160,9 +174,12 @@ export class ComponentPage {
                     <input
                       type="color"
                       class="button-color-picker"
+                      id="buttonColorPicker"
                       value="#CDA434"
                     />
-                    <span class="button-color-value">#CDA434</span>
+                    <span class="button-color-value" id="buttonColorValue"
+                      >#CDA434</span
+                    >
                   </div>
                 </div>
               </div>
@@ -176,7 +193,7 @@ export class ComponentPage {
                 <div class="border-width-container">
                   <p class="border-width-title">Border Width:</p>
                   <div class="border-width-controls">
-                    <select class="border-width-select">
+                    <select class="border-width-select" id="borderWidthSelect">
                       <option value="1px">Thin (1px)</option>
                       <option value="2px">Medium (2px)</option>
                       <option value="3px">Thick (3px)</option>
@@ -189,7 +206,7 @@ export class ComponentPage {
                 <div class="border-style-container">
                   <p class="border-style-title">Border Style:</p>
                   <div class="border-style-controls">
-                    <select class="border-style-select">
+                    <select class="border-style-select" id="borderStyleSelect">
                       <option value="solid">Solid</option>
                       <option value="dashed">Dashed</option>
                       <option value="dotted">Dotted</option>
@@ -205,9 +222,12 @@ export class ComponentPage {
                     <input
                       type="color"
                       class="border-color-picker"
+                      id="borderColorPicker"
                       value="#FFFFFF"
                     />
-                    <span class="border-color-value">#FFFFFF</span>
+                    <span class="border-color-value" id="borderColorValue"
+                      >#FFFFFF</span
+                    >
                   </div>
                 </div>
 
@@ -218,14 +238,23 @@ export class ComponentPage {
                     <input
                       type="range"
                       class="border-radius-slider"
+                      id="borderRadiusSlider"
                       min="0"
                       max="50"
                       step="1"
                       value="4"
                     />
-                    <span class="border-radius-value">4px</span>
+                    <span class="border-radius-value" id="borderRadiusValue"
+                      >4px</span
+                    >
                   </div>
                 </div>
+              </div>
+              <!-- Submit Button -->
+              <div class="grid-item-customization" id="submit-button-container">
+                <button id="submit-button" class="submit-button">
+                  Submit Code
+                </button>
               </div>
             </div>
 
@@ -251,6 +280,7 @@ export class ComponentPage {
                 <code-container
                   html-code="&lt;button class='customButton'&gt;Button Text&lt;/button&gt;"
                   css-code=".customButton { background-color: #cda434; /* styles */ }"
+                  tokens-code=".customButton { --color: #cda434; }"
                   js-code="const button = document.querySelector('.customButton'); /* code */"
                 ></code-container>
               </div>

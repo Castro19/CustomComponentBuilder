@@ -4,6 +4,22 @@ import {
   updateCodeContainerCSS,
 } from "./buttonHelpers/defaultStyles.js";
 
+// Helper function to generate HTML code
+function outputButtonHTML(customButton) {
+  const text = customButton.textContent.trim() || "Button";
+  const className = customButton.className || "customButton";
+  return `<button class="${className}">${text}</button>`;
+}
+
+// Helper function to generate JS code
+function outputButtonJS(customButton) {
+  const className = customButton.className || "customButton";
+  return `const button = document.querySelector('.${className}');
+button.addEventListener('click', () => {
+  alert('Button clicked!');
+});`;
+}
+
 // Add event listeners for each icon to ensure all icons log their clicks
 document.addEventListener("DOMContentLoaded", function () {
   // Get all the icon buttons
@@ -211,11 +227,19 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // Button text change handler
+  // Event listener for Button Text Change
   buttonTextInput.addEventListener("input", function () {
     const newText = this.value || "Button"; // Use "Button" as fallback if empty
     customButton.textContent = newText;
+
+    // Update HTML and JS code in CodeContainer
+    const htmlCode = outputButtonHTML(customButton);
+    const jsCode = outputButtonJS(customButton);
+    codeContainer.setAttribute("html-code", htmlCode);
+    codeContainer.setAttribute("js-code", jsCode);
   });
+
+  // Similarly, update other event listeners to update HTML and JS as needed
 
   // Text color handler
   createEventListenerWithCSSUpdate(textColorPicker, "input", function () {
@@ -257,4 +281,70 @@ document.addEventListener("DOMContentLoaded", function () {
     borderRadiusValue.textContent = radius;
     customButton.style.borderRadius = radius;
   });
+
+  // Select the Submit Code button
+  const submitButton = document.getElementById("submit-button");
+
+  // Ensure the submit button exists
+  if (submitButton) {
+    submitButton.addEventListener("click", async (event) => {
+      event.preventDefault(); // Prevent default button behavior
+
+      try {
+        // Select the CodeContainer element
+        const codeContainer = document.querySelector("code-container");
+
+        if (!codeContainer) {
+          throw new Error("CodeContainer element not found.");
+        }
+
+        // Retrieve code from CodeContainer's attributes
+        const htmlCode = codeContainer.getAttribute("html-code") || "";
+        const cssCode = codeContainer.getAttribute("css-code") || "";
+        const tokensCode = codeContainer.getAttribute("tokens-code") || "";
+        const jsCode = codeContainer.getAttribute("js-code") || "";
+
+        // Optionally, perform additional processing or validation here
+
+        // Prepare the payload
+        const payload = {
+          html: htmlCode,
+          css: cssCode,
+          tokens: tokensCode,
+          js: jsCode,
+        };
+
+        console.log("Submitting the following payload:", payload);
+
+        // Send the data to the server via a POST request
+        // const response = await fetch("/api/submit-code", {
+        //   method: "POST",
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //   },
+        //   body: JSON.stringify(payload),
+        // });
+
+        // if (!response.ok) {
+        //   // Handle HTTP errors
+        //   const errorText = await response.text();
+        //   throw new Error(
+        //     `Server responded with ${response.status}: ${errorText}`
+        //   );
+        // }
+
+        // // Optionally, handle the server's response data
+        // const responseData = await response.json();
+        // console.log("Server response:", responseData);
+
+        // Provide user feedback (e.g., alert, modal, notification)
+        alert("Code submitted successfully!");
+
+        // Optionally, reset the form or perform other actions
+      } catch (error) {
+        console.error("Error submitting code:", error);
+        alert(`Error submitting code: ${error.message}`);
+      }
+    });
+  }
 });
