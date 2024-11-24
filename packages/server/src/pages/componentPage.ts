@@ -21,7 +21,7 @@ export class ComponentPage {
       ],
       styles: [],
       scripts: [
-        `import { define } from "@calpoly/mustang";
+        `import { define, Auth } from "@calpoly/mustang";
          import { ButtonCustomComponent } from "/scripts/buttonComponent.js";
         import { CodeInstruction } from "/scripts/codeInstruction.js";
         import { CodeContainer } from "/scripts/codeContainer.js";
@@ -66,10 +66,7 @@ export class ComponentPage {
 
     return html`
       <body>
-        <label id="lightModeLabel">
-          <input type="checkbox" autocomplete="off" id="lightModeToggle" />
-          Light Mode
-        </label>
+        <blz-header></blz-header>
         <div class="magazine-wrapper">
           <div class="magazine-page magazine-page-left">
             <div class="page-number-left">5</div>
