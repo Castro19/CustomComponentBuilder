@@ -8,7 +8,7 @@ const router = express.Router();
 // GET all buttons
 router.get("/", (_, res: Response) => {
   Buttons.index()
-    .then((list: ButtonConfig[]) => res.json(list))
+    .then((list: ButtonConfigWithId[]) => res.json(list))
     .catch((err) => res.status(500).send(err));
 });
 
@@ -17,7 +17,7 @@ router.get("/:buttonId", (req: Request, res: Response) => {
   const { buttonId } = req.params;
 
   Buttons.get(buttonId)
-    .then((button: ButtonConfig) => res.json(button))
+    .then((button: ButtonConfigWithId) => res.json(button))
     .catch((err) => res.status(404).send(err.message));
 });
 
@@ -80,7 +80,7 @@ router.put("/:buttonId", (req: Request, res: Response) => {
   const updatedButton = req.body as ButtonConfigWithId;
 
   Buttons.update(buttonId, updatedButton)
-    .then((button: ButtonConfig) => res.json(button))
+    .then((button: ButtonConfigWithId) => res.json(button))
     .catch((err) => res.status(404).send(err.message));
 });
 

@@ -56,6 +56,9 @@ document.addEventListener("DOMContentLoaded", function () {
   // Code Container elements:
   const codeContainer = document.querySelector("code-container");
 
+  // Select the Submit Code button
+  const submitButton = document.getElementById("submit-button");
+
   // Set initial colors
   customButton.style.setProperty("color", textColorPicker.value);
   customButton.style.setProperty("background-color", buttonColorPicker.value);
@@ -282,69 +285,107 @@ document.addEventListener("DOMContentLoaded", function () {
     customButton.style.borderRadius = radius;
   });
 
-  // Select the Submit Code button
-  const submitButton = document.getElementById("submit-button");
-
   // Ensure the submit button exists
-  if (submitButton) {
-    submitButton.addEventListener("click", async (event) => {
+  /* SUBMIT CODE HANDLING */
+  if (submitButton && codeContainer && customButton) {
+    submitButton.addEventListener("click", async function (event) {
       event.preventDefault(); // Prevent default button behavior
 
       try {
-        // Select the CodeContainer element
-        const codeContainer = document.querySelector("code-container");
+        // Retrieve button configuration data
+        const variant = Array.from(buttonTypes).find((btn) =>
+          btn.classList.contains("button-primary")
+        )
+          ? "primary"
+          : Array.from(buttonTypes).find((btn) =>
+              btn.classList.contains("button-secondary")
+            )
+          ? "secondary"
+          : Array.from(buttonTypes).find((btn) =>
+              btn.classList.contains("button-destructive")
+            )
+          ? "destructive"
+          : "primary"; // Default to "primary" if none found
 
-        if (!codeContainer) {
-          throw new Error("CodeContainer element not found.");
+        const iconOnly = customButton.classList.contains("icon-only");
+
+        // Retrieve icon href
+        let icon = "";
+        const svgElement = customButton.querySelector("svg.icon use");
+        if (svgElement) {
+          icon = svgElement.getAttribute("href") || "";
         }
 
-        // Retrieve code from CodeContainer's attributes
+        // Retrieve icon label
+        let iconLabel = "";
+        const iconLabelElement = customButton.querySelector("p.icon-label");
+        if (iconLabelElement) {
+          iconLabel = iconLabelElement.textContent || "";
+        }
+
+        // Retrieve button text
+        const textElement = customButton.querySelector("span");
+        let text = "";
+        if (textElement) {
+          text = textElement.textContent || "";
+        } else {
+          // If no span, assume direct text content
+          text = customButton.textContent || "";
+        }
+
+        // Retrieve code segments
         const htmlCode = codeContainer.getAttribute("html-code") || "";
         const cssCode = codeContainer.getAttribute("css-code") || "";
         const tokensCode = codeContainer.getAttribute("tokens-code") || "";
         const jsCode = codeContainer.getAttribute("js-code") || "";
 
-        // Optionally, perform additional processing or validation here
-
         // Prepare the payload
         const payload = {
-          html: htmlCode,
-          css: cssCode,
-          tokens: tokensCode,
-          js: jsCode,
+          variant,
+          iconOnly,
+          icon,
+          iconLabel,
+          text,
+          htmlCode,
+          cssCode,
+          tokensCode,
+          jsCode,
         };
 
         console.log("Submitting the following payload:", payload);
 
         // Send the data to the server via a POST request
-        // const response = await fetch("/api/submit-code", {
-        //   method: "POST",
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //   },
-        //   body: JSON.stringify(payload),
-        // });
+        const response = await fetch("/button", {
+          // Ensure the endpoint is correct
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        });
 
-        // if (!response.ok) {
-        //   // Handle HTTP errors
-        //   const errorText = await response.text();
-        //   throw new Error(
-        //     `Server responded with ${response.status}: ${errorText}`
-        //   );
-        // }
+        if (!response.ok) {
+          // Handle HTTP errors
+          const errorText = await response.text();
+          throw new Error(
+            `Server responded with ${response.status}: ${errorText}`
+          );
+        }
 
-        // // Optionally, handle the server's response data
-        // const responseData = await response.json();
-        // console.log("Server response:", responseData);
+        // Optionally, handle the server's response data
+        const responseData = await response.json();
+        console.log("Server response:", responseData);
 
         // Provide user feedback (e.g., alert, modal, notification)
-        alert("Code submitted successfully!");
+        alert("Button configuration submitted successfully!");
 
         // Optionally, reset the form or perform other actions
       } catch (error) {
-        console.error("Error submitting code:", error);
-        alert(`Error submitting code: ${error.message}`);
+        console.error("Error submitting button configuration:", error);
+        alert(`Error submitting button configuration: ${error.message}`);
       }
     });
+  } else {
+    console.error("Submit button, CodeContainer, or CustomButton not found.");
   }
 });
