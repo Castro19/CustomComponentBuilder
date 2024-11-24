@@ -12,6 +12,7 @@ html {
   width: 100vw;
   height: 100vh;
   display: flex;
+  flex-direction: column;
   justify-content: center; /* Center horizontally */
   align-items: center; /* Center vertically */
   background-color: var(--color-background);
@@ -85,6 +86,7 @@ svg.icon {
 /* Magazine Wrapper to Align Two Pages Side by Side */
 .magazine-wrapper {
   display: flex;
+  flex: 1; /* Allow main content to grow and fill available space */
   justify-content: center;
   align-items: center;
   width: var(--page-width-large);

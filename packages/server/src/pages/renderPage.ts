@@ -16,7 +16,7 @@ const defaults = {
     import { HeaderElement } from "/scripts/header.js";
     define({
       "blz-header": HeaderElement,
-      });
+    });
     HeaderElement.initializeOnce();
     `,
   ],

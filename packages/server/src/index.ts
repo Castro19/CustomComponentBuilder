@@ -2,9 +2,10 @@
 import express, { Request, Response } from "express";
 import componentRouter from "./routes/component";
 import buttonRouter from "./routes/button";
+import auth, { authenticateUser } from "./routes/auth";
 import { connect } from "./services/mongo";
-import path from "path";
-
+import { LoginPage } from "./pages/index";
+import { RegistrationPage } from "./pages/auth";
 connect("publish-ui");
 
 const app = express();
@@ -20,13 +21,21 @@ app.get("/hello", (req: Request, res: Response) => {
   res.send("Hello, World");
 });
 
+// with the other HTML routes
+app.get("/login", (req: Request, res: Response) => {
+  const page = new LoginPage();
+  res.set("Content-Type", "text/html").send(page.render());
+});
+
+app.get("/register", (req: Request, res: Response) => {
+  const page = new RegistrationPage();
+  res.set("Content-Type", "text/html").send(page.render());
+});
+
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
 
 app.use("/component", componentRouter);
 app.use("/button", buttonRouter);
-
-app.use("/", (req: Request, res: Response) => {
-  res.sendFile(path.join(staticDir, "index.html"));
-});
+app.use("/auth", auth);

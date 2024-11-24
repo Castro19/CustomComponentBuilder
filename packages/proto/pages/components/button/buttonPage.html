@@ -305,15 +305,19 @@
       }
     </script>
     <script type="module">
-      import { define } from "@calpoly/mustang";
+      import { define, Auth } from "@calpoly/mustang";
       import { CodeInstruction } from "../../../public/scripts/codeInstruction.js";
       import { CodeContainer } from "../../../public/scripts/codeContainer.js";
       import { ButtonCustomComponent } from "../../../public/scripts/buttonComponent.js";
+      import { HeaderElement } from "/scripts/header.js";
       define({
         "code-container": CodeContainer,
         "code-instruction": CodeInstruction,
         "button-custom": ButtonCustomComponent,
+        "blz-header": HeaderElement,
+        "mu-auth": Auth.Provider,
       });
+      HeaderElement.initializeOnce();
     </script>
     <script src="../../../public/scripts/index.js"></script>
     <script type="module" src="../../../public/scripts/buttonPage.js"></script>

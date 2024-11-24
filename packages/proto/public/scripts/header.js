@@ -7,8 +7,8 @@ import {
   Events,
   Observer,
 } from "@calpoly/mustang";
-import reset from "./styles/reset.css.js";
-import headings from "./styles/headings.css.js";
+import reset from "../styles/reset.css.js";
+import headings from "../styles/headings.css.js";
 
 export class HeaderElement extends HTMLElement {
   static uses = define({
@@ -17,7 +17,7 @@ export class HeaderElement extends HTMLElement {
 
   static template = html`<template>
     <header>
-      <h1>Blazing Travels</h1>
+      <h1>CUSTOM UI</h1>
       <nav>
         <p><slot> Unnamed Tour </slot></p>
         <mu-dropdown>
@@ -27,9 +27,13 @@ export class HeaderElement extends HTMLElement {
           </a>
           <menu>
             <li>
-              <label class="dark-mode-switch">
-                <input type="checkbox" />
-                Dark Mode
+              <label id="lightModeLabel">
+                <input
+                  type="checkbox"
+                  autocomplete="off"
+                  id="lightModeToggle"
+                />
+                Light Mode
               </label>
             </li>
             <li class="when-signed-in">
@@ -46,32 +50,36 @@ export class HeaderElement extends HTMLElement {
 
   static styles = css`
     :host {
-      display: contents;
+      display: block;
     }
     header {
       display: flex;
-      flex-wrap: wrap;
-      align-items: bottom;
+      align-items: center;
       justify-content: space-between;
-      padding: var(--size-spacing-medium);
+      padding: var(--padding-medium);
       background-color: var(--color-background-header);
-      color: var(--color-text-inverted);
+      color: var(--color-white);
+      width: 100vw;
+      box-sizing: border-box;
     }
-    header ~ * {
-      margin: var(--size-spacing-medium);
-    }
-    header p {
-      --color-link: var(--color-link-inverted);
+    h1 {
+      font-size: var(--font-size-lg);
+      margin: 0;
     }
     nav {
       display: flex;
-      flex-direction: column;
-      flex-basis: max-content;
-      align-items: end;
+      align-items: center;
     }
     a[slot="actuator"] {
       color: var(--color-link-inverted);
       cursor: pointer;
+      text-decoration: none;
+      padding: var(--padding-small);
+      border-radius: var(--size-border-radius-small);
+      transition: background-color 0.3s;
+    }
+    a[slot="actuator"]:hover {
+      background-color: var(--color-background-hover);
     }
     #userid:empty::before {
       content: "traveler";
@@ -80,6 +88,12 @@ export class HeaderElement extends HTMLElement {
       color: var(--color-link);
       cursor: pointer;
       text-decoration: underline;
+      padding: var(--padding-small);
+      border-radius: var(--size-border-radius-small);
+      transition: background-color 0.3s;
+    }
+    menu a:hover {
+      background-color: var(--color-background-hover);
     }
     a:has(#userid:empty) ~ menu > .when-signed-in,
     a:has(#userid:not(:empty)) ~ menu > .when-signed-out {
@@ -105,10 +119,10 @@ export class HeaderElement extends HTMLElement {
       .template(HeaderElement.template)
       .styles(reset.styles, headings.styles, HeaderElement.styles);
 
-    const dm = this.shadowRoot.querySelector(".dark-mode-switch");
+    const lmSwitch = this.shadowRoot.querySelector("#lightModeToggle");
 
-    dm.addEventListener("click", (event) =>
-      Events.relay(event, "dark-mode", {
+    lmSwitch.addEventListener("change", (event) =>
+      Events.relay(event, "light-mode", {
         checked: event.target.checked,
       })
     );
@@ -132,12 +146,12 @@ export class HeaderElement extends HTMLElement {
   }
 
   static initializeOnce() {
-    function toggleDarkMode(page, checked) {
-      page.classList.toggle("dark-mode", checked);
+    function toggleLightMode(page, checked) {
+      page.classList.toggle("light-mode", checked);
     }
 
-    document.body.addEventListener("dark-mode", (event) =>
-      toggleDarkMode(event.currentTarget, event.detail.checked)
+    document.body.addEventListener("light-mode", (event) =>
+      toggleLightMode(document.body, event.detail.checked)
     );
   }
 }

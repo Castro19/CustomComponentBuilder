@@ -104,6 +104,9 @@ export class ButtonCustomComponent extends HTMLElement {
     } else {
       this.renderButton();
     }
+    this._authObserver.observe(({ user }) => {
+      this._user = user;
+    });
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -113,8 +116,17 @@ export class ButtonCustomComponent extends HTMLElement {
       this.renderButton();
     }
   }
+  // _authObserver = new Observer(this, "blazing:auth");
+  // get authorization() {
+  //   return (
+  //     this._user?.authenticated && {
+  //       Authorization: `Bearer ${this._user.token}`,
+  //     }
+  //   );
+  // }
 
   hydrate(url) {
+    // fetch(url, { headers: this.authorization })
     fetch(url)
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);

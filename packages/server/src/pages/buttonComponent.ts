@@ -15,7 +15,7 @@ export class ButtonPage {
         `import { define } from "@calpoly/mustang";
          import { ButtonCustomComponent } from "/scripts/buttonComponent.js";
         define({
-          "button-custom": ButtonCustomComponent
+          "button-custom": ButtonCustomComponent,
         });`,
       ],
     });
