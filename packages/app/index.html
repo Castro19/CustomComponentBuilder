@@ -25,23 +25,14 @@
       href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap"
       rel="stylesheet"
     />
+    <script type="module" src="/src/main.ts"></script>
   </head>
   <body>
-    <mu-auth provides="blazing:auth" redirect="./login.html">
-      <blazing-header></blazing-header>
-      <home-view></home-view>
-    </mu-auth>
-    <script type="module">
-      import { define, Auth, Events } from "@calpoly/mustang";
-      import { HeaderElement } from "/src/components/blazing-header";
-      import { HomeViewElement } from "/src/views/home-view";
-      define({
-        "mu-auth": Auth.Provider,
-        "blazing-header": HeaderElement,
-        "home-view": HomeViewElement,
-      });
-      window.relayEvent = Events.relay;
-    </script>
-    <script src="scripts/index.js"></script>
+    <mu-history provides="blazing:history">
+      <mu-auth provides="blazing:auth" redirect="./login.html">
+        <blazing-header></blazing-header>
+        <mu-switch></mu-switch>
+      </mu-auth>
+    </mu-history>
   </body>
 </html>
