@@ -20,7 +20,7 @@ export class HomeViewElement extends LitElement {
           <div class="footer-container-cover">
             <p class="author-cover">By Cristian Castro Oliva</p>
             <button class="arrow-button">
-              <a href="pages/tableContents/tableContents.html">
+              <a href="/tableContents">
                 <svg class="icon arrow" width="50" height="50">
                   <use href="/componentOptions.svg#icon-arrow" />
                 </svg>

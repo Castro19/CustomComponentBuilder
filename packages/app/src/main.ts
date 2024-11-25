@@ -2,6 +2,9 @@ import { Auth, define, History, Switch } from "@calpoly/mustang";
 import { html, LitElement } from "lit";
 import { HeaderElement } from "./components/blazing-header";
 import { HomeViewElement } from "./views/home-view.ts";
+import { TableOfContentsViewElement } from "./views/table-of-contents-view.ts";
+import { ButtonComponentViewElement } from "./views/button-component-view.ts";
+import { CreditsViewElement } from "./views/credits-view.ts";
 
 const routes: Switch.Route[] = [
   //   {
@@ -30,6 +33,18 @@ const routes: Switch.Route[] = [
     path: "/",
     redirect: "/app",
   },
+  {
+    path: "/tableContents",
+    view: () => html`<table-of-contents-view></table-of-contents-view>`,
+  },
+  {
+    path: "/components/button",
+    view: () => html`<button-component-view></button-component-view>`,
+  },
+  {
+    path: "/credits",
+    view: () => html`<credits-view></credits-view>`,
+  },
 ];
 
 class AppElement extends LitElement {
@@ -54,4 +69,7 @@ define({
   "blazing-app": AppElement,
   "blazing-header": HeaderElement,
   "home-view": HomeViewElement,
+  "table-of-contents-view": TableOfContentsViewElement,
+  "button-component-view": ButtonComponentViewElement,
+  "credits-view": CreditsViewElement,
 });
