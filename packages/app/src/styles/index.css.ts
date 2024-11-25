@@ -156,6 +156,16 @@ const styles = css`
     font-weight: var(--font-weight-normal);
   }
 
+  .credits-list li {
+    margin-bottom: var(--spacing-sm);
+    font-size: var(--font-size-md);
+    color: var(--color-white);
+  }
+
+  .magazine-credits {
+    max-height: 95vh;
+  }
+
   /* Responsive Adjustments */
   @media (max-width: 1024px) {
     .magazine-wrapper {
@@ -187,4 +197,4 @@ const styles = css`
   }
 `;
 
-export default styles;
+export default { styles };
