@@ -1,7 +1,6 @@
 import { Auth, define, Observer } from "@calpoly/mustang";
 import { html, LitElement, TemplateResult } from "lit";
 import { property, state } from "lit/decorators.js";
-import reset from "../styles/reset.css.js";
 import buttonPage from "../styles/buttonPage.css.js";
 import customButtonStyles from "../styles/custom-button-styles.css.js";
 import gridUtility from "../styles/gridUtility.css.js";
@@ -309,7 +308,6 @@ export class ButtonComponentViewElement extends LitElement {
   }
 
   static styles = [
-    reset.styles,
     buttonPage.styles,
     customButtonStyles.styles,
     gridUtility.styles,

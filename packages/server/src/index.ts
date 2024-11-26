@@ -8,29 +8,40 @@ import { LoginPage } from "./pages/index";
 import { RegistrationPage } from "./pages/auth";
 import fs from "node:fs/promises";
 import path from "path";
-
-connect("publish-ui");
+import renderPage from "./pages/renderPage";
 
 const app = express();
 const port = process.env.PORT || 3000;
+
+// Mongo Connecition
+connect("publish-ui");
+
+// Static files
 const staticDir = process.env.STATIC || "public";
-
-console.log("STATIC DIR", staticDir);
-
 app.use(express.static(staticDir));
+
+// Middleware
 app.use(express.json());
 
-app.get("/hello", (req: Request, res: Response) => {
-  res.send("Hello, World");
+// Auth routes
+app.use("/auth", auth);
+
+// API Routes:
+app.use("/component", componentRouter);
+app.use("/button", buttonRouter);
+
+// Page Routes:
+app.get("/ping", (_: Request, res: Response) => {
+  res.send(
+    `<h1>Hello!</h1>
+     <p>Server is up and running.</p>
+     <p>Serving static files from <code>${staticDir}</code>.</p>
+    `
+  );
 });
 
-app.use("/app", (req: Request, res: Response) => {
-  const indexHtml = path.resolve(staticDir, "index.html");
-  fs.readFile(indexHtml, { encoding: "utf8" }).then((html) => res.send(html));
-});
-
-// with the other HTML routes
 app.get("/login", (req: Request, res: Response) => {
+  console.log("Login Page 1");
   const page = new LoginPage();
   res.set("Content-Type", "text/html").send(page.render());
 });
@@ -40,10 +51,12 @@ app.get("/register", (req: Request, res: Response) => {
   res.set("Content-Type", "text/html").send(page.render());
 });
 
+// SPA Routes: /app/...
+app.use("/app", (_: Request, res: Response) => {
+  const indexHtml = path.resolve(staticDir, "index.html");
+  fs.readFile(indexHtml, { encoding: "utf8" }).then((html) => res.send(html));
+});
+
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
-
-app.use("/component", componentRouter);
-app.use("/button", buttonRouter);
-app.use("/auth", auth);

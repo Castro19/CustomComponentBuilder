@@ -1,4 +1,3 @@
-// src/routes/auth.js
 import dotenv from "dotenv";
 import express, { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
@@ -11,6 +10,7 @@ dotenv.config();
 const TOKEN_SECRET: string = process.env.TOKEN_SECRET || "NOT_A_SECRET";
 
 function generateAccessToken(username: string): Promise<String> {
+  console.log("Generating token for", username);
   return new Promise((resolve, reject) => {
     jwt.sign(
       { username: username },
@@ -18,7 +18,10 @@ function generateAccessToken(username: string): Promise<String> {
       { expiresIn: "1d" },
       (error, token) => {
         if (error) reject(error);
-        else resolve(token as string);
+        else {
+          console.log("Token is", token);
+          resolve(token as string);
+        }
       }
     );
   });
@@ -66,8 +69,11 @@ export function authenticateUser(
     res.status(401).end();
   } else {
     jwt.verify(token, TOKEN_SECRET, (error, decoded) => {
-      if (decoded) next();
-      else res.status(403).end();
+      if (decoded) {
+        next();
+      } else {
+        res.status(401).end();
+      }
     });
   }
 }

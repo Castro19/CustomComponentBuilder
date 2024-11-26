@@ -7,8 +7,8 @@ import {
   Events,
   Observer,
 } from "@calpoly/mustang";
-import reset from "../styles/reset.css.js";
-import headings from "../styles/headings.css.js";
+import { reset } from "./styles/reset.css.js";
+import { headings } from "./styles/headings.css.js";
 
 export class HeaderElement extends HTMLElement {
   static uses = define({
@@ -117,7 +117,7 @@ export class HeaderElement extends HTMLElement {
     super();
     shadow(this)
       .template(HeaderElement.template)
-      .styles(reset.styles, headings.styles, HeaderElement.styles);
+      .styles(reset, headings, HeaderElement.styles);
 
     const lmSwitch = this.shadowRoot.querySelector("#lightModeToggle");
 

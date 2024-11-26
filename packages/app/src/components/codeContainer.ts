@@ -1,6 +1,6 @@
 // scripts/codeContainer.js
 import { css, html, shadow } from "@calpoly/mustang";
-import reset from "../styles/reset.css.js";
+import { reset } from "../styles/reset.css.ts";
 
 export class CodeContainer extends HTMLElement {
   static template = html`
@@ -122,7 +122,7 @@ export class CodeContainer extends HTMLElement {
     super();
     shadow(this)
       .template(CodeContainer.template)
-      .styles(reset.styles, CodeContainer.styles);
+      .styles([reset, CodeContainer.styles]);
   }
 
   connectedCallback() {

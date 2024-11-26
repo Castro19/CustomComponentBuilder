@@ -1,6 +1,6 @@
 // scripts/buttonComponent.js
 import { css, html, shadow } from "@calpoly/mustang";
-import reset from "../styles/reset.css.js";
+import { reset } from "../styles/reset.css.ts";
 import { ButtonConfig } from "server/models";
 
 export class ButtonCustomComponent extends HTMLElement {
@@ -96,7 +96,7 @@ export class ButtonCustomComponent extends HTMLElement {
     super();
     shadow(this)
       .template(ButtonCustomComponent.template)
-      .styles(reset.styles, ButtonCustomComponent.styles);
+      .styles([reset, ButtonCustomComponent.styles]);
   }
 
   connectedCallback() {

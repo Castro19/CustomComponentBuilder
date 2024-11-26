@@ -2,8 +2,7 @@
 import { Auth, define, Dropdown, Events, Observer } from "@calpoly/mustang";
 import { css, html, LitElement } from "lit";
 import { state } from "lit/decorators.js";
-// import headings from "../styles/headings.css";
-// import reset from "../styles/reset.css";
+import { reset } from "../styles/reset.css.ts";
 
 function toggleLightMode(ev: InputEvent) {
   const target = ev.target as HTMLInputElement;
@@ -59,58 +58,61 @@ export class HeaderElement extends LitElement {
     `;
   }
 
-  static styles = css`
-    :host {
-      display: block;
-    }
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: var(--padding-medium);
-      background-color: var(--color-background-header);
-      color: var(--color-white);
-      width: 100vw;
-      box-sizing: border-box;
-    }
-    h1 {
-      font-size: var(--font-size-lg);
-      margin: 0;
-    }
-    nav {
-      display: flex;
-      align-items: center;
-    }
-    a[slot="actuator"] {
-      color: var(--color-link-inverted);
-      cursor: pointer;
-      text-decoration: none;
-      padding: var(--padding-small);
-      border-radius: var(--size-border-radius-small);
-      transition: background-color 0.3s;
-    }
-    a[slot="actuator"]:hover {
-      background-color: var(--color-background-hover);
-    }
-    #userid:empty::before {
-      content: "traveler";
-    }
-    menu a {
-      color: var(--color-link);
-      cursor: pointer;
-      text-decoration: underline;
-      padding: var(--padding-small);
-      border-radius: var(--size-border-radius-small);
-      transition: background-color 0.3s;
-    }
-    menu a:hover {
-      background-color: var(--color-background-hover);
-    }
-    a:has(#userid:empty) ~ menu > .when-signed-in,
-    a:has(#userid:not(:empty)) ~ menu > .when-signed-out {
-      display: none;
-    }
-  `;
+  static styles = [
+    reset,
+    css`
+      :host {
+        display: block;
+      }
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: var(--padding-medium);
+        background-color: var(--color-background-header);
+        color: var(--color-white);
+        width: 100vw;
+        box-sizing: border-box;
+      }
+      h1 {
+        font-size: var(--font-size-lg);
+        margin: 0;
+      }
+      nav {
+        display: flex;
+        align-items: center;
+      }
+      a[slot="actuator"] {
+        color: var(--color-link-inverted);
+        cursor: pointer;
+        text-decoration: none;
+        padding: var(--padding-small);
+        border-radius: var(--size-border-radius-small);
+        transition: background-color 0.3s;
+      }
+      a[slot="actuator"]:hover {
+        background-color: var(--color-background-hover);
+      }
+      #userid:empty::before {
+        content: "traveler";
+      }
+      menu a {
+        color: var(--color-link);
+        cursor: pointer;
+        text-decoration: underline;
+        padding: var(--padding-small);
+        border-radius: var(--size-border-radius-small);
+        transition: background-color 0.3s;
+      }
+      menu a:hover {
+        background-color: var(--color-background-hover);
+      }
+      a:has(#userid:empty) ~ menu > .when-signed-in,
+      a:has(#userid:not(:empty)) ~ menu > .when-signed-out {
+        display: none;
+      }
+    `,
+  ];
   _authObserver = new Observer<Auth.Model>(this, "blazing:auth");
 
   connectedCallback() {

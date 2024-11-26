@@ -1,6 +1,6 @@
 // scripts/codeInstructions.js
 import { css, html, shadow } from "@calpoly/mustang";
-import reset from "../styles/reset.css.js";
+import { reset } from "../styles/reset.css.ts";
 export class CodeInstruction extends HTMLElement {
   static template = html`
     <template>
@@ -56,6 +56,6 @@ export class CodeInstruction extends HTMLElement {
     super();
     shadow(this)
       .template(CodeInstruction.template)
-      .styles(reset.styles, CodeInstruction.styles);
+      .styles([reset, CodeInstruction.styles]);
   }
 }
