@@ -1,7 +1,6 @@
 import { Auth, Observer } from "@calpoly/mustang";
 import { html, LitElement } from "lit";
 import { state } from "lit/decorators.js";
-import reset from "../styles/reset.css.js";
 import index from "../styles/index.css.js";
 import tableContents from "../styles/tableContents.css.js";
 export class TableOfContentsViewElement extends LitElement {
@@ -81,5 +80,5 @@ export class TableOfContentsViewElement extends LitElement {
     `;
   }
 
-  static styles = [reset.styles, index.styles, tableContents.styles];
+  static styles = [index.styles, tableContents.styles];
 }

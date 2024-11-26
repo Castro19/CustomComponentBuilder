@@ -1,6 +1,6 @@
 import { css, html, shadow, Events } from "@calpoly/mustang";
-import reset from "../styles/reset.css.js";
-import headings from "../styles/headings.css.js";
+import { reset } from "./styles/reset.css.js";
+import { headings } from "./styles/headings.css.js";
 
 export class RegistrationForm extends HTMLElement {
   static template = html`<template>
@@ -100,7 +100,7 @@ export class RegistrationForm extends HTMLElement {
 
     shadow(this)
       .template(RegistrationForm.template)
-      .styles(reset.styles, headings.styles, RegistrationForm.styles);
+      .styles(reset, headings, RegistrationForm.styles);
 
     this.form.addEventListener("submit", (event) =>
       submitRegistrationForm(

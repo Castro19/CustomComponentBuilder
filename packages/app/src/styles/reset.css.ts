@@ -1,6 +1,6 @@
-import { css } from "@calpoly/mustang";
+import { css } from "lit";
 
-const styles = css`
+export const reset = css`
   * {
     margin: 0;
     box-sizing: border-box;
@@ -179,5 +179,3 @@ const styles = css`
     --color-shadow-dark: rgba(0, 0, 0, 0.6);
   }
 `;
-
-export default { styles };
