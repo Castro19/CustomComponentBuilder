@@ -1,7 +1,7 @@
-import { Auth, define, History, Switch } from "@calpoly/mustang";
-// import { Msg } from "./messages";
-// import { Model, init } from "./model";
-// import update from "./update";
+import { Auth, define, History, Store, Switch } from "@calpoly/mustang";
+import { Msg } from "./messages";
+import { Model, init } from "./model";
+import update from "./update";
 import { html, LitElement } from "lit";
 import { HeaderElement } from "./components/blazing-header";
 import { HomeViewElement } from "./views/home-view.ts";
@@ -20,10 +20,6 @@ const routes: Switch.Route[] = [
     path: "/",
     redirect: "/app",
   },
-  // {
-  //   path: "/login",
-  //   view: () => html`<login-view></login-view>`,
-  // },
   {
     path: "/tableContents",
     view: () => html`<table-of-contents-view></table-of-contents-view>`,
@@ -37,10 +33,6 @@ const routes: Switch.Route[] = [
     path: "/credits",
     view: () => html`<credits-view></credits-view>`,
   },
-  // {
-  //   path: "/register",
-  //   view: () => html`<register-view></register-view>`,
-  // },
 ];
 
 class AppElement extends LitElement {
@@ -57,11 +49,11 @@ class AppElement extends LitElement {
 define({
   "mu-auth": Auth.Provider,
   "mu-history": History.Provider,
-  // "mu-store": class AppStore extends Store.Provider<Model, Msg> {
-  //   constructor() {
-  //     super(update, init, "blazing:auth");
-  //   }
-  // },
+  "mu-store": class AppStore extends Store.Provider<Model, Msg> {
+    constructor() {
+      super(update, init, "blazing:auth");
+    }
+  },
   "mu-switch": class AppSwitch extends Switch.Element {
     constructor() {
       super(routes, "blazing:history", "blazing:auth");
