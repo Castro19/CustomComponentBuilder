@@ -28,7 +28,7 @@ app.use(express.json());
 app.use("/auth", auth);
 
 // API Routes:
-app.use("/component", componentRouter);
+app.use("/api/component", componentRouter);
 app.use("/button", buttonRouter);
 app.use("/api/profiles", authenticateUser, profileRouter);
 

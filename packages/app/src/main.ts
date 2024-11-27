@@ -27,14 +27,9 @@ const routes: Switch.Route[] = [
     view: () => html`<table-of-contents-view></table-of-contents-view>`,
   },
   {
-    path: "/component",
+    path: "/component/:id",
     view: () => html`<component-view></component-view>`,
   },
-  {
-    path: "/components/button",
-    view: () => html`<button-component-view></button-component-view>`,
-  },
-
   {
     path: "/credits",
     view: () => html`<credits-view></credits-view>`,

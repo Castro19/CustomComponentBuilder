@@ -2,8 +2,9 @@
 import { css, html, shadow } from "@calpoly/mustang";
 import { reset } from "../styles/reset.css.ts";
 import { ButtonConfig } from "server/models";
+import { LitElement } from "lit";
 
-export class ButtonCustomComponent extends HTMLElement {
+export class ButtonCustomComponent extends LitElement {
   static template = html`
     <template>
       <button id="buttonComponent">

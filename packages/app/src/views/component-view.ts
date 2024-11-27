@@ -1,17 +1,95 @@
-import { Auth, Observer } from "@calpoly/mustang";
+import { Auth, define, Observer } from "@calpoly/mustang";
 import { html, LitElement } from "lit";
-import { state } from "lit/decorators.js";
+import { property, state } from "lit/decorators.js";
 import index from "../styles/index.css.js";
+import gridUtility from "../styles/gridUtility.css.js";
 import buttonPage from "../styles/buttonPage.css.js";
 import customButtonStylesCss from "../styles/custom-button-styles.css.js";
+import { ComponentConfig, Instruction } from "server/models";
+import { CodeInstruction } from "../components/codeInstruction.js";
+import { CodeContainer } from "../components/codeContainer.js";
+import { ButtonCustomComponent } from "../components/buttonComponent.js";
 
 export class ComponentViewElement extends LitElement {
+  static uses = define({
+    "button-custom": ButtonCustomComponent,
+    "code-instruction": CodeInstruction,
+    "code-container": CodeContainer,
+  });
+
+  @property({ attribute: "component-id", reflect: true })
+  componentId = "button";
+
   @state()
+  componentConfig: ComponentConfig | null = null;
   _authObserver = new Observer<Auth.Model>(this, "blazing:auth");
 
   _user = new Auth.User();
 
+  connectedCallback() {
+    super.connectedCallback();
+    this.loadData();
+  }
+
+  loadData() {
+    const src = `/api/component/${this.componentId}`;
+
+    fetch(src, {
+      headers: Auth.headers(this._user),
+    })
+      .then((res: Response) => {
+        if (res.status === 200) return res.json();
+        throw `Server responded with status ${res.status}`;
+      })
+      .catch((err) => console.log("Failed to load component data:", err))
+      .then((json: ComponentConfig) => {
+        if (json) {
+          this.componentConfig = json;
+        }
+      })
+      .catch((err) => console.log("Failed to convert component data:", err));
+  }
+
   render() {
+    if (!this.componentConfig) {
+      return html`<div>No component data found</div>`;
+    }
+    const { variants, options, instructions } = this.componentConfig;
+
+    const renderVariants = (variants: string[]) => {
+      return variants.map((variant) => {
+        return html`<button-custom
+          id="${variant}Button"
+          data-variant="${variant}"
+          >${variant} Button</button-custom
+        >`;
+      });
+    };
+
+    const renderOptions = (options: string[]) => {
+      return options.map((option) => {
+        return html`<div class="icon-container" id="${option}-icon">
+          <button-custom data-icon-only>
+            <svg slot="icon" class="icon">
+              <use href="/componentOptions.svg#icon-${option}" />
+            </svg>
+          </button-custom>
+        </div>`;
+      });
+    };
+
+    const renderInstructions = (instructions: {
+      [key: string]: Instruction;
+    }) => {
+      return Object.entries(instructions).map(([stepNumber, instruction]) => {
+        return html`<code-instruction>
+          <span slot="step-number">${stepNumber}</span>
+          <h4 slot="step-title">${instruction.title}</h4>
+          <div slot="step-content">${instruction.description}</div>
+        </code-instruction>`;
+      });
+    };
+
     return html`
       <main>
         <div class="magazine-wrapper">
@@ -27,12 +105,15 @@ export class ComponentViewElement extends LitElement {
                   </button>
                 </div>
               </div>
-              <div class="grid-item"></div>
+              <div class="grid-item">
+                <div class="controls">${renderOptions(options)}</div>
+              </div>
               <div
                 class="grid-item-customization"
                 id="customization-button-types"
               >
                 <h3 class="customization-tools-type-title">Button Types</h3>
+                <div class="button-type-list">${renderVariants(variants)}</div>
               </div>
               <div
                 class="grid-item-customization font-customization"
@@ -201,7 +282,9 @@ export class ComponentViewElement extends LitElement {
               <!-- Instructions Section -->
               <div class="right-page-instructions-section">
                 <h4 class="instructions-title">How to Use This Button</h4>
-                <div class="instructions-container"></div>
+                <div class="instructions-container">
+                  ${renderInstructions(instructions)}
+                </div>
               </div>
             </div>
             <div class="footer-container footer-container-right-page">
@@ -223,5 +306,6 @@ export class ComponentViewElement extends LitElement {
     index.styles,
     buttonPage.styles,
     customButtonStylesCss.styles,
+    gridUtility.styles,
   ];
 }
