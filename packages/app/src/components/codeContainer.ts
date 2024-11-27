@@ -1,6 +1,60 @@
-// scripts/codeContainer.js
-import { css, html, shadow } from "@calpoly/mustang";
-import { reset } from "../styles/reset.css.ts";
+// scripts/codeContainer.ts
+import { LitElement, html, css, unsafeCSS } from "lit";
+import { customElement, property } from "lit/decorators.js";
+import { reset } from "../styles/reset.css.js";
+
+@customElement("code-container")
+export class CodeContainer extends LitElement {
+  @property({ type: String, attribute: "html-code" }) htmlCode = "";
+  @property({ type: String, attribute: "css-code" }) cssCode = "";
+  @property({ type: String, attribute: "tokens-code" }) tokensCode = "";
+  @property({ type: String, attribute: "js-code" }) jsCode = "";
+
+  static styles = [
+    unsafeCSS(reset),
+    unsafeCSS(css`
+      /* Code Display Container Styles */
+      .code-container {
+        background-color: var(--color-black-light);
+        border-radius: 8px;
+        padding: var(--spacing-md);
+        height: 100%;
+        justify-self: stretch;
+        align-self: start;
+        width: 100%;
+      }
+
+      .code-tabs {
+        display: flex;
+        gap: var(--spacing-sm);
+        margin-bottom: var(--spacing-sm);
+      }
+
+      .code-tab {
+        padding: var(--spacing-xs) var(--spacing-sm);
+        background: transparent;
+        border: 1px solid var(--color-white);
+        color: var(--color-white);
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .code-tab.active {
+        background: var(--color-gold);
+        border-color: var(--color-gold);
+        color: var(--color-black);
+      }
+
+      .code-content {
+        background-color: var(--color-black);
+        border-radius: 4px;
+        padding: var(--spacing-sm);
+        height: calc(100% - 60px);
+        overflow-y: auto;
+        text-align: left;
+        display: block;
+      }
 
       .code-panel {
         display: none;
