@@ -40,7 +40,7 @@ export class HeaderElement extends HTMLElement {
               <a id="signout">Sign Out</a>
             </li>
             <li class="when-signed-out">
-              <a href="/login">Sign In</a>
+              <a href="/login.html">Sign In</a>
             </li>
           </menu>
         </mu-dropdown>

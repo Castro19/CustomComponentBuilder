@@ -25,14 +25,24 @@
       rel="stylesheet"
     />
     <script type="module" src="/src/main.ts"></script>
+    <script type="module">
+      function toggleLightMode(page, checked) {
+        page.classList.toggle("light-mode", checked);
+      }
+
+      document.body.addEventListener("light-mode", (event) =>
+        toggleLightMode(event.currentTarget, event.detail.checked)
+      );
+    </script>
   </head>
+
   <body>
     <mu-history provides="blazing:history">
-      <mu-auth provides="blazing:auth" redirect="/login">
+      <mu-auth provides="blazing:auth" redirect="/login.html">
         <mu-store provides="blazing:model">
           <article>
             <blazing-header></blazing-header>
-            <blazing-app></blazing-app>
+            <mu-switch></mu-switch>
           </article>
         </mu-store>
       </mu-auth>

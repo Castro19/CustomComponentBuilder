@@ -1,16 +1,19 @@
-import { Auth, Observer } from "@calpoly/mustang";
-import { html, LitElement } from "lit";
-import { state, customElement } from "lit/decorators.js";
+import { View } from "@calpoly/mustang";
+import { html } from "lit";
 import frontPage from "../styles/frontPage.css.js";
 import index from "../styles/index.css.js";
 import { reset } from "../styles/reset.css.js";
+import { Model } from "../model.js";
+import { Msg } from "../messages.js";
 
-@customElement("home-view")
-export class HomeViewElement extends LitElement {
-  @state()
-  _authObserver = new Observer<Auth.Model>(this, "blazing:auth");
+export class HomeViewElement extends View<Model, Msg> {
+  constructor() {
+    super("blazing:model");
+  }
 
-  _user = new Auth.User();
+  connectedCallback() {
+    super.connectedCallback();
+  }
 
   render() {
     return html`

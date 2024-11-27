@@ -2,6 +2,7 @@
 import express, { Request, Response } from "express";
 import componentRouter from "./routes/component";
 import buttonRouter from "./routes/button";
+import profileRouter from "./routes/profile";
 import auth, { authenticateUser } from "./routes/auth";
 import { connect } from "./services/mongo";
 import { LoginPage } from "./pages/index";
@@ -29,6 +30,7 @@ app.use("/auth", auth);
 // API Routes:
 app.use("/component", componentRouter);
 app.use("/button", buttonRouter);
+app.use("/api/profiles", authenticateUser, profileRouter);
 
 // Page Routes:
 app.get("/ping", (_: Request, res: Response) => {

@@ -9,6 +9,7 @@ import { TableOfContentsViewElement } from "./views/table-of-contents-view.ts";
 import { ButtonComponentViewElement } from "./views/button-component-view.ts";
 import { CreditsViewElement } from "./views/credits-view.ts";
 import { LoginViewElement } from "./views/login-view.ts";
+import { ProfileViewElement } from "./views/profile-view.ts";
 
 const routes: Switch.Route[] = [
   {
@@ -32,6 +33,13 @@ const routes: Switch.Route[] = [
   {
     path: "/credits",
     view: () => html`<credits-view></credits-view>`,
+  },
+  {
+    auth: "protected",
+    path: "/app/profile/:id",
+    view: (params: Switch.Params) => html`
+      <profile-view user-id=${params.id}></profile-view>
+    `,
   },
 ];
 
@@ -66,4 +74,5 @@ define({
   "button-component-view": ButtonComponentViewElement,
   "credits-view": CreditsViewElement,
   "login-view": LoginViewElement,
+  "profile-view": ProfileViewElement,
 });
