@@ -1,6 +1,5 @@
-import { Auth, define, Observer } from "@calpoly/mustang";
 import { html, LitElement } from "lit";
-import { property, state } from "lit/decorators.js";
+import { customElement, property, state } from "lit/decorators.js";
 import index from "../styles/index.css.js";
 import gridUtility from "../styles/gridUtility.css.js";
 import buttonPage from "../styles/buttonPage.css.js";
@@ -9,7 +8,9 @@ import { ComponentConfig, Instruction } from "server/models";
 import { CodeInstruction } from "../components/codeInstruction.js";
 import { CodeContainer } from "../components/codeContainer.js";
 import { ButtonCustomComponent } from "../components/buttonComponent.js";
+import { define } from "@calpoly/mustang";
 
+@customElement("component-view")
 export class ComponentViewElement extends LitElement {
   static uses = define({
     "button-custom": ButtonCustomComponent,
@@ -17,37 +18,31 @@ export class ComponentViewElement extends LitElement {
     "code-container": CodeContainer,
   });
 
-  @property({ attribute: "component-id", reflect: true })
+  @property({ type: String, attribute: "component-id" })
   componentId = "button";
 
   @state()
   componentConfig: ComponentConfig | null = null;
-  _authObserver = new Observer<Auth.Model>(this, "blazing:auth");
-
-  _user = new Auth.User();
 
   connectedCallback() {
     super.connectedCallback();
     this.loadData();
   }
 
-  loadData() {
+  async loadData() {
     const src = `/api/component/${this.componentId}`;
 
-    fetch(src, {
-      headers: Auth.headers(this._user),
-    })
-      .then((res: Response) => {
-        if (res.status === 200) return res.json();
-        throw `Server responded with status ${res.status}`;
-      })
-      .catch((err) => console.log("Failed to load component data:", err))
-      .then((json: ComponentConfig) => {
-        if (json) {
-          this.componentConfig = json;
-        }
-      })
-      .catch((err) => console.log("Failed to convert component data:", err));
+    try {
+      const res = await fetch(src);
+      if (res.status === 200) {
+        const json = await res.json();
+        this.componentConfig = json;
+      } else {
+        throw new Error(`Server responded with status ${res.status}`);
+      }
+    } catch (err) {
+      console.error("Failed to load component data:", err);
+    }
   }
 
   render() {
@@ -58,23 +53,27 @@ export class ComponentViewElement extends LitElement {
 
     const renderVariants = (variants: string[]) => {
       return variants.map((variant) => {
-        return html`<button-custom
-          id="${variant}Button"
-          data-variant="${variant}"
-          >${variant} Button</button-custom
-        >`;
+        return html`
+          <button-custom
+            id="${variant}Button"
+            .dataVariant=${variant}
+            .dataText="${variant} Button"
+          ></button-custom>
+        `;
       });
     };
 
     const renderOptions = (options: string[]) => {
       return options.map((option) => {
-        return html`<div class="icon-container" id="${option}-icon">
-          <button-custom data-icon-only>
-            <svg slot="icon" class="icon">
-              <use href="/componentOptions.svg#icon-${option}" />
-            </svg>
-          </button-custom>
-        </div>`;
+        return html`
+          <div class="icon-container" id="${option}-icon">
+            <button-custom
+              .dataIconOnly=${true}
+              .dataIcon="/componentOptions.svg#icon-${option}"
+              .dataText=${option}
+            ></button-custom>
+          </div>
+        `;
       });
     };
 
