@@ -12,17 +12,21 @@ export class LoginFormElement extends LitElement {
   render() {
     const init = { username: "", password: "" };
     return html`
-      <restful-form
-        new
-        .init=${init}
-        src="/auth/login"
-        @mu-rest-form:created=${this._handleSuccess}
-        @mu-rest-form:error=${this._handleError}
-      >
-        <slot></slot>
-      </restful-form>
-      <p class="error">${this.message ? "Invalid Username or Password" : ""}</p>
-      <pre>${this.message}</pre>
+      <body>
+        <restful-form
+          new
+          .init=${init}
+          src="/auth/login"
+          @mu-rest-form:created=${this._handleSuccess}
+          @mu-rest-form:error=${this._handleError}
+        >
+          <slot></slot>
+        </restful-form>
+        <p class="error">
+          ${this.message ? "Invalid Username or Password" : ""}
+        </p>
+        <pre>${this.message}</pre>
+      </body>
     `;
   }
 

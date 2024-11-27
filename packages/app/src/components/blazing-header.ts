@@ -1,8 +1,18 @@
 // src/components/blazing-header.ts
-import { Auth, define, Dropdown, Events, Observer } from "@calpoly/mustang";
-import { css, html, LitElement } from "lit";
-import { state } from "lit/decorators.js";
+import {
+  Auth,
+  define,
+  Dropdown,
+  Events,
+  Observer,
+  View,
+} from "@calpoly/mustang";
+import { css, html } from "lit";
+import { property, state } from "lit/decorators.js";
 import { reset } from "../styles/reset.css.ts";
+import { Profile } from "server/models";
+import { Model } from "../model.ts";
+import { Msg } from "../messages.ts";
 
 function toggleLightMode(ev: InputEvent) {
   const target = ev.target as HTMLInputElement;
@@ -15,24 +25,39 @@ function signOut(ev: MouseEvent) {
   Events.relay(ev, "auth:message", ["auth/signout"]);
 }
 
-export class HeaderElement extends LitElement {
+export class HeaderElement extends View<Model, Msg> {
   static uses = define({
     "mu-dropdown": Dropdown.Element,
   });
 
+  @property()
+  username = "anonymous";
+
   @state()
-  userid: string = "traveler";
+  get profile(): Profile | undefined {
+    return this.model.profile;
+  }
+  constructor() {
+    super("blazing:model");
+  }
+  connectedCallback() {
+    super.connectedCallback();
+    this._authObserver.observe(({ user }) => {
+      if (user && user.username !== this.username) {
+        this.username = user.username;
+        this.dispatchMessage(["profile/select", { userid: this.username }]);
+      }
+    });
+  }
 
   render() {
     return html`
       <header>
-        <h1>CUSTOM UI</h1>
+        <h1><a href="/app">CustomUI</a></h1>
         <nav>
-          <p><slot> Unnamed Tour </slot></p>
           <drop-down>
-            <a slot="actuator">
-              Hello,
-              <span id="userid"></span>
+            <a href="#" slot="actuator">
+              <slot name="greeting">Hello, ${this.username}</slot>
             </a>
             <menu>
               <li>
@@ -49,7 +74,7 @@ export class HeaderElement extends LitElement {
                 <a id="signout" @click=${signOut}>Sign Out</a>
               </li>
               <li class="when-signed-out">
-                <a href="/login">Sign In</a>
+                <a href="/login.html">Sign In</a>
               </li>
             </menu>
           </drop-down>
@@ -114,16 +139,6 @@ export class HeaderElement extends LitElement {
     `,
   ];
   _authObserver = new Observer<Auth.Model>(this, "blazing:auth");
-
-  connectedCallback() {
-    super.connectedCallback();
-
-    this._authObserver.observe(({ user }) => {
-      if (user && user.username !== this.userid) {
-        this.userid = user.username;
-      }
-    });
-  }
 
   static initializeOnce() {
     function toggleLightMode(page: HTMLElement, checked: boolean) {
