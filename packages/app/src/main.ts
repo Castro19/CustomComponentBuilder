@@ -10,6 +10,7 @@ import { ButtonComponentViewElement } from "./views/button-component-view.ts";
 import { CreditsViewElement } from "./views/credits-view.ts";
 import { LoginViewElement } from "./views/login-view.ts";
 import { ProfileViewElement } from "./views/profile-view.ts";
+import { ComponentViewElement } from "./views/component-view.ts";
 
 const routes: Switch.Route[] = [
   {
@@ -24,6 +25,10 @@ const routes: Switch.Route[] = [
   {
     path: "/tableContents",
     view: () => html`<table-of-contents-view></table-of-contents-view>`,
+  },
+  {
+    path: "/component",
+    view: () => html`<component-view></component-view>`,
   },
   {
     path: "/components/button",
@@ -71,6 +76,7 @@ define({
   "blazing-header": HeaderElement,
   "home-view": HomeViewElement,
   "table-of-contents-view": TableOfContentsViewElement,
+  "component-view": ComponentViewElement,
   "button-component-view": ButtonComponentViewElement,
   "credits-view": CreditsViewElement,
   "login-view": LoginViewElement,
