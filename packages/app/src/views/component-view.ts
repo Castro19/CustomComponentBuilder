@@ -10,6 +10,7 @@ import { CodeContainer } from "../components/codeContainer.js";
 import { ButtonCustomComponent } from "../components/buttonComponent.js";
 import { define } from "@calpoly/mustang";
 import { styleMap } from "lit/directives/style-map.js";
+import { outputButtonTokens } from "../utils/defaultStyles.js";
 
 @customElement("component-view")
 export class ComponentViewElement extends LitElement {
@@ -57,7 +58,7 @@ export class ComponentViewElement extends LitElement {
   jsCode: string = "";
 
   @state()
-  tokensCode: string = "";
+  tokensCode: string = outputButtonTokens();
 
   selectButtonVariant(variant: "primary" | "secondary" | "destructive") {
     this.currentVariant = variant;
@@ -284,7 +285,7 @@ export class ComponentViewElement extends LitElement {
       const htmlCode = this.htmlCode;
       const cssCode = this.cssCode;
       const jsCode = this.jsCode;
-      const tokensCode = this.tokensCode || ""; // If you have tokens code
+      const tokensCode = outputButtonTokens();
 
       // Prepare the payload
       const payload = {
@@ -708,6 +709,7 @@ export class ComponentViewElement extends LitElement {
                   .htmlCode=${this.htmlCode}
                   .cssCode=${this.cssCode}
                   .jsCode=${this.jsCode}
+                  .tokensCode=${this.tokensCode}
                 ></code-container>
               </div>
               <!-- Instructions Section -->

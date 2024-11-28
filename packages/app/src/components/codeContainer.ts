@@ -47,7 +47,7 @@ export class CodeContainer extends LitElement {
       }
 
       .code-content {
-        background-color: var(--color-black);
+        background-color: var(--color-gray-dark);
         border-radius: 4px;
         padding: var(--spacing-sm);
         height: calc(100% - 60px);
