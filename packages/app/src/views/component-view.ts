@@ -1,5 +1,5 @@
 import { html, LitElement } from "lit";
-import { customElement, property, state } from "lit/decorators.js";
+import { customElement, property, query, state } from "lit/decorators.js";
 import index from "../styles/index.css.js";
 import gridUtility from "../styles/gridUtility.css.js";
 import buttonPage from "../styles/buttonPage.css.js";
@@ -9,6 +9,7 @@ import { CodeInstruction } from "../components/codeInstruction.js";
 import { CodeContainer } from "../components/codeContainer.js";
 import { ButtonCustomComponent } from "../components/buttonComponent.js";
 import { define } from "@calpoly/mustang";
+import { styleMap } from "lit/directives/style-map.js";
 
 @customElement("component-view")
 export class ComponentViewElement extends LitElement {
@@ -18,15 +19,197 @@ export class ComponentViewElement extends LitElement {
     "code-container": CodeContainer,
   });
 
+  /* ICON TYPE SELECTOR */
+  @query("#customization-button-types")
+  buttonTypeSection!: HTMLElement;
+
+  @query("#customization-button-font")
+  buttonFontSection!: HTMLElement;
+
+  @query("#customization-button-border")
+  buttonBorderSection!: HTMLElement;
+
+  // Method to show the appropriate customization tools
+  @state()
+  private activeCustomization: "type" | "font" | "border" | null = null;
+
+  showCustomizationTools(iconId: string) {
+    if (iconId === "type-icon") {
+      this.activeCustomization = "type";
+    } else if (iconId === "font-icon") {
+      this.activeCustomization = "font";
+    } else if (iconId === "border-icon") {
+      this.activeCustomization = "border";
+    }
+  }
+
+  /* BUTTON VARIANT SELECTOR */
+  @state()
+  currentVariant: "primary" | "secondary" | "destructive" = "primary";
+
+  @state()
+  cssCode: string = "";
+
+  @state()
+  htmlCode: string = "";
+
+  @state()
+  jsCode: string = "";
+
+  selectButtonVariant(variant: "primary" | "secondary" | "destructive") {
+    this.currentVariant = variant;
+    // Reset custom colors to use variant colors
+    this.textColor = "";
+    this.buttonColor = "";
+    this.borderColor = "";
+    this.updateCodeSnippets();
+  }
+
+  get customButtonStyles() {
+    let styles: { [key: string]: string } = {};
+
+    // Variant styles
+    if (this.currentVariant === "primary") {
+      styles.color = "var(--button-primary-color)";
+      styles.backgroundColor = "var(--button-primary-background)";
+      styles.borderColor = "var(--button-primary-border-color)";
+    } else if (this.currentVariant === "secondary") {
+      styles.color = "var(--button-secondary-color)";
+      styles.backgroundColor = "var(--button-secondary-background)";
+      styles.borderColor = "var(--button-secondary-border-color)";
+    } else if (this.currentVariant === "destructive") {
+      styles.color = "var(--button-destructive-color)";
+      styles.backgroundColor = "var(--button-destructive-background)";
+      styles.borderColor = "var(--button-destructive-border-color)";
+    }
+
+    // Font styles
+    styles.fontFamily = this.fontFamily;
+    styles.fontSize = this.fontSize;
+    styles.fontWeight = this.fontWeight;
+
+    // Override colors if user has customized them
+    if (this.textColor) {
+      styles.color = this.textColor;
+    }
+    if (this.buttonColor) {
+      styles.backgroundColor = this.buttonColor;
+    }
+
+    // Border styles
+    styles.borderWidth = this.borderWidth;
+    styles.borderStyle = this.borderStyle;
+    styles.borderRadius = this.borderRadius;
+
+    // Only override borderColor if user has customized it
+    if (this.borderColor) {
+      styles.borderColor = this.borderColor;
+    }
+
+    return styles;
+  }
+
+  updateCodeSnippets() {
+    this.cssCode = this.outputButtonStyles();
+    this.htmlCode = this.outputButtonHTML();
+    this.jsCode = this.outputButtonJS();
+  }
+
+  outputButtonStyles() {
+    const styles = this.customButtonStyles;
+    return `.customButton {
+      color: ${styles.color};
+      background-color: ${styles.backgroundColor};
+      border-color: ${styles.borderColor};
+      border-width: ${styles.borderWidth};
+      border-style: ${styles.borderStyle};
+      border-radius: ${styles.borderRadius};
+      font-family: ${styles.fontFamily};
+      font-size: ${styles.fontSize};
+      font-weight: ${styles.fontWeight};
+      /* Additional styles */
+    }`;
+  }
+
+  outputButtonHTML() {
+    return `<button class="customButton">${this.customButtonText}</button>`;
+  }
+
+  outputButtonJS() {
+    return `const button = document.querySelector('.customButton');
+  button.addEventListener('click', () => {
+    alert('Button clicked!');
+  });`;
+  }
+
+  /* FONT OPTIONS */
+  @state()
+  fontFamily: string = "Arial, sans-serif";
+
+  @state()
+  fontSize: string = "16px";
+
+  @state()
+  fontWeight: string = "400";
+
+  @state()
+  customButtonText: string = "Button";
+  @state()
+  textColor: string = "#000000";
+
+  @state()
+  buttonColor: string = "#CDA434";
+
   @property({ type: String, attribute: "component-id" })
   componentId = "button";
 
   @state()
   componentConfig: ComponentConfig | null = null;
 
+  onFontFamilyChange(event: Event) {
+    const select = event.target as HTMLSelectElement;
+    this.fontFamily = select.value;
+    this.updateCodeSnippets();
+  }
+
+  onFontSizeChange(event: Event) {
+    const select = event.target as HTMLSelectElement;
+    this.fontSize = select.value;
+    this.updateCodeSnippets();
+  }
+
+  onFontWeightChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.fontWeight = input.value;
+    this.updateCodeSnippets();
+  }
+
+  onButtonTextChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.customButtonText = input.value || "Button";
+    this.updateCodeSnippets();
+  }
+
+  onTextColorChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.textColor = input.value;
+    this.updateCodeSnippets();
+  }
+
+  onButtonColorChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.buttonColor = input.value;
+    this.updateCodeSnippets();
+  }
+
   connectedCallback() {
     super.connectedCallback();
     this.loadData();
+  }
+  firstUpdated() {
+    this.showCustomizationTools("type-icon");
+    // Show the button types section by default
+    this.updateCodeSnippets();
   }
 
   async loadData() {
@@ -44,6 +227,44 @@ export class ComponentViewElement extends LitElement {
       console.error("Failed to load component data:", err);
     }
   }
+  fontSizes = [12, 14, 16, 18, 20, 24, 28, 32];
+
+  /* Border Options */
+  @state()
+  borderWidth: string = "1px";
+
+  @state()
+  borderStyle: string = "solid";
+
+  @state()
+  borderColor: string = "#FFFFFF";
+
+  @state()
+  borderRadius: string = "4px";
+
+  onBorderWidthChange(event: Event) {
+    const select = event.target as HTMLSelectElement;
+    this.borderWidth = select.value;
+    this.updateCodeSnippets();
+  }
+
+  onBorderStyleChange(event: Event) {
+    const select = event.target as HTMLSelectElement;
+    this.borderStyle = select.value;
+    this.updateCodeSnippets();
+  }
+
+  onBorderColorChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.borderColor = input.value;
+    this.updateCodeSnippets();
+  }
+
+  onBorderRadiusChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.borderRadius = input.value + "px";
+    this.updateCodeSnippets();
+  }
 
   render() {
     if (!this.componentConfig) {
@@ -54,23 +275,31 @@ export class ComponentViewElement extends LitElement {
     const renderVariants = (variants: string[]) => {
       return variants.map((variant) => {
         return html`
-          <button-custom
+          <button
             id="${variant}Button"
-            .dataVariant=${variant}
-            .dataText="${variant} Button"
-          ></button-custom>
+            class="button-type button-${variant}"
+            data-variant="${variant}"
+            @click=${() =>
+              this.selectButtonVariant(
+                variant as "primary" | "secondary" | "destructive"
+              )}
+          >
+            ${variant.charAt(0).toUpperCase() + variant.slice(1)} Button
+          </button>
         `;
       });
     };
 
     const renderOptions = (options: string[]) => {
       return options.map((option) => {
+        const iconId = `${option}-icon`; // Construct the icon ID
         return html`
-          <div class="icon-container" id="${option}-icon">
+          <div class="icon-container" id="${iconId}">
             <button-custom
               .dataIconOnly=${true}
               .dataIcon="/componentOptions.svg#icon-${option}"
               .dataText=${option}
+              @click=${() => this.showCustomizationTools(iconId)}
             ></button-custom>
           </div>
         `;
@@ -99,8 +328,12 @@ export class ComponentViewElement extends LitElement {
               <div class="grid-item left-page-first-row">
                 <div class="button-display-container">
                   <p class="button-display-title">Button Display</p>
-                  <button id="customButton" class="button-display button-type">
-                    Button
+                  <button
+                    id="customButton"
+                    class="button-display button-type"
+                    style=${styleMap(this.customButtonStyles)}
+                  >
+                    ${this.customButtonText}
                   </button>
                 </div>
               </div>
@@ -110,38 +343,95 @@ export class ComponentViewElement extends LitElement {
               <div
                 class="grid-item-customization"
                 id="customization-button-types"
+                style="display: ${this.activeCustomization === "type"
+                  ? "flex"
+                  : "none"};"
               >
                 <h3 class="customization-tools-type-title">Button Types</h3>
                 <div class="button-type-list">${renderVariants(variants)}</div>
               </div>
+              <!-- Font Customization Section -->
               <div
                 class="grid-item-customization font-customization"
                 id="customization-button-font"
+                style="display: ${this.activeCustomization === "font"
+                  ? "flex"
+                  : "none"};"
               >
                 <h3 class="customization-tools-type-title">Font</h3>
+
+                <!-- Font Family -->
                 <div class="font-family-container">
                   <p class="font-family-title">Font Family:</p>
                   <div class="font-family-list">
-                    <select class="font-family-select">
-                      <option value="Arial, sans-serif">Arial</option>
-                      <option value="Helvetica, sans-serif">Helvetica</option>
-                      <option value="Georgia, serif">Georgia</option>
-                      <option value="'Times New Roman', serif">
+                    <select
+                      class="font-family-select"
+                      @change=${this.onFontFamilyChange}
+                    >
+                      <option
+                        value="Arial, sans-serif"
+                        ?selected=${this.fontFamily === "Arial, sans-serif"}
+                      >
+                        Arial
+                      </option>
+                      <option
+                        value="Helvetica, sans-serif"
+                        ?selected=${this.fontFamily === "Helvetica, sans-serif"}
+                      >
+                        Helvetica
+                      </option>
+                      <option
+                        value="Georgia, serif"
+                        ?selected=${this.fontFamily === "Georgia, serif"}
+                      >
+                        Georgia
+                      </option>
+                      <option
+                        value="'Times New Roman', serif"
+                        ?selected=${this.fontFamily ===
+                        "'Times New Roman', serif"}
+                      >
                         Times New Roman
                       </option>
-                      <option value="Verdana, sans-serif">Verdana</option>
-                      <option value="'Courier New', monospace">
+                      <option
+                        value="Verdana, sans-serif"
+                        ?selected=${this.fontFamily === "Verdana, sans-serif"}
+                      >
+                        Verdana
+                      </option>
+                      <option
+                        value="'Courier New', monospace"
+                        ?selected=${this.fontFamily ===
+                        "'Courier New', monospace"}
+                      >
                         Courier New
                       </option>
                     </select>
                   </div>
                 </div>
+
+                <!-- Font Size -->
                 <div class="font-size-container">
                   <p class="font-size-title">Font Size:</p>
                   <div class="font-size-list">
-                    <select class="font-size-select"></select>
+                    <select
+                      class="font-size-select"
+                      @change=${this.onFontSizeChange}
+                    >
+                      ${this.fontSizes.map(
+                        (size) =>
+                          html`<option
+                            value="${size}px"
+                            ?selected=${this.fontSize === `${size}px`}
+                          >
+                            ${size}px
+                          </option>`
+                      )}
+                    </select>
                   </div>
                 </div>
+
+                <!-- Font Weight -->
                 <div class="font-weight-container">
                   <p class="font-weight-title">Font Weight:</p>
                   <div class="font-weight-controls">
@@ -151,11 +441,14 @@ export class ComponentViewElement extends LitElement {
                       min="100"
                       max="900"
                       step="100"
-                      value="400"
+                      .value=${this.fontWeight}
+                      @input=${this.onFontWeightChange}
                     />
-                    <span class="font-weight-value">400</span>
+                    <span class="font-weight-value">${this.fontWeight}</span>
                   </div>
                 </div>
+
+                <!-- Button Text -->
                 <div class="button-text-container">
                   <p class="button-text-title">Button Text:</p>
                   <div class="button-text-controls">
@@ -163,36 +456,51 @@ export class ComponentViewElement extends LitElement {
                       type="text"
                       class="button-text-input"
                       placeholder="Enter button text..."
-                      value="Button"
+                      .value=${this.customButtonText}
+                      @input=${this.onButtonTextChange}
                     />
                   </div>
                 </div>
+
+                <!-- Text Color -->
                 <div class="text-color-container">
                   <p class="text-color-title">Text Color:</p>
                   <div class="text-color-controls">
                     <input
                       type="color"
                       class="text-color-picker"
-                      value="#000000"
+                      .value=${this.textColor}
+                      @input=${this.onTextColorChange}
                     />
-                    <span class="text-color-value">#000000</span>
+                    <span class="text-color-value"
+                      >${this.textColor.toUpperCase()}</span
+                    >
                   </div>
                 </div>
+
+                <!-- Button Color -->
                 <div class="button-color-container">
                   <p class="button-color-title">Button Color:</p>
                   <div class="button-color-controls">
                     <input
                       type="color"
                       class="button-color-picker"
-                      value="#CDA434"
+                      .value=${this.buttonColor}
+                      @input=${this.onButtonColorChange}
                     />
-                    <span class="button-color-value">#CDA434</span>
+                    <span class="button-color-value"
+                      >${this.buttonColor.toUpperCase()}</span
+                    >
                   </div>
                 </div>
               </div>
+              <!-- Border Customization Section -->
               <div
                 class="grid-item-customization border-customization"
                 id="customization-button-border"
+                style="display: ${this.activeCustomization === "border"
+                  ? "flex"
+                  : "none"};"
               >
                 <h3 class="customization-tools-type-title">Border</h3>
 
@@ -200,11 +508,34 @@ export class ComponentViewElement extends LitElement {
                 <div class="border-width-container">
                   <p class="border-width-title">Border Width:</p>
                   <div class="border-width-controls">
-                    <select class="border-width-select">
-                      <option value="1px">Thin (1px)</option>
-                      <option value="2px">Medium (2px)</option>
-                      <option value="3px">Thick (3px)</option>
-                      <option value="4px">Extra Thick (4px)</option>
+                    <select
+                      class="border-width-select"
+                      @change=${this.onBorderWidthChange}
+                    >
+                      <option
+                        value="1px"
+                        ?selected=${this.borderWidth === "1px"}
+                      >
+                        Thin (1px)
+                      </option>
+                      <option
+                        value="2px"
+                        ?selected=${this.borderWidth === "2px"}
+                      >
+                        Medium (2px)
+                      </option>
+                      <option
+                        value="3px"
+                        ?selected=${this.borderWidth === "3px"}
+                      >
+                        Thick (3px)
+                      </option>
+                      <option
+                        value="4px"
+                        ?selected=${this.borderWidth === "4px"}
+                      >
+                        Extra Thick (4px)
+                      </option>
                     </select>
                   </div>
                 </div>
@@ -213,11 +544,34 @@ export class ComponentViewElement extends LitElement {
                 <div class="border-style-container">
                   <p class="border-style-title">Border Style:</p>
                   <div class="border-style-controls">
-                    <select class="border-style-select">
-                      <option value="solid">Solid</option>
-                      <option value="dashed">Dashed</option>
-                      <option value="dotted">Dotted</option>
-                      <option value="double">Double</option>
+                    <select
+                      class="border-style-select"
+                      @change=${this.onBorderStyleChange}
+                    >
+                      <option
+                        value="solid"
+                        ?selected=${this.borderStyle === "solid"}
+                      >
+                        Solid
+                      </option>
+                      <option
+                        value="dashed"
+                        ?selected=${this.borderStyle === "dashed"}
+                      >
+                        Dashed
+                      </option>
+                      <option
+                        value="dotted"
+                        ?selected=${this.borderStyle === "dotted"}
+                      >
+                        Dotted
+                      </option>
+                      <option
+                        value="double"
+                        ?selected=${this.borderStyle === "double"}
+                      >
+                        Double
+                      </option>
                     </select>
                   </div>
                 </div>
@@ -229,9 +583,12 @@ export class ComponentViewElement extends LitElement {
                     <input
                       type="color"
                       class="border-color-picker"
-                      value="#FFFFFF"
+                      .value=${this.borderColor}
+                      @input=${this.onBorderColorChange}
                     />
-                    <span class="border-color-value">#FFFFFF</span>
+                    <span class="border-color-value"
+                      >${this.borderColor.toUpperCase()}</span
+                    >
                   </div>
                 </div>
 
@@ -245,9 +602,12 @@ export class ComponentViewElement extends LitElement {
                       min="0"
                       max="50"
                       step="1"
-                      value="4"
+                      .value=${parseInt(this.borderRadius)}
+                      @input=${this.onBorderRadiusChange}
                     />
-                    <span class="border-radius-value">4px</span>
+                    <span class="border-radius-value"
+                      >${this.borderRadius}</span
+                    >
                   </div>
                 </div>
               </div>
@@ -273,9 +633,9 @@ export class ComponentViewElement extends LitElement {
               <!-- Code Section -->
               <div class="right-page-code-section">
                 <code-container
-                  html-code="&lt;button class='customButton'&gt;Button Text&lt;/button&gt;"
-                  css-code=".customButton { background-color: #cda434; /* styles */ }"
-                  js-code="const button = document.querySelector('.customButton'); /* code */"
+                  .htmlCode=${this.htmlCode}
+                  .cssCode=${this.cssCode}
+                  .jsCode=${this.jsCode}
                 ></code-container>
               </div>
               <!-- Instructions Section -->
