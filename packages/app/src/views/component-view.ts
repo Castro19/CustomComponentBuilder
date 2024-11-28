@@ -273,6 +273,9 @@ const button = document.querySelector('.customButton');
     this.updateCodeSnippets();
   }
 
+  deleteButtonVariant(variant: string) {
+    console.log("Deleting button variant:", variant);
+  }
   async handleSubmit(event: Event) {
     event.preventDefault(); // Prevent default form submission behavior
 
@@ -344,19 +347,30 @@ const button = document.querySelector('.customButton');
     const { variants, options, instructions } = this.componentConfig;
 
     const renderVariants = (variants: string[]) => {
+      const deleteIconId = "trash";
       return variants.map((variant) => {
         return html`
-          <button
-            id="${variant}Button"
-            class="button-type button-${variant}"
-            data-variant="${variant}"
-            @click=${() =>
-              this.selectButtonVariant(
-                variant as "primary" | "secondary" | "destructive"
-              )}
-          >
-            ${variant.charAt(0).toUpperCase() + variant.slice(1)} Button
-          </button>
+          <div class="button-type-container">
+            <button
+              id="${variant}Button"
+              class="button-type button-${variant}"
+              data-variant="${variant}"
+              @click=${() =>
+                this.selectButtonVariant(
+                  variant as "primary" | "secondary" | "destructive"
+                )}
+            >
+              ${variant.charAt(0).toUpperCase() + variant.slice(1)} Button
+            </button>
+            <!-- Delete Button -->
+              <button-custom
+                .dataIconOnly=${true}
+                .dataIcon="/componentOptions.svg#icon-${deleteIconId}"
+                .dataText="Delete"
+                @click=${() => this.deleteButtonVariant(variant)}
+              ></button-custom>
+            </div>
+          </div>
         `;
       });
     };
