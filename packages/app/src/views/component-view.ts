@@ -56,6 +56,9 @@ export class ComponentViewElement extends LitElement {
   @state()
   jsCode: string = "";
 
+  @state()
+  tokensCode: string = "";
+
   selectButtonVariant(variant: "primary" | "secondary" | "destructive") {
     this.currentVariant = variant;
     // Reset custom colors to use variant colors
@@ -264,6 +267,70 @@ export class ComponentViewElement extends LitElement {
     const input = event.target as HTMLInputElement;
     this.borderRadius = input.value + "px";
     this.updateCodeSnippets();
+  }
+
+  async handleSubmit(event: Event) {
+    event.preventDefault(); // Prevent default form submission behavior
+
+    try {
+      // Collect button configuration data from the component's state
+      const variant = this.currentVariant;
+      const iconOnly = false; // Update as needed
+      const icon = ""; // Update as needed
+      const iconLabel = ""; // Update as needed
+      const text = this.customButtonText;
+
+      // Retrieve code snippets
+      const htmlCode = this.htmlCode;
+      const cssCode = this.cssCode;
+      const jsCode = this.jsCode;
+      const tokensCode = this.tokensCode || ""; // If you have tokens code
+
+      // Prepare the payload
+      const payload = {
+        variant,
+        iconOnly,
+        icon,
+        iconLabel,
+        text,
+        htmlCode,
+        cssCode,
+        tokensCode,
+        jsCode,
+      };
+
+      console.log("Submitting the following payload:", payload);
+
+      // Send the data to the server via a POST request
+      const response = await fetch("http://localhost:3000/button", {
+        // Ensure the endpoint is correct
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        // Handle HTTP errors
+        const errorText = await response.text();
+        throw new Error(
+          `Server responded with ${response.status}: ${errorText}`
+        );
+      }
+
+      // Optionally, handle the server's response data
+      const responseData = await response.json();
+      console.log("Server response:", responseData);
+
+      // Provide user feedback (e.g., alert, modal, notification)
+      alert("Button configuration submitted successfully!");
+
+      // Optionally, reset the form or perform other actions
+    } catch (error: any) {
+      console.error("Error submitting button configuration:", error);
+      alert(`Error submitting button configuration: ${error.message}`);
+    }
   }
 
   render() {
@@ -610,6 +677,11 @@ export class ComponentViewElement extends LitElement {
                     >
                   </div>
                 </div>
+              </div>
+              <div class="submit-button-container">
+                <button id="submit-button" @click=${this.handleSubmit}>
+                  Submit Button
+                </button>
               </div>
             </div>
 

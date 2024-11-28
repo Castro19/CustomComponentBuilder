@@ -5,15 +5,15 @@ import { ButtonConfigWithId } from "../models/button";
 const ButtonConfigSchema = new Schema<ButtonConfigWithId>(
   {
     buttonId: { type: String, required: true, unique: true },
-    variant: {
-      type: String,
-      required: true,
-    },
+    variant: { type: String, required: true },
     text: { type: String },
-    code: { type: String },
     iconOnly: { type: Boolean },
     icon: { type: String },
     iconLabel: { type: String },
+    tokensCode: { type: String },
+    htmlCode: { type: String },
+    cssCode: { type: String },
+    jsCode: { type: String },
   },
   { collection: "button_configs" }
 );
@@ -28,21 +28,15 @@ function index(): Promise<ButtonConfigWithId[]> {
   return ButtonConfigModel.find();
 }
 
-async function get(buttonId: string): Promise<ButtonConfigWithId> {
-  return ButtonConfigModel.findOne({ buttonId })
-    .then((data) => {
-      if (data) return data;
-      else throw new Error(`Button ${buttonId} Not Found`);
-    })
-    .catch((err) => {
-      throw err;
-    });
+async function get(buttonId: string): Promise<ButtonConfigWithId | null> {
+  return ButtonConfigModel.findOne({ buttonId }).exec();
 }
 
 // New functions
 async function create(button: ButtonConfigWithId): Promise<ButtonConfigWithId> {
+  console.log("Creating button:", button);
   const newButton = new ButtonConfigModel(button);
-  console.log("NEW BUTTON", newButton);
+  console.log("New button:", newButton);
   return newButton.save();
 }
 
