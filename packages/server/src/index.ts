@@ -29,7 +29,7 @@ app.use("/auth", auth);
 
 // API Routes:
 app.use("/api/component", componentRouter);
-app.use("/button", buttonRouter);
+app.use("/api/button", buttonRouter);
 app.use("/api/profiles", authenticateUser, profileRouter);
 
 // Page Routes:
