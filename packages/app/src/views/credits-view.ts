@@ -25,7 +25,7 @@ export class CreditsViewElement extends LitElement {
           </div>
           <div class="footer-container footer-container-left-page">
             <button class="arrow-button">
-              <a href="/components/button">
+              <a href="/component">
                 <svg class="icon arrow arrow-left" width="50" height="50">
                   <use href="/componentOptions.svg#icon-arrow" />
                 </svg>

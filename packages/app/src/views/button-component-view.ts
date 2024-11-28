@@ -4,7 +4,7 @@ import { property, state } from "lit/decorators.js";
 import buttonPage from "../styles/buttonPage.css.js";
 import customButtonStyles from "../styles/custom-button-styles.css.js";
 import gridUtility from "../styles/gridUtility.css.js";
-import { ComponentConfig, Instructions } from "server/models";
+import { ComponentConfig } from "server/models";
 import { CodeInstruction } from "../components/codeInstruction.ts";
 import { CodeContainer } from "../components/codeContainer.ts";
 import { ButtonCustomComponent } from "../components/buttonComponent.ts";
@@ -81,17 +81,17 @@ export class ButtonComponentViewElement extends LitElement {
         </div>`;
       });
     };
-    const renderInstructions = (instructions: Instructions) => {
-      return Array.from(instructions.entries()).map(
-        ([stepNumber, instruction]) => {
-          return html`<code-instruction>
-            <span slot="step-number">${stepNumber}</span>
-            <h4 slot="step-title">${instruction.title}</h4>
-            <div slot="step-content">${instruction.description}</div>
-          </code-instruction>`;
-        }
-      );
-    };
+    // const renderInstructions = (instructions: Instructions) => {
+    //   return Array.from(instructions.entries()).map(
+    //     ([stepNumber, instruction]) => {
+    //       return html`<code-instruction>
+    //         <span slot="step-number">${stepNumber}</span>
+    //         <h4 slot="step-title">${instruction.title}</h4>
+    //         <div slot="step-content">${instruction.description}</div>
+    //       </code-instruction>`;
+    //     }
+    //   );
+    // };
 
     return html`
       <main>
@@ -287,9 +287,7 @@ export class ButtonComponentViewElement extends LitElement {
               <!-- Instructions Section -->
               <div class="right-page-instructions-section">
                 <h4 class="instructions-title">How to Use This Button</h4>
-                <div class="instructions-container">
-                  <!-- ${renderInstructions(instructions)} -->
-                </div>
+                <div class="instructions-container"></div>
               </div>
             </div>
             <div class="footer-container footer-container-right-page">

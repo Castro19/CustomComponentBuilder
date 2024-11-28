@@ -117,4 +117,15 @@
 
   /* Button Padding */
   --button-padding: 12px 24px;
+
+  /* Code Container */
+  --color-black-light: #333;
+  --color-black: #000;
+  --color-white: #fff;
+  --color-gold: #cda434;
+  --spacing-md: 16px;
+  --spacing-sm: 8px;
+  --spacing-xs: 4px;
+  --font-size-sm: 14px;
+  --font-size-xs: 12px;
 }

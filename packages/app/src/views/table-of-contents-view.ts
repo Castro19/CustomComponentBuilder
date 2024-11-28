@@ -67,7 +67,7 @@ export class TableOfContentsViewElement extends LitElement {
             </div>
             <div class="footer-container footer-container-right-page">
               <button class="arrow-button">
-                <a href="/credits">
+                <a href="/component/button">
                   <svg class="icon arrow" width="50" height="50">
                     <use href="/componentOptions.svg#icon-arrow" />
                   </svg>

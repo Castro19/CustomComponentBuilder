@@ -1,10 +1,16 @@
+// models/button.ts
 export interface ButtonConfig {
-  variant: "primary" | "secondary" | "destructive";
-  iconOnly?: boolean;
-  icon?: string; // URL or SVG content
-  iconLabel?: string;
+  variant: string;
   text?: string;
-  code?: string;
+  iconOnly?: boolean;
+  icon?: string;
+  iconLabel?: string;
+  tokensCode?: string;
+  htmlCode?: string;
+  cssCode?: string;
+  jsCode?: string;
 }
 
-export type ButtonConfigWithId = ButtonConfig & { buttonId: string };
+export interface ButtonConfigWithId extends ButtonConfig {
+  buttonId: string;
+}
