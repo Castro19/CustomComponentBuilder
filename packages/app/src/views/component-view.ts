@@ -121,7 +121,8 @@ export class ComponentViewElement extends LitElement {
 
   outputButtonStyles() {
     const styles = this.customButtonStyles;
-    return `.customButton {
+    return `
+.customButton {
       color: ${styles.color};
       background-color: ${styles.backgroundColor};
       border-color: ${styles.borderColor};
@@ -136,11 +137,13 @@ export class ComponentViewElement extends LitElement {
   }
 
   outputButtonHTML() {
-    return `<button class="customButton">${this.customButtonText}</button>`;
+    return `
+<button class="customButton">${this.customButtonText}</button>`;
   }
 
   outputButtonJS() {
-    return `const button = document.querySelector('.customButton');
+    return `
+const button = document.querySelector('.customButton');
   button.addEventListener('click', () => {
     alert('Button clicked!');
   });`;

@@ -1,5 +1,6 @@
 // scripts/codeContainer.ts
 import { LitElement, html, css, unsafeCSS } from "lit";
+import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { customElement, property } from "lit/decorators.js";
 import { reset } from "../styles/reset.css.js";
 
@@ -104,16 +105,20 @@ export class CodeContainer extends LitElement {
         </div>
         <div class="code-content">
           <pre class="code-panel" id="htmlCode">
-${this.formatCode(this.htmlCode, "html")}</pre
+            ${unsafeHTML(this.formatCode(this.htmlCode, "html"))}
+          </pre
           >
           <pre class="code-panel active" id="cssCode">
-${this.formatCode(this.cssCode, "css")}</pre
+            ${unsafeHTML(this.formatCode(this.cssCode, "css"))}
+          </pre
           >
           <pre class="code-panel" id="tokensCode">
-${this.formatCode(this.tokensCode, "css")}</pre
+            ${unsafeHTML(this.formatCode(this.tokensCode, "css"))}
+          </pre
           >
           <pre class="code-panel" id="jsCode">
-${this.formatCode(this.jsCode, "js")}</pre
+            ${unsafeHTML(this.formatCode(this.jsCode, "js"))}
+          </pre
           >
         </div>
       </div>
