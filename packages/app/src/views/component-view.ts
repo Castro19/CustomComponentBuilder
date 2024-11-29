@@ -1,9 +1,13 @@
 import { html, LitElement } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
+import { styleMap } from "lit/directives/style-map.js";
+import { define } from "@calpoly/mustang";
+
 import index from "../styles/index.css.js";
 import gridUtility from "../styles/gridUtility.css.js";
 import buttonPage from "../styles/buttonPage.css.js";
 import customButtonStylesCss from "../styles/custom-button-styles.css.js";
+
 import {
   ButtonConfigFetched,
   ComponentConfig,
@@ -12,8 +16,8 @@ import {
 import { CodeInstruction } from "../components/codeInstruction.js";
 import { CodeContainer } from "../components/codeContainer.js";
 import { ButtonCustomComponent } from "../components/buttonComponent.js";
-import { define } from "@calpoly/mustang";
-import { styleMap } from "lit/directives/style-map.js";
+
+import { parseCssToStyleObject } from "../utils/parseCss.js";
 import { outputButtonTokens } from "../utils/defaultStyles.js";
 
 @customElement("component-view")
@@ -34,25 +38,15 @@ export class ComponentViewElement extends LitElement {
   @query("#customization-button-border")
   buttonBorderSection!: HTMLElement;
 
-  // Method to show the appropriate customization tools
   @state()
   private activeCustomization: "type" | "font" | "border" | null = null;
-
-  showCustomizationTools(iconId: string) {
-    if (iconId === "type-icon") {
-      this.activeCustomization = "type";
-    } else if (iconId === "font-icon") {
-      this.activeCustomization = "font";
-    } else if (iconId === "border-icon") {
-      this.activeCustomization = "border";
-    }
-  }
 
   /* BUTTON VARIANT SELECTOR */
   @state()
   currentVariant: "primary" | "secondary" | "destructive" | "custom" =
     "primary";
 
+  /* CODE SNIPPETS */
   @state()
   cssCode: string = "";
 
@@ -64,153 +58,6 @@ export class ComponentViewElement extends LitElement {
 
   @state()
   tokensCode: string = outputButtonTokens();
-
-  applyButtonStyles() {
-    if (this.currentButtonConfig) {
-      // Update the styles of the display button using cssCode and tokensCode
-      const styleElement = this.shadowRoot?.getElementById("dynamic-styles");
-      if (styleElement) {
-        styleElement.textContent = `
-          ${this.currentButtonConfig.tokensCode}
-          ${this.currentButtonConfig.cssCode}
-        `;
-      }
-      this.requestUpdate();
-    }
-  }
-
-  selectButtonVariant(buttonConfig: ButtonConfigFetched) {
-    this.currentVariant = buttonConfig.variant;
-    this.currentButtonConfig = buttonConfig;
-
-    // Reset custom colors if the variant is not "custom"
-    this.textColor = "";
-    this.buttonColor = "";
-    this.borderColor = "";
-
-    this.updateCodeSnippets();
-    // Apply styles from the selected configuration
-    this.applyButtonStyles();
-  }
-
-  deleteButtonVariant(buttonId: string) {
-    // Implement your delete logic here
-    console.log("Deleting button Id:", buttonId);
-  }
-  parseCssToStyleObject(cssCode: string): { [key: string]: string } {
-    const styleObject: { [key: string]: string } = {};
-
-    // Regular expression to match the .customButton class
-    const regex = /\.customButton\s*\{([^}]+)\}/;
-    const match = cssCode.match(regex);
-
-    if (match && match[1]) {
-      // Split the declarations into individual properties
-      const declarations = match[1]
-        .split(";")
-        .map((decl) => decl.trim())
-        .filter((decl) => decl);
-
-      declarations.forEach((decl) => {
-        const [property, value] = decl.split(":").map((part) => part.trim());
-        if (property && value) {
-          // Convert CSS property names to JavaScript style property names
-          const jsProperty = property.replace(/-([a-z])/g, (g) =>
-            g[1].toUpperCase()
-          );
-          styleObject[jsProperty] = value;
-        }
-      });
-    }
-
-    return styleObject;
-  }
-
-  get customButtonStyles() {
-    let styles: { [key: string]: string } = {};
-
-    // Variant styles
-    if (this.currentVariant === "primary") {
-      styles.color = "var(--button-primary-color)";
-      styles.backgroundColor = "var(--button-primary-background)";
-      styles.borderColor = "var(--button-primary-border-color)";
-    } else if (this.currentVariant === "secondary") {
-      styles.color = "var(--button-secondary-color)";
-      styles.backgroundColor = "var(--button-secondary-background)";
-      styles.borderColor = "var(--button-secondary-border-color)";
-    } else if (this.currentVariant === "destructive") {
-      styles.color = "var(--button-destructive-color)";
-      styles.backgroundColor = "var(--button-destructive-background)";
-      styles.borderColor = "var(--button-destructive-border-color)";
-    } else if (this.currentVariant === "custom" && this.currentButtonConfig) {
-      // Parse the CSS code from currentButtonConfig
-      const parsedStyles = this.parseCssToStyleObject(
-        this.currentButtonConfig.cssCode
-      );
-      Object.assign(styles, parsedStyles);
-    }
-
-    // Font styles
-    styles.fontFamily = this.fontFamily;
-    styles.fontSize = this.fontSize;
-    styles.fontWeight = this.fontWeight;
-
-    // Override colors if user has customized them
-    if (this.textColor) {
-      styles.color = this.textColor;
-    }
-    if (this.buttonColor) {
-      styles.backgroundColor = this.buttonColor;
-    }
-
-    // Border styles
-    styles.borderWidth = this.borderWidth;
-    styles.borderStyle = this.borderStyle;
-    styles.borderRadius = this.borderRadius;
-
-    // Only override borderColor if user has customized it
-    if (this.borderColor) {
-      styles.borderColor = this.borderColor;
-    }
-
-    return styles;
-  }
-
-  updateCodeSnippets() {
-    this.cssCode = this.outputButtonStyles();
-    this.htmlCode = this.outputButtonHTML();
-    this.jsCode = this.outputButtonJS();
-  }
-
-  outputButtonStyles() {
-    const styles = this.customButtonStyles;
-    return `
-.customButton {
-      color: ${styles.color};
-      background-color: ${styles.backgroundColor};
-      border-color: ${styles.borderColor};
-      border-width: ${styles.borderWidth};
-      border-style: ${styles.borderStyle};
-      border-radius: ${styles.borderRadius};
-      font-family: ${styles.fontFamily};
-      font-size: ${styles.fontSize};
-      font-weight: ${styles.fontWeight};
-      /* Additional styles */
-    }`;
-  }
-
-  outputButtonHTML() {
-    return `
-<button class="customButton">${this.customButtonText}</button>`;
-  }
-
-  outputButtonJS() {
-    return `
-const button = document.querySelector('.customButton');
-  button.addEventListener('click', () => {
-    alert('Button clicked!');
-  });`;
-  }
 
   /* FONT OPTIONS */
   @state()
@@ -224,6 +71,7 @@ const button = document.querySelector('.customButton');
 
   @state()
   customButtonText: string = "Button";
+
   @state()
   textColor: string = "#000000";
 
@@ -242,53 +90,36 @@ const button = document.querySelector('.customButton');
   @state()
   currentButtonConfig: ButtonConfigFetched | null = null;
 
-  onFontFamilyChange(event: Event) {
-    const select = event.target as HTMLSelectElement;
-    this.fontFamily = select.value;
-    this.updateCodeSnippets();
-  }
+  /* Border Options */
+  @state()
+  borderWidth: string = "1px";
 
-  onFontSizeChange(event: Event) {
-    const select = event.target as HTMLSelectElement;
-    this.fontSize = select.value;
-    this.updateCodeSnippets();
-  }
+  @state()
+  borderStyle: string = "solid";
 
-  onFontWeightChange(event: Event) {
-    const input = event.target as HTMLInputElement;
-    this.fontWeight = input.value;
-    this.updateCodeSnippets();
-  }
+  @state()
+  borderColor: string = "#FFFFFF";
 
-  onButtonTextChange(event: Event) {
-    const input = event.target as HTMLInputElement;
-    this.customButtonText = input.value || "Button";
-    this.updateCodeSnippets();
-  }
+  @state()
+  borderRadius: string = "4px";
 
-  onTextColorChange(event: Event) {
-    const input = event.target as HTMLInputElement;
-    this.textColor = input.value;
-    this.updateCodeSnippets();
-  }
+  fontSizes = [12, 14, 16, 18, 20, 24, 28, 32];
 
-  onButtonColorChange(event: Event) {
-    const input = event.target as HTMLInputElement;
-    this.buttonColor = input.value;
-    this.updateCodeSnippets();
-  }
-
+  /* LIFECYCLE */
   connectedCallback() {
     super.connectedCallback();
     this.loadData();
     this.loadButtonData();
   }
+
+  /* FIRST UPDATED */
   firstUpdated() {
     this.showCustomizationTools("type-icon");
     // Show the button types section by default
     this.updateCodeSnippets();
   }
 
+  /* LOAD COMPONENT DATA */
   async loadData() {
     const src = `/api/component/${this.componentId}`;
     try {
@@ -303,6 +134,8 @@ const button = document.querySelector('.customButton');
       console.error("Failed to load component data:", err);
     }
   }
+
+  /* LOAD BUTTON DATA */
   async loadButtonData() {
     try {
       const response = await fetch("http://localhost:3000/api/button");
@@ -319,45 +152,8 @@ const button = document.querySelector('.customButton');
       console.error("Error fetching button config:", error);
     }
   }
-  fontSizes = [12, 14, 16, 18, 20, 24, 28, 32];
 
-  /* Border Options */
-  @state()
-  borderWidth: string = "1px";
-
-  @state()
-  borderStyle: string = "solid";
-
-  @state()
-  borderColor: string = "#FFFFFF";
-
-  @state()
-  borderRadius: string = "4px";
-
-  onBorderWidthChange(event: Event) {
-    const select = event.target as HTMLSelectElement;
-    this.borderWidth = select.value;
-    this.updateCodeSnippets();
-  }
-
-  onBorderStyleChange(event: Event) {
-    const select = event.target as HTMLSelectElement;
-    this.borderStyle = select.value;
-    this.updateCodeSnippets();
-  }
-
-  onBorderColorChange(event: Event) {
-    const input = event.target as HTMLInputElement;
-    this.borderColor = input.value;
-    this.updateCodeSnippets();
-  }
-
-  onBorderRadiusChange(event: Event) {
-    const input = event.target as HTMLInputElement;
-    this.borderRadius = input.value + "px";
-    this.updateCodeSnippets();
-  }
-
+  /* SUBMIT BUTTON CONFIG */
   async handleSubmit(event: Event) {
     event.preventDefault(); // Prevent default form submission behavior
 
@@ -421,6 +217,190 @@ const button = document.querySelector('.customButton');
     }
   }
 
+  /* GET CUSTOM BUTTON STYLES */
+  get customButtonStyles() {
+    let styles: { [key: string]: string } = {};
+
+    // Variant styles
+    if (this.currentVariant === "primary") {
+      styles.color = "var(--button-primary-color)";
+      styles.backgroundColor = "var(--button-primary-background)";
+      styles.borderColor = "var(--button-primary-border-color)";
+    } else if (this.currentVariant === "secondary") {
+      styles.color = "var(--button-secondary-color)";
+      styles.backgroundColor = "var(--button-secondary-background)";
+      styles.borderColor = "var(--button-secondary-border-color)";
+    } else if (this.currentVariant === "destructive") {
+      styles.color = "var(--button-destructive-color)";
+      styles.backgroundColor = "var(--button-destructive-background)";
+      styles.borderColor = "var(--button-destructive-border-color)";
+    } else if (this.currentVariant === "custom" && this.currentButtonConfig) {
+      // Parse the CSS code from currentButtonConfig
+      const parsedStyles = parseCssToStyleObject(
+        this.currentButtonConfig.cssCode
+      );
+      Object.assign(styles, parsedStyles);
+    }
+
+    // Font styles
+    styles.fontFamily = this.fontFamily;
+    styles.fontSize = this.fontSize;
+    styles.fontWeight = this.fontWeight;
+
+    // Override colors if user has customized them
+    if (this.textColor) {
+      styles.color = this.textColor;
+    }
+    if (this.buttonColor) {
+      styles.backgroundColor = this.buttonColor;
+    }
+
+    // Border styles
+    styles.borderWidth = this.borderWidth;
+    styles.borderStyle = this.borderStyle;
+    styles.borderRadius = this.borderRadius;
+
+    // Only override borderColor if user has customized it
+    if (this.borderColor) {
+      styles.borderColor = this.borderColor;
+    }
+
+    return styles;
+  }
+
+  /* CUSTOMIZATION TOOLS */
+  showCustomizationTools(iconId: string) {
+    if (iconId === "type-icon") {
+      this.activeCustomization = "type";
+    } else if (iconId === "font-icon") {
+      this.activeCustomization = "font";
+    } else if (iconId === "border-icon") {
+      this.activeCustomization = "border";
+    }
+  }
+
+  /* SELECT BUTTON VARIANT */
+  selectButtonVariant(buttonConfig: ButtonConfigFetched) {
+    this.currentVariant = buttonConfig.variant;
+    this.currentButtonConfig = buttonConfig;
+
+    this.textColor = "";
+    this.buttonColor = "";
+    this.borderColor = "";
+
+    this.updateCodeSnippets();
+    this.applyButtonStyles();
+  }
+
+  /* DELETE BUTTON VARIANT */
+  deleteButtonVariant(buttonId: string) {
+    // TO-DO: Implement delete logic here
+    console.log("Deleting button Id:", buttonId);
+  }
+
+  /* APPLY STYLES */
+  applyButtonStyles() {
+    if (this.currentButtonConfig) {
+      // Update the styles of the display button using cssCode and tokensCode
+      const styleElement = this.shadowRoot?.getElementById("dynamic-styles");
+      if (styleElement) {
+        styleElement.textContent = `
+              ${this.currentButtonConfig.tokensCode}
+              ${this.currentButtonConfig.cssCode}
+            `;
+      }
+      this.requestUpdate();
+    }
+  }
+
+  /* FONT HANDLERS */
+  onFontFamilyChange(event: Event) {
+    const select = event.target as HTMLSelectElement;
+    this.fontFamily = select.value;
+    this.updateCodeSnippets();
+  }
+  onFontSizeChange(event: Event) {
+    const select = event.target as HTMLSelectElement;
+    this.fontSize = select.value;
+    this.updateCodeSnippets();
+  }
+  onFontWeightChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.fontWeight = input.value;
+    this.updateCodeSnippets();
+  }
+  onButtonTextChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.customButtonText = input.value || "Button";
+    this.updateCodeSnippets();
+  }
+  onTextColorChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.textColor = input.value;
+    this.updateCodeSnippets();
+  }
+  onButtonColorChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.buttonColor = input.value;
+    this.updateCodeSnippets();
+  }
+
+  /* BORDER HANDLERS */
+  onBorderWidthChange(event: Event) {
+    const select = event.target as HTMLSelectElement;
+    this.borderWidth = select.value;
+    this.updateCodeSnippets();
+  }
+  onBorderStyleChange(event: Event) {
+    const select = event.target as HTMLSelectElement;
+    this.borderStyle = select.value;
+    this.updateCodeSnippets();
+  }
+  onBorderColorChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.borderColor = input.value;
+    this.updateCodeSnippets();
+  }
+  onBorderRadiusChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.borderRadius = input.value + "px";
+    this.updateCodeSnippets();
+  }
+
+  /* UPDATE CODE HANDLERS */
+  updateCodeSnippets() {
+    this.cssCode = this.outputButtonStyles();
+    this.htmlCode = this.outputButtonHTML();
+    this.jsCode = this.outputButtonJS();
+  }
+  outputButtonStyles() {
+    const styles = this.customButtonStyles;
+    return `
+    .customButton {
+          color: ${styles.color};
+          background-color: ${styles.backgroundColor};
+          border-color: ${styles.borderColor};
+          border-width: ${styles.borderWidth};
+          border-style: ${styles.borderStyle};
+          border-radius: ${styles.borderRadius};
+          font-family: ${styles.fontFamily};
+          font-size: ${styles.fontSize};
+          font-weight: ${styles.fontWeight};
+          /* Additional styles */
+        }`;
+  }
+  outputButtonHTML() {
+    return `
+    <button class="customButton">${this.customButtonText}</button>`;
+  }
+  outputButtonJS() {
+    return `
+    const button = document.querySelector('.customButton');
+      button.addEventListener('click', () => {
+        alert('Button clicked!');
+      });`;
+  }
+
   render() {
     if (!this.componentConfig || !this.buttonConfig) {
       return html`<div>No component data found</div>`;
@@ -430,17 +410,14 @@ const button = document.querySelector('.customButton');
     console.log("BUTTON CONFIGS: ", buttonConfigs);
 
     const renderVariants = (buttonConfigs: ButtonConfigFetched[]) => {
-      const deleteIconId = "trash";
       return buttonConfigs.map((buttonConfig) => {
-        // Parse the CSS code to get the style object
-        const styles = this.parseCssToStyleObject(buttonConfig.cssCode);
+        const styles = parseCssToStyleObject(buttonConfig.cssCode);
 
         return html`
           <div class="button-type-container">
             <button
               id="${buttonConfig._id}"
               class="button-type button-${buttonConfig.variant}"
-              data-variant="${buttonConfig.variant}"
               style=${styleMap(styles)}
               @click=${() => this.selectButtonVariant(buttonConfig)}
             >
@@ -448,10 +425,9 @@ const button = document.querySelector('.customButton');
               buttonConfig.variant.slice(1)}
               Button
             </button>
-            <!-- Delete Button -->
             <button-custom
               .dataIconOnly=${true}
-              .dataIcon="/componentOptions.svg#icon-${deleteIconId}"
+              .dataIcon="/componentOptions.svg#icon-trash"
               .dataText="Delete"
               @click=${() => this.deleteButtonVariant(buttonConfig._id)}
             ></button-custom>
@@ -459,6 +435,7 @@ const button = document.querySelector('.customButton');
         `;
       });
     };
+
     const renderOptions = (options: string[]) => {
       return options.map((option) => {
         const iconId = `${option}-icon`; // Construct the icon ID
