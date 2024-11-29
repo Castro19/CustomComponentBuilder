@@ -1,5 +1,5 @@
 import { Auth, Update } from "@calpoly/mustang";
-import { ButtonConfig, Profile } from "server/models";
+import { Profile } from "server/models";
 import { Msg } from "./messages";
 import { Model } from "./model";
 
@@ -26,16 +26,16 @@ export default function update(
         apply((model) => ({ ...model, profile }))
       );
       break;
-    case "button/index":
-      indexButtons(user).then((buttonIndex: ButtonConfig[] | undefined) =>
-        apply((model) => ({ ...model, buttonIndex }))
-      );
-      break;
-    case "button/select":
-      selectButton(message[1], user).then((button: ButtonConfig | undefined) =>
-        apply((model) => ({ ...model, button }))
-      );
-      break;
+    // case "button/index":
+    //   indexButtons(user).then((buttonIndex: ButtonConfig[] | undefined) =>
+    //     apply((model) => ({ ...model, buttonIndex }))
+    //   );
+    //   break;
+    // case "button/select":
+    //   selectButton(message[1], user).then((button: ButtonConfig | undefined) =>
+    //     apply((model) => ({ ...model, button }))
+    //   );
+    //   break;
     default:
       const unhandled: never = message[0];
       throw new Error(`Unhandled message "${unhandled}"`);
@@ -85,43 +85,43 @@ function selectProfile(msg: { userid: string }, user: Auth.User) {
     });
 }
 
-async function indexButtons(user: Auth.User) {
-  const userid = user.username;
+// async function indexButtons(user: Auth.User) {
+//   const userid = user.username;
 
-  return fetch(`/api/buttons?userid=${userid}`, {
-    headers: Auth.headers(user),
-  })
-    .then((response: Response) => {
-      if (response.status !== 200) throw `Failed to load index of buttons`;
-      return response.json();
-    })
-    .then((json: unknown) => {
-      if (json) {
-        const { data } = json as {
-          data: ButtonConfig[];
-        };
-        return data;
-      }
-    });
-}
+//   return fetch(`/api/buttons?userid=${userid}`, {
+//     headers: Auth.headers(user),
+//   })
+//     .then((response: Response) => {
+//       if (response.status !== 200) throw `Failed to load index of buttons`;
+//       return response.json();
+//     })
+//     .then((json: unknown) => {
+//       if (json) {
+//         const { data } = json as {
+//           data: ButtonConfig[];
+//         };
+//         return data;
+//       }
+//     });
+// }
 
-async function selectButton(msg: { buttonid: string }, user: Auth.User) {
-  return fetch(`/api/buttons/${msg.buttonid}`, {
-    headers: Auth.headers(user),
-  })
-    .then((response: Response) => {
-      if (response.status === 200) {
-        return response.json();
-      }
-      return undefined;
-    })
-    .then((json: unknown) => {
-      if (json) {
-        console.log("Button:", json);
-        return json as ButtonConfig;
-      }
-    });
-}
+// async function selectButton(msg: { buttonid: string }, user: Auth.User) {
+//   return fetch(`/api/buttons/${msg.buttonid}`, {
+//     headers: Auth.headers(user),
+//   })
+//     .then((response: Response) => {
+//       if (response.status === 200) {
+//         return response.json();
+//       }
+//       return undefined;
+//     })
+//     .then((json: unknown) => {
+//       if (json) {
+//         console.log("Button:", json);
+//         return json as ButtonConfig;
+//       }
+//     });
+// }
 
 // async function saveButton(
 //   msg: {

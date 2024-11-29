@@ -4,7 +4,11 @@ import index from "../styles/index.css.js";
 import gridUtility from "../styles/gridUtility.css.js";
 import buttonPage from "../styles/buttonPage.css.js";
 import customButtonStylesCss from "../styles/custom-button-styles.css.js";
-import { ComponentConfig, Instruction } from "server/models";
+import {
+  ButtonConfigFetched,
+  ComponentConfig,
+  Instruction,
+} from "server/models";
 import { CodeInstruction } from "../components/codeInstruction.js";
 import { CodeContainer } from "../components/codeContainer.js";
 import { ButtonCustomComponent } from "../components/buttonComponent.js";
@@ -46,7 +50,8 @@ export class ComponentViewElement extends LitElement {
 
   /* BUTTON VARIANT SELECTOR */
   @state()
-  currentVariant: "primary" | "secondary" | "destructive" = "primary";
+  currentVariant: "primary" | "secondary" | "destructive" | "custom" =
+    "primary";
 
   @state()
   cssCode: string = "";
@@ -60,13 +65,65 @@ export class ComponentViewElement extends LitElement {
   @state()
   tokensCode: string = outputButtonTokens();
 
-  selectButtonVariant(variant: "primary" | "secondary" | "destructive") {
-    this.currentVariant = variant;
-    // Reset custom colors to use variant colors
+  applyButtonStyles() {
+    if (this.currentButtonConfig) {
+      // Update the styles of the display button using cssCode and tokensCode
+      const styleElement = this.shadowRoot?.getElementById("dynamic-styles");
+      if (styleElement) {
+        styleElement.textContent = `
+          ${this.currentButtonConfig.tokensCode}
+          ${this.currentButtonConfig.cssCode}
+        `;
+      }
+      this.requestUpdate();
+    }
+  }
+
+  selectButtonVariant(buttonConfig: ButtonConfigFetched) {
+    this.currentVariant = buttonConfig.variant;
+    this.currentButtonConfig = buttonConfig;
+
+    // Reset custom colors if the variant is not "custom"
     this.textColor = "";
     this.buttonColor = "";
     this.borderColor = "";
+
     this.updateCodeSnippets();
+    // Apply styles from the selected configuration
+    this.applyButtonStyles();
+  }
+
+  deleteButtonVariant(buttonId: string) {
+    // Implement your delete logic here
+    console.log("Deleting button Id:", buttonId);
+  }
+  parseCssToStyleObject(cssCode: string): { [key: string]: string } {
+    const styleObject: { [key: string]: string } = {};
+
+    // Regular expression to match the .customButton class
+    const regex = /\.customButton\s*\{([^}]+)\}/;
+    const match = cssCode.match(regex);
+
+    if (match && match[1]) {
+      // Split the declarations into individual properties
+      const declarations = match[1]
+        .split(";")
+        .map((decl) => decl.trim())
+        .filter((decl) => decl);
+
+      declarations.forEach((decl) => {
+        const [property, value] = decl.split(":").map((part) => part.trim());
+        if (property && value) {
+          // Convert CSS property names to JavaScript style property names
+          const jsProperty = property.replace(/-([a-z])/g, (g) =>
+            g[1].toUpperCase()
+          );
+          styleObject[jsProperty] = value;
+        }
+      });
+    }
+
+    return styleObject;
   }
 
   get customButtonStyles() {
@@ -85,6 +142,12 @@ export class ComponentViewElement extends LitElement {
       styles.color = "var(--button-destructive-color)";
       styles.backgroundColor = "var(--button-destructive-background)";
       styles.borderColor = "var(--button-destructive-border-color)";
+    } else if (this.currentVariant === "custom" && this.currentButtonConfig) {
+      // Parse the CSS code from currentButtonConfig
+      const parsedStyles = this.parseCssToStyleObject(
+        this.currentButtonConfig.cssCode
+      );
+      Object.assign(styles, parsedStyles);
     }
 
     // Font styles
@@ -173,6 +236,12 @@ const button = document.querySelector('.customButton');
   @state()
   componentConfig: ComponentConfig | null = null;
 
+  @state()
+  buttonConfig: ButtonConfigFetched[] | null = null;
+
+  @state()
+  currentButtonConfig: ButtonConfigFetched | null = null;
+
   onFontFamilyChange(event: Event) {
     const select = event.target as HTMLSelectElement;
     this.fontFamily = select.value;
@@ -212,6 +281,7 @@ const button = document.querySelector('.customButton');
   connectedCallback() {
     super.connectedCallback();
     this.loadData();
+    this.loadButtonData();
   }
   firstUpdated() {
     this.showCustomizationTools("type-icon");
@@ -221,7 +291,6 @@ const button = document.querySelector('.customButton');
 
   async loadData() {
     const src = `/api/component/${this.componentId}`;
-
     try {
       const res = await fetch(src);
       if (res.status === 200) {
@@ -232,6 +301,22 @@ const button = document.querySelector('.customButton');
       }
     } catch (err) {
       console.error("Failed to load component data:", err);
+    }
+  }
+  async loadButtonData() {
+    try {
+      const response = await fetch("http://localhost:3000/api/button");
+      if (!response.ok) {
+        throw new Error(`Failed to fetch: ${response.statusText}`);
+      }
+      const data = await response.json();
+      console.log("BUTTON DATA: ", data);
+      this.buttonConfig = data as ButtonConfigFetched[];
+      if (this.buttonConfig && this.buttonConfig.length > 0) {
+        this.currentButtonConfig = this.buttonConfig[0];
+      }
+    } catch (error) {
+      console.error("Error fetching button config:", error);
     }
   }
   fontSizes = [12, 14, 16, 18, 20, 24, 28, 32];
@@ -273,15 +358,11 @@ const button = document.querySelector('.customButton');
     this.updateCodeSnippets();
   }
 
-  deleteButtonVariant(variant: string) {
-    console.log("Deleting button variant:", variant);
-  }
   async handleSubmit(event: Event) {
     event.preventDefault(); // Prevent default form submission behavior
 
     try {
       // Collect button configuration data from the component's state
-      const variant = this.currentVariant;
       const iconOnly = false; // Update as needed
       const icon = ""; // Update as needed
       const iconLabel = ""; // Update as needed
@@ -295,7 +376,7 @@ const button = document.querySelector('.customButton');
 
       // Prepare the payload
       const payload = {
-        variant,
+        variant: "custom",
         iconOnly,
         icon,
         iconLabel,
@@ -309,7 +390,7 @@ const button = document.querySelector('.customButton');
       console.log("Submitting the following payload:", payload);
 
       // Send the data to the server via a POST request
-      const response = await fetch("http://localhost:3000/button", {
+      const response = await fetch("http://localhost:3000/api/button", {
         // Ensure the endpoint is correct
         method: "POST",
         headers: {
@@ -341,40 +422,43 @@ const button = document.querySelector('.customButton');
   }
 
   render() {
-    if (!this.componentConfig) {
+    if (!this.componentConfig || !this.buttonConfig) {
       return html`<div>No component data found</div>`;
     }
-    const { variants, options, instructions } = this.componentConfig;
+    const { options, instructions } = this.componentConfig;
+    const buttonConfigs = this.buttonConfig;
+    console.log("BUTTON CONFIGS: ", buttonConfigs);
 
-    const renderVariants = (variants: string[]) => {
+    const renderVariants = (buttonConfigs: ButtonConfigFetched[]) => {
       const deleteIconId = "trash";
-      return variants.map((variant) => {
+      return buttonConfigs.map((buttonConfig) => {
+        // Parse the CSS code to get the style object
+        const styles = this.parseCssToStyleObject(buttonConfig.cssCode);
+
         return html`
           <div class="button-type-container">
             <button
-              id="${variant}Button"
-              class="button-type button-${variant}"
-              data-variant="${variant}"
-              @click=${() =>
-                this.selectButtonVariant(
-                  variant as "primary" | "secondary" | "destructive"
-                )}
+              id="${buttonConfig._id}"
+              class="button-type button-${buttonConfig.variant}"
+              data-variant="${buttonConfig.variant}"
+              style=${styleMap(styles)}
+              @click=${() => this.selectButtonVariant(buttonConfig)}
             >
-              ${variant.charAt(0).toUpperCase() + variant.slice(1)} Button
+              ${buttonConfig.variant.charAt(0).toUpperCase() +
+              buttonConfig.variant.slice(1)}
+              Button
             </button>
             <!-- Delete Button -->
-              <button-custom
-                .dataIconOnly=${true}
-                .dataIcon="/componentOptions.svg#icon-${deleteIconId}"
-                .dataText="Delete"
-                @click=${() => this.deleteButtonVariant(variant)}
-              ></button-custom>
-            </div>
+            <button-custom
+              .dataIconOnly=${true}
+              .dataIcon="/componentOptions.svg#icon-${deleteIconId}"
+              .dataText="Delete"
+              @click=${() => this.deleteButtonVariant(buttonConfig._id)}
+            ></button-custom>
           </div>
         `;
       });
     };
-
     const renderOptions = (options: string[]) => {
       return options.map((option) => {
         const iconId = `${option}-icon`; // Construct the icon ID
@@ -403,7 +487,18 @@ const button = document.querySelector('.customButton');
       });
     };
 
+    console.log("CURRENT BUTTON CONFIG: ", this.currentButtonConfig);
     return html`
+      <!-- Inject styles from currentButtonConfig -->
+      ${this.currentButtonConfig
+        ? html`
+            <style>
+              ${this.currentButtonConfig.tokensCode}
+              ${this.currentButtonConfig.cssCode}
+            </style>
+            <style id="dynamic-styles"></style>
+          `
+        : ""}
       <main>
         <div class="magazine-wrapper">
           <div class="magazine-page magazine-page-left">
@@ -414,7 +509,7 @@ const button = document.querySelector('.customButton');
                 <div class="button-display-container">
                   <p class="button-display-title">Button Display</p>
                   <button
-                    id="customButton"
+                    id="customButton main-display-button"
                     class="button-display button-type"
                     style=${styleMap(this.customButtonStyles)}
                   >
@@ -433,7 +528,9 @@ const button = document.querySelector('.customButton');
                   : "none"};"
               >
                 <h3 class="customization-tools-type-title">Button Types</h3>
-                <div class="button-type-list">${renderVariants(variants)}</div>
+                <div class="button-type-list">
+                  ${renderVariants(buttonConfigs)}
+                </div>
               </div>
               <!-- Font Customization Section -->
               <div

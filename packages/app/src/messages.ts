@@ -10,9 +10,9 @@ export type Msg =
         onSuccess?: () => void;
         onFailure?: (err: Error) => void;
       }
-    ]
-  | ["button/index", { userid: string }]
-  | ["button/select", { buttonid: string }];
+    ];
+// | ["button/index", { userid: string }]
+// | ["button/select", { buttonid: string }];
 //   | [
 //       "button/save",
 //       {
