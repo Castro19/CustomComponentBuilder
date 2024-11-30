@@ -421,7 +421,7 @@ export class ComponentViewElement extends LitElement {
     const renderVariants = (buttonConfigs: ButtonConfigFetched[]) => {
       return buttonConfigs.map((buttonConfig) => {
         const styles = parseCssToStyleObject(buttonConfig.cssCode);
-
+        const trashIcon = "trash";
         return html`
           <div class="button-type-container">
             <button
@@ -436,7 +436,7 @@ export class ComponentViewElement extends LitElement {
             </button>
             <button-custom
               .dataIconOnly=${true}
-              .dataIcon="/componentOptions.svg#icon-trash"
+              .dataIcon="/componentOptions.svg#icon-${trashIcon}"
               .dataText="Delete"
               @click=${() => this.deleteButtonVariant(buttonConfig._id)}
             ></button-custom>
