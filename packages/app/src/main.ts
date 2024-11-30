@@ -2,7 +2,7 @@ import { Auth, define, History, Store, Switch } from "@calpoly/mustang";
 import { Msg } from "./messages";
 import { Model, init } from "./model";
 import update from "./update";
-import { html, LitElement } from "lit";
+import { html } from "lit";
 import { HeaderElement } from "./components/blazing-header";
 import { HomeViewElement } from "./views/home-view.ts";
 import { TableOfContentsViewElement } from "./views/table-of-contents-view.ts";
@@ -43,17 +43,6 @@ const routes: Switch.Route[] = [
   },
 ];
 
-class AppElement extends LitElement {
-  render() {
-    return html`<mu-switch></mu-switch>`;
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-    HeaderElement.initializeOnce();
-  }
-}
-
 define({
   "mu-auth": Auth.Provider,
   "mu-history": History.Provider,
@@ -67,7 +56,6 @@ define({
       super(routes, "blazing:history", "blazing:auth");
     }
   },
-  "blazing-app": AppElement,
   "blazing-header": HeaderElement,
   "home-view": HomeViewElement,
   "table-of-contents-view": TableOfContentsViewElement,

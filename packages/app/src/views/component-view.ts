@@ -217,6 +217,22 @@ export class ComponentViewElement extends LitElement {
     }
   }
 
+  /* DELETE BUTTON VARIANT */
+  async deleteButtonVariant(_id: string) {
+    console.log("Deleting button Id:", _id);
+    try {
+      const response = await fetch(`http://localhost:3000/api/button/${_id}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) {
+        throw new Error(`Failed to delete button: ${response.statusText}`);
+      }
+      console.log("Button deleted successfully");
+    } catch (error) {
+      console.error("Error deleting button:", error);
+    }
+  }
+
   /* GET CUSTOM BUTTON STYLES */
   get customButtonStyles() {
     let styles: { [key: string]: string } = {};
@@ -268,17 +284,6 @@ export class ComponentViewElement extends LitElement {
     return styles;
   }
 
-  /* CUSTOMIZATION TOOLS */
-  showCustomizationTools(iconId: string) {
-    if (iconId === "type-icon") {
-      this.activeCustomization = "type";
-    } else if (iconId === "font-icon") {
-      this.activeCustomization = "font";
-    } else if (iconId === "border-icon") {
-      this.activeCustomization = "border";
-    }
-  }
-
   /* SELECT BUTTON VARIANT */
   selectButtonVariant(buttonConfig: ButtonConfigFetched) {
     this.currentVariant = buttonConfig.variant;
@@ -292,12 +297,50 @@ export class ComponentViewElement extends LitElement {
     this.applyButtonStyles();
   }
 
-  /* DELETE BUTTON VARIANT */
-  deleteButtonVariant(buttonId: string) {
-    // TO-DO: Implement delete logic here
-    console.log("Deleting button Id:", buttonId);
+  /* UPDATE CODE HANDLERS */
+  updateCodeSnippets() {
+    this.cssCode = this.outputButtonStyles();
+    this.htmlCode = this.outputButtonHTML();
+    this.jsCode = this.outputButtonJS();
+  }
+  outputButtonStyles() {
+    const styles = this.customButtonStyles;
+    return `
+    .customButton {
+          color: ${styles.color};
+          background-color: ${styles.backgroundColor};
+          border-color: ${styles.borderColor};
+          border-width: ${styles.borderWidth};
+          border-style: ${styles.borderStyle};
+          border-radius: ${styles.borderRadius};
+          font-family: ${styles.fontFamily};
+          font-size: ${styles.fontSize};
+          font-weight: ${styles.fontWeight};
+          /* Additional styles */
+        }`;
+  }
+  outputButtonHTML() {
+    return `
+    <button class="customButton">${this.customButtonText}</button>`;
+  }
+  outputButtonJS() {
+    return `
+    const button = document.querySelector('.customButton');
+      button.addEventListener('click', () => {
+        alert('Button clicked!');
+      });`;
   }
 
+  /* CUSTOMIZATION TOOLS */
+  showCustomizationTools(iconId: string) {
+    if (iconId === "type-icon") {
+      this.activeCustomization = "type";
+    } else if (iconId === "font-icon") {
+      this.activeCustomization = "font";
+    } else if (iconId === "border-icon") {
+      this.activeCustomization = "border";
+    }
+  }
   /* APPLY STYLES */
   applyButtonStyles() {
     if (this.currentButtonConfig) {
@@ -365,40 +408,6 @@ export class ComponentViewElement extends LitElement {
     const input = event.target as HTMLInputElement;
     this.borderRadius = input.value + "px";
     this.updateCodeSnippets();
-  }
-
-  /* UPDATE CODE HANDLERS */
-  updateCodeSnippets() {
-    this.cssCode = this.outputButtonStyles();
-    this.htmlCode = this.outputButtonHTML();
-    this.jsCode = this.outputButtonJS();
-  }
-  outputButtonStyles() {
-    const styles = this.customButtonStyles;
-    return `
-    .customButton {
-          color: ${styles.color};
-          background-color: ${styles.backgroundColor};
-          border-color: ${styles.borderColor};
-          border-width: ${styles.borderWidth};
-          border-style: ${styles.borderStyle};
-          border-radius: ${styles.borderRadius};
-          font-family: ${styles.fontFamily};
-          font-size: ${styles.fontSize};
-          font-weight: ${styles.fontWeight};
-          /* Additional styles */
-        }`;
-  }
-  outputButtonHTML() {
-    return `
-    <button class="customButton">${this.customButtonText}</button>`;
-  }
-  outputButtonJS() {
-    return `
-    const button = document.querySelector('.customButton');
-      button.addEventListener('click', () => {
-        alert('Button clicked!');
-      });`;
   }
 
   render() {
