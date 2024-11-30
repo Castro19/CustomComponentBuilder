@@ -8,6 +8,7 @@ export default function update(
   apply: Update.ApplyMap<Model>,
   user: Auth.User
 ) {
+  console.log("Update:", message);
   switch (message[0]) {
     case "profile/save":
       saveProfile(message[1], user)
@@ -26,16 +27,29 @@ export default function update(
         apply((model) => ({ ...model, profile }))
       );
       break;
-    case "button/index":
-      indexButtons(user).then((buttonIndex: ButtonConfig[] | undefined) =>
-        apply((model) => ({ ...model, buttonIndex }))
-      );
+    case "button/save":
+      console.log("Saving button:", message[1]);
+      saveButton(message[1])
+        .then((buttonConfig) => apply((model) => ({ ...model, buttonConfig })))
+        .then(() => {
+          const { onSuccess } = message[1];
+          if (onSuccess) onSuccess();
+        })
+        .catch((error: Error) => {
+          const { onFailure } = message[1];
+          if (onFailure) onFailure(error);
+        });
       break;
-    case "button/select":
-      selectButton(message[1], user).then((button: ButtonConfig | undefined) =>
-        apply((model) => ({ ...model, button }))
-      );
-      break;
+    // case "button/index":
+    //   indexButtons(user).then((buttonIndex: ButtonConfig[] | undefined) =>
+    //     apply((model) => ({ ...model, buttonIndex }))
+    //   );
+    //   break;
+    // case "button/select":
+    //   selectButton(message[1], user).then((button: ButtonConfig | undefined) =>
+    //     apply((model) => ({ ...model, button }))
+    //   );
+    //   break;
     default:
       const unhandled: never = message[0];
       throw new Error(`Unhandled message "${unhandled}"`);
@@ -85,43 +99,62 @@ function selectProfile(msg: { userid: string }, user: Auth.User) {
     });
 }
 
-async function indexButtons(user: Auth.User) {
-  const userid = user.username;
-
-  return fetch(`/api/buttons?userid=${userid}`, {
-    headers: Auth.headers(user),
+function saveButton(msg: { buttonConfig: ButtonConfig }) {
+  console.log("Saving button:", msg.buttonConfig);
+  return fetch("/api/button", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(msg.buttonConfig),
   })
     .then((response: Response) => {
-      if (response.status !== 200) throw `Failed to load index of buttons`;
-      return response.json();
+      if (response.ok) return response.json();
+      else
+        throw new Error(
+          `Failed to save button configuration: ${response.statusText}`
+        );
     })
-    .then((json: unknown) => {
-      if (json) {
-        const { data } = json as {
-          data: ButtonConfig[];
-        };
-        return data;
-      }
-    });
+    .then((json: unknown) => json as ButtonConfig);
 }
 
-async function selectButton(msg: { buttonid: string }, user: Auth.User) {
-  return fetch(`/api/buttons/${msg.buttonid}`, {
-    headers: Auth.headers(user),
-  })
-    .then((response: Response) => {
-      if (response.status === 200) {
-        return response.json();
-      }
-      return undefined;
-    })
-    .then((json: unknown) => {
-      if (json) {
-        console.log("Button:", json);
-        return json as ButtonConfig;
-      }
-    });
-}
+// async function indexButtons(user: Auth.User) {
+//   const userid = user.username;
+
+//   return fetch(`/api/buttons?userid=${userid}`, {
+//     headers: Auth.headers(user),
+//   })
+//     .then((response: Response) => {
+//       if (response.status !== 200) throw `Failed to load index of buttons`;
+//       return response.json();
+//     })
+//     .then((json: unknown) => {
+//       if (json) {
+//         const { data } = json as {
+//           data: ButtonConfig[];
+//         };
+//         return data;
+//       }
+//     });
+// }
+
+// async function selectButton(msg: { buttonid: string }, user: Auth.User) {
+//   return fetch(`/api/buttons/${msg.buttonid}`, {
+//     headers: Auth.headers(user),
+//   })
+//     .then((response: Response) => {
+//       if (response.status === 200) {
+//         return response.json();
+//       }
+//       return undefined;
+//     })
+//     .then((json: unknown) => {
+//       if (json) {
+//         console.log("Button:", json);
+//         return json as ButtonConfig;
+//       }
+//     });
+// }
 
 // async function saveButton(
 //   msg: {

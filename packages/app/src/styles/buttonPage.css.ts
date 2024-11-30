@@ -126,12 +126,13 @@ const styles = css`
     grid-template-columns: 1fr;
     gap: 5px; /* Reduced space between buttons */
     margin: var(--spacing-sm);
-    width: 70%;
+    width: 100%;
   }
 
   .button-type {
     font-size: var(--font-size-xs); /* Smaller font size */
     padding: var(--spacing-xs) var(--spacing-sm); /* Smaller padding */
+    width: 100%;
   }
 
   /* Font Customization */
@@ -614,6 +615,13 @@ const styles = css`
   }
   .code-value {
     color: #f1fa8c;
+  }
+
+  .button-type-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
   }
 `;
 

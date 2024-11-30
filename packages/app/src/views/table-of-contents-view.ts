@@ -28,7 +28,7 @@ export class TableOfContentsViewElement extends LitElement {
                 <span class="toc-dots"></span>
                 <span class="toc-page-number">4</span>
               </a>
-              <a href="../components/button/buttonPage.html" class="toc-item">
+              <a href="/component/button" class="toc-item">
                 <span class="toc-title">Buttons</span>
                 <span class="toc-dots"></span>
                 <span class="toc-page-number">5</span>

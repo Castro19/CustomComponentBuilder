@@ -53,9 +53,11 @@ async function update(
 }
 
 async function remove(buttonId: string): Promise<void> {
-  return ButtonConfigModel.findOneAndDelete({ buttonId }).then((deleted) => {
-    if (!deleted) throw new Error(`${buttonId} not deleted`);
-  });
+  return ButtonConfigModel.findOneAndDelete({ _id: buttonId }).then(
+    (deleted) => {
+      if (!deleted) throw new Error(`${buttonId} not deleted`);
+    }
+  );
 }
 
 export default { index, get, create, update, remove };
